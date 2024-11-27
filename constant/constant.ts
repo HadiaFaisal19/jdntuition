@@ -7,26 +7,36 @@ export const navLinks = [
     {
         id: 2,
         url: "#",
-        label: "About",
+        label: "Who we are",
     },
     {
         id: 3,
         url: "#",
-        label: "Testimonials"
+        label: "Subjects"
     },
     {
         id: 4,
         url: "#",
-        label: "Courses"
+        label: "Pricing"
     },
     {
         id: 5,
         url: "#",
-        label: "Blog"
+        label: "Jobs"
     },
     {
         id: 6,
         url: "#",
-        label: "Contact"
+        label: "Testimonials"
+    },
+    {
+        id: 7,
+        url: "#",
+        label: "Blog"
+    },
+    {
+        id: 8,
+        url: "#",
+        label: "Contact us"
     },
 ]

@@ -8,7 +8,7 @@ const About = () => {
 
     <div>
         <div className='flex items-center space-x-4'>
-            <div className='w-12 h-12 bg-rose-600 rounded-full flex items-center justify-center flex-col'>
+            <div className='w-12 h-12 bg-[#17A4A5] rounded-full flex items-center justify-center flex-col'>
                 <FaAward className='h6 w-6 text-white'/>
             </div>
             <h1 className='text-xl text-black font-semibold'>Australia's Best Tutors</h1>
@@ -25,7 +25,7 @@ const About = () => {
     {/* 2nd part*/}
     <div>
         <div className=''>
-            <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-5'>
+            <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
                 01
             </h1>
             <div className='-mt-10'>
@@ -36,7 +36,7 @@ const About = () => {
             </div>
         </div>
         <div className='mt-5 w-full'>
-            <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-5'>
+            <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
                 02
             </h1>
             <div className='-mt-10'>
@@ -47,7 +47,7 @@ const About = () => {
             </div>
         </div>
         <div className='mt-5 w-full'>
-            <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-5'>
+            <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
                 03
             </h1>
             <div className='-mt-10'>

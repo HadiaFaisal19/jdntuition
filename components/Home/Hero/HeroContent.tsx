@@ -3,24 +3,23 @@ import React from "react";
 const HeroContent = () => {
   return (
     <div>
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[4rem] text-white">
-        Best online platform for education.
+      <h4 className="text-1xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-2xl font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[4rem] text-white opacity-60">
+      Journet Development Network: Building the Pillars of Success
+      </h4>
+      <h1 className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-5xl font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[4rem] text-white">
+      Empowering Futures With Tutoring for Primary & High School Students
       </h1>
-      <p className="mt-6 text-sm md:text-base text-white text-opacity-60">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, non!
-        Tenetur enim eius quisquam deleniti temporibus nam exercitationem
-        deserunt?
-      </p>
+      
       <div className="mt-8 flex items-center space-x-4">
         <button
-          className="button__cls bg-green-700 hover:bg-green-500"
+          className="button__cls text-white bg-[#17A4A5] hover:bg-[#138F8F]"
         >
-          Get Started
+          Book Now
         </button>
         <button
-          className="button__cls bg-yellow-700 hover:bg-green-500"
+          className="button__cls text-[#17A4A5] bg-white hover:bg-green-500"
         >
-          Learn More
+          Why Choose Us
         </button>
         
       </div>
