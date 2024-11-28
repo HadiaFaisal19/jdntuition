@@ -3,6 +3,7 @@ import {Space_Grotesk }from "next/font/google";
 import "./globals.css";
 import ResponsiveNav from "@/components/Home/Navbar/ResponsiveNav";
 import Home from "@/components/Home/Home";
+import Footer from "@/components/Home/Footer/Footer";
 
 const font = Space_Grotesk({
   weight:['300', '400', '500', '600', '700'],
@@ -25,6 +26,7 @@ export default function RootLayout({
         className={font.className}>
           <ResponsiveNav/>
         {children}
+        <Footer />
       </body>
     </html>
   );
