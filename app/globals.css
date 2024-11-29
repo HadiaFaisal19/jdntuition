@@ -15,4 +15,34 @@
     .footer__link{
         @apply text-sm text-white hover:text-green-700 cursor-pointer text-opacity-60  mb-3 w-fit
     }
+
+    
+    @layer base{
+    html {
+        @apply scroll-smooth;
+      }
+    }
+
+    @keyframes shake {
+        0% {
+          transform: translateX(0);
+        }
+        25% {
+          transform: translateX(-2px);
+        }
+        50% {
+          transform: translateX(2px);
+        }
+        75% {
+          transform: translateX(-2px);
+        }
+        100% {
+          transform: translateX(0);
+        }
+      }
+      
+      .animate-shake:hover {
+        animation: shake 0.3s ease-in-out;
+      }
+      
 }

@@ -2,11 +2,12 @@ import React from 'react'
 import { FaArrowRight, FaAward } from 'react-icons/fa';
 
 const About = () => {
-  return <div className='pt-16 pb-16'>
+  return <div className='pt-16 pb-15'>
     <div className='w-4/5 mx-auto grid grid-cols-1 lg:grid-cols-2 items-center gap-16'>
     {/* 1st part*/}
 
-    <div>
+    <div data-aos="fade-right"
+      data-aos-anchor-placement="top-center">
         <div className='flex items-center space-x-4'>
             <div className='w-12 h-12 bg-[#17A4A5] rounded-full flex items-center justify-center flex-col'>
                 <FaAward className='h6 w-6 text-white'/>
@@ -23,9 +24,11 @@ const About = () => {
         </button>
     </div>
     {/* 2nd part*/}
-    <div>
+    <div data-aos="fade-left"
+      data-aos-anchor-placement="top-center"
+      data-aos-delay="150">
         <div className=''>
-            <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
+            <h1 className='mt-20 text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
                 01
             </h1>
             <div className='-mt-10'>
