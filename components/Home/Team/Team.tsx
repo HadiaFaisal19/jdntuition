@@ -2,6 +2,7 @@ import { teamData } from '@/data/data';
 import React from 'react'
 import TeamCard from './TeamCard';
 
+
 const Team = () => {
   return (
     <div className="pt-20 pb-20 bg-gray">

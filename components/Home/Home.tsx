@@ -5,6 +5,8 @@ import Courses from "./Courses/Courses";
 import Feature from "@/components/Home/Feature/Feature";
 import Review from "./Review/Review";
 import Team from "./Team/Team";
+import Pricing from "./Pricing/Pricing";
+import OurProcess from "./OurProcess/OurProcess";
 
 const Home = () => {
   return (
@@ -12,7 +14,9 @@ const Home = () => {
       <Hero />
       <About />
       <Courses />
+      <OurProcess />
       <Team />
+      <Pricing />
       <Review />
       <Feature />
     </div>

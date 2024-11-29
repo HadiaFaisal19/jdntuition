@@ -15,7 +15,7 @@ const TeamCard = ({ team }: Props) => {
   return (
     <div className="relative bg-gray-300 rounded-lg overflow-hidden group">
       {/* Image Section */}
-      <div className="w-full h-[37rem] relative"> {/* Increased height to h-96 */}
+      <div className="w-full h-[37rem] relative">
         <Image
           src={`${team.image}`}
           alt={`${team.name}`}

@@ -44,3 +44,23 @@ export const coursesData = [
       about: "My name is Rachit, and I’m the Student Wellbeing Coordinator here at JDN Tuition. In both my personal and academic life I’ve always aimed to assist students to be the best versions of themselves. As the Vice President of Help Elevate Youth, an organization dedicated to empowering young people, I’ve had the extraordinary gift to help shape the lives of countless students. Through both my roles, I’ve been able to provide students with the tools and support they need to thrive. The key to academic success and personal growth is by having a positive and healthy mindset.",
     },
   ]
+    export const priceData = [
+      {
+        id: 1,
+        tagline: "Anywhere, Anytime",
+        name: "Online",
+        image: "/images/online.jpg",
+        title: "Weekly Lessons",
+        price: 75,
+        about: "1 Hour, 90-minutes, 2 Hours, 2+ Hours",
+      },
+      {
+        id: 2,
+        tagline: "Face to Face Lessons",
+        name: "In Person",
+        image: "/images/inperson.jpg",
+        title: "Weekly Lessons",
+        price: 80,
+        about: "1 Hour, 90-minutes, 2 Hours",
+      },
+    ]
