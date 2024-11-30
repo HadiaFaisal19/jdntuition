@@ -76,9 +76,6 @@ const ReasonsToChooseUs = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {reasons.map((reason, i) => (
             <div
-              data-aos="fade-right"
-              data-aos-anchor-placement="top-center"
-              data-aos-delay={`${i * 100}`}
               key={reason.id}
               className="bg-white shadow-lg p-6 rounded-lg flex flex-col items-center text-center transition-all duration-300 hover:animate-shake"
             >

@@ -26,10 +26,7 @@ const Courses = () => {
         <div className="md:mt-12 mt-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
           {coursesData.map((course, i) => {
             return (
-              <div key={course.id} 
-              data-aos="fade-right"
-              data-aos-anchor-placement="top-center"
-              data-aos-delay={`${i*150}`}
+              <div key={course.id}
               className="relative z-20">
                 <CourseCard course={course} />
               </div>

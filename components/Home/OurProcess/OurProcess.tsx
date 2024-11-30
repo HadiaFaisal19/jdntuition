@@ -34,12 +34,8 @@ const WorkProcess = () => {
       {/* Title Section */}
       <div className="text-center mb-10">
         <p 
-        data-aos="fade-right"
-        data-aos-anchor-placement="top-center"
         className="text-lg uppercase text-gray-100">What We Do</p>
         <h1 
-        data-aos="fade-left"
-      data-aos-anchor-placement="top-center"
       className="text-4xl font-bold text-white">Our Process</h1>
       </div>
 
@@ -50,7 +46,7 @@ const WorkProcess = () => {
           <div
           data-aos="zoom-left"
               data-aos-anchor-placement="top-center"
-              data-aos-delay={`${i*150}`}
+              data-aos-delay={`${i*100}`}
             key={step.id}
             className="flex flex-col items-center text-center space-y-4"
           >
