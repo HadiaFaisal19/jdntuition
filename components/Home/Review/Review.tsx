@@ -22,15 +22,15 @@ const Review = () => {
           <h1 className="text-2xl md:text-3xl lg:text-5xl mt-5 font-bold md:leading-[3rem] lg:leading-[3.3rem] xl:leading-[3.6rem] text-white">
             5-Star Excellence
           </h1>
-          <p className="text-base text-white text-opacity-50 mt-6">
-          Journet Development Network: Building the Pillars of Success
+          <p className="text-base text-white text-opacity-70 mt-6">
+          Raising the Bar for Tutoring Excellence - Countless Success Stories Across All Grade Levels
           </p>
-          <div className="flex items-center space-x-10 mt-5">
+          {/* <div className="flex items-center space-x-10 mt-5">
             <p className="text-white font-bold text-5xl">99%</p>
             <p className="text-white">Success Stores Across<br/> All Grade Levels</p>
-          </div>
+          </div> */}
           <button className="button__cls mt-5 text-white bg-[#17A4A5] hover:bg-[#138F8F]">
-            <Link href="/reviews">View More</Link>
+            <Link href="/reviews">View All</Link>
           </button>
         </div>
         <div className="xl:col-span-2 bg-white rounded-lg overflow-hidden">

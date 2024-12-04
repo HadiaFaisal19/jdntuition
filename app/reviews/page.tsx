@@ -15,7 +15,7 @@ const Reviews = () => {
       date: "2 weeks ago",
       rating: 5,
       review:
-        "I recently had the pleasure of using Alchemy Tutoring for my children's educational needs, and I can't recommend them highly enough! The tutor matched us perfectly and exceeded expectations.",
+        "I recently had the pleasure of using JDN Tution for my children's educational needs, and I can't recommend them highly enough! The tutor matched us perfectly and exceeded expectations.",
       role: "Primary School Parent",
     },
     {
@@ -56,13 +56,16 @@ const Reviews = () => {
     <div className="pt-[9rem] py-16 px-4 bg-gray-100">
       {/* Header Section */}
       <div className="max-w-6xl mx-auto text-center mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">JDN Tuition Reviews</h1>
-        <p className="mt-2 text-lg text-gray-600">
-          Hear What Our Students Have to Say:
-        </p>
+        <h1 className="text-4xl font-bold text-gray-800">Australia’s Highest Rated Tutoring Platform
+        </h1>
+        <h1 className="text-4xl font-bold text-gray-800">
+        Thousands of Hours Tutored, Countless Futures Brightened</h1>
+        <h4 className="mt-2 text-lg font-semibold text-gray-600">
+        
+        </h4>
         <div className="mt-4 text-yellow-500 flex items-center justify-center space-x-2">
-          <span className="text-2xl font-semibold">5.0 rating</span>
-          <span className="text-lg text-gray-500">of 27 reviews</span>
+          <span className="text-2xl font-semibold">5.0 rated</span>
+          <span className="text-lg text-gray-500">platform</span>
         </div>
       </div>
 
