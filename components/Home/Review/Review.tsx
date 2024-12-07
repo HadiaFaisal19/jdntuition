@@ -1,3 +1,4 @@
+"use client"
 import Slider from "@/components/Helper/Slider";
 import Link from "next/link";
 import React from "react";

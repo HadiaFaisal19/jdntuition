@@ -11,6 +11,7 @@ import WhyChooseUs from "./WhyChooseUs/WhyChooseUs";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import WhyJDNTuition from "./WhyJDNTuition/WhyJDNTuition";
 
 const Home = () => {
 
@@ -45,6 +46,9 @@ const Home = () => {
       <div 
       id="our-process">
         <OurProcess />
+      </div>
+      <div>
+        <WhyJDNTuition/>
       </div>
       <div 
       id="pricing">

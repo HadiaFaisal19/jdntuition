@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { FaUserGraduate, FaChalkboardTeacher, FaComments, FaBookOpen } from 'react-icons/fa';
 

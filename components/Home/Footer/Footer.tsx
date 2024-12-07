@@ -15,7 +15,7 @@ const Footer = () => {
             width={100}
             />
             <p className="text-white text-opacity-50">
-            Journet Development Network: Building the Pillars of Success
+            Journey Development Network: Building the Pillars of Success
             </p>
             <div className="flex items-center space-x-4 mt-6">
                 <FaFacebookF className="w-6 h-6 text-blue-600" />

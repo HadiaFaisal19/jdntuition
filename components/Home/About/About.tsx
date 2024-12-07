@@ -29,7 +29,7 @@ const About = () => {
       data-aos-anchor-placement="top-center"
       data-aos-delay="150">
         <div className=''>
-            <h1 className='mt-20 text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
+            <h1 className='mt-19 text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
                 01
             </h1>
             <div className='-mt-10'>
