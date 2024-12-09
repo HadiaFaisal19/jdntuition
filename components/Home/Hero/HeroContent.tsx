@@ -1,4 +1,5 @@
 "use client"
+import Link from "next/link";
 import React from "react";
 
 const HeroContent = () => {
@@ -20,7 +21,7 @@ const HeroContent = () => {
           data-aos-delay="300"
           className="button__cls text-white bg-[#17A4A5] hover:bg-[#138F8F]"
         >
-          Book Now
+          <Link href="/book-now">Book Now</Link>
         </button>
         <button
           data-aos="zoom-in"

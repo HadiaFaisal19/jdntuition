@@ -39,7 +39,7 @@ const About = () => {
                 <p className='w-[90%] lg-w-[70%] text-base text-black text-opacity-60'>At JDN Tuition, we pride ourselves on having some of Australia’s best tutors. Our team consists of highly qualified professionals who excel in their respective subjects. With years of experience and a passion for teaching, our tutors are dedicated to helping students achieve their academic goals. Whether they’re preparing for exams or need assistance with coursework, trust JDN Tuition for unparalleled expertise and guidance.</p>
             </div>
         </div>
-        <div className='mt-5 w-full'>
+        <div className='mt-10 w-full'>
             <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
                 02
             </h1>
@@ -50,7 +50,7 @@ const About = () => {
                 <p className='w-[90%] lg-w-[70%] text-base text-black text-opacity-60'>Unlike other tutoring services, we understand that every student is unique. That’s why we take a personalized approach to education at JDN Tuition. From our free 15-minute consultation to our carefully curated tutor-matching process, we ensure that each student receives the individualized attention they deserve. Our tutors are not only knowledgeable but also committed to understanding each student’s learning style and adapting their teaching methods to suit their needs.</p>
             </div>
         </div>
-        <div className='mt-5 w-full'>
+        <div className='mt-10 w-full'>
             <h1 className='text-7xl lg:text-9xl font-bold text-black text-opacity-10'>
                 03
             </h1>

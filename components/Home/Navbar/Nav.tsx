@@ -59,7 +59,8 @@ const Nav = ({ openNav }: Props) => {
           <button
             className="md:px-10 md:py-2 px-8 py-1.5 text-white font-semibold text-base bg-[#17A4A5] hover:bg-[#138F8F] transition-all duration-200 rounded-lg"
           >
-            Book Now
+            
+            <Link href="/book-now">Book Now</Link>
           </button>
 
           {/* Show menu icon only on small screens */}
