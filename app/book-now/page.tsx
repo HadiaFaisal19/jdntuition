@@ -10,10 +10,17 @@ export default function BookNow() {
     userType: '',
     grade: '',
     selectedSubjects: [],
+    studentInfo: {
+      firstName: "",
+      lastName: "",
+      reason: "",
+      performance: "",
+      learningNeeds: "",
+    },
   });
 
   const handleNext = () => {
-    if (step < 5 && formData.userType) {
+    if (step < 5 && formData.userType && formData.studentInfo ) {
       setStep(step + 1);
     }
   };
@@ -21,30 +28,28 @@ export default function BookNow() {
   const handlePrev = () => {
     if (step > 1) {
       setStep(step - 1);
-      setFormData({
-        userType: '',
-        grade: '',
-        selectedSubjects: [],
-      });
+      
     }
+  };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        studentInfo: { ...prevData.studentInfo, [name]: value },
+      };
+      console.log("Updated formData:", updatedData); // Log formData whenever it is updated
+      return updatedData;
+    });
   };
 
   const handleGradeChange = (grade) => {
     setFormData((prevData) => {
-      if (prevData.grade !== grade) {
-        return { ...prevData, grade, selectedSubjects: [] };
-      }
-      return prevData;
-    });
-  };
-
-  const toggleSubjectSelection = (subject) => {
-    setFormData((prevData) => {
-      const isSelected = prevData.selectedSubjects.includes(subject);
-      const updatedSubjects = isSelected
-        ? prevData.selectedSubjects.filter((s) => s !== subject)
-        : [...prevData.selectedSubjects, subject];
-      return { ...prevData, selectedSubjects: updatedSubjects };
+      const updatedData = prevData.grade !== grade 
+        ? { ...prevData, grade, selectedSubjects: [] } 
+        : prevData;
+      console.log("Updated formData after grade change:", updatedData); // Log formData when grade changes
+      return updatedData;
     });
   };
 
@@ -57,104 +62,177 @@ export default function BookNow() {
             <div className="flex justify-center space-x-4 mt-4">
               <button
                 className={`p-2 px-6 border rounded ${formData.userType === 'Student' ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
-                onClick={() => {
-                  setFormData({ ...formData, userType: 'Student' });
-                }}
+                onClick={() => setFormData({ ...formData, userType: 'Student' })}
               >
                 Student
               </button>
               <button
                 className={`p-2 px-6 border rounded ${formData.userType === 'Parent' ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
-                onClick={() => {
-                  setFormData({ ...formData, userType: 'Parent' });
-                }}
+                onClick={() => setFormData({ ...formData, userType: 'Parent' })}
               >
                 Parent
               </button>
             </div>
           </div>
         );
-        case 2:
-            return (
-              <div className="step-content">
-                <p className="text-lg font-semibold">
-                  {formData.userType === 'Student' ? 'What grade are you in?' : 'What grade is your child in?'}
-                </p>
-                <div className="mt-4">
-                  <div className="flex space-x-4">
-                    {/* Primary Grades */}
-                    <div>
-                      <p className="font-semibold">Primary</p>
-                      <div className="flex space-x-2 mt-2">
-                        {['K', '1', '2', '3', '4', '5', '6'].map((grade) => (
-                          <button
-                            key={grade}
-                            className={`p-2 px-4 border rounded ${formData.grade === grade ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
-                            onClick={() => handleGradeChange(grade)}
-                          >
-                            {grade}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    {/* Secondary Grades */}
-                    <div>
-                      <p className="font-semibold">Secondary</p>
-                      <div className="flex space-x-2 mt-2">
-                        {['7', '8', '9', '10'].map((grade) => (
-                          <button
-                            key={grade}
-                            className={`p-2 px-4 border rounded ${formData.grade === grade ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
-                            onClick={() => handleGradeChange(grade)}
-                          >
-                            {grade}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    {/* Senior Grades */}
-                    <div>
-                      <p className="font-semibold">Senior</p>
-                      <div className="flex space-x-2 mt-2">
-                        {['11', '12'].map((grade) => (
-                          <button
-                            key={grade}
-                            className={`p-2 px-4 border rounded ${formData.grade === grade ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
-                            onClick={() => handleGradeChange(grade)}
-                          >
-                            {grade}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
+      case 2:
+        return (
+          <div className="step-content">
+            <p className="text-lg font-semibold">
+              {formData.userType === 'Student' ? 'What grade are you in?' : 'What grade is your child in?'}
+            </p>
+            <div className="mt-4">
+              <div className="flex space-x-4">
+                {/* Primary Grades */}
+                <div>
+                  <p className="font-semibold">Primary</p>
+                  <div className="flex space-x-2 mt-2">
+                    {['K', '1', '2', '3', '4', '5', '6'].map((grade) => (
+                      <button
+                        key={grade}
+                        className={`p-2 px-4 border rounded ${formData.grade === grade ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
+                        onClick={() => handleGradeChange(grade)}
+                      >
+                        {grade}
+                      </button>
+                    ))}
                   </div>
                 </div>
-                <div className="mt-8">
-                  <p className="text-lg font-semibold">What subject(s) do you need support in?</p>
-                  <div className="mt-4">{formData.grade && renderSubjects(formData.grade)}</div>
+                {/* Secondary Grades */}
+                <div>
+                  <p className="font-semibold">Secondary</p>
+                  <div className="flex space-x-2 mt-2">
+                    {['7', '8', '9', '10'].map((grade) => (
+                      <button
+                        key={grade}
+                        className={`p-2 px-4 border rounded ${formData.grade === grade ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
+                        onClick={() => handleGradeChange(grade)}
+                      >
+                        {grade}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* Senior Grades */}
+                <div>
+                  <p className="font-semibold">Senior</p>
+                  <div className="flex space-x-2 mt-2">
+                    {['11', '12'].map((grade) => (
+                      <button
+                        key={grade}
+                        className={`p-2 px-4 border rounded ${formData.grade === grade ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
+                        onClick={() => handleGradeChange(grade)}
+                      >
+                        {grade}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            );
-          default:
-            return null;
-        }
-      };
+            </div>
+
+            {formData.grade && (
+              <div className="mt-8">
+                <p className="text-lg font-semibold">What subject(s) do you need support in?</p>
+                <div className="mt-4">{renderSubjects(formData.grade)}</div>
+              </div>
+            )}
+          </div>
+        );
+
+     case 3:
+        return (
+          <div className="step-content">
+            <h2 className="text-2xl font-semibold mb-4">Student Information</h2>
+            <div className="flex gap-4 mb-4">
+              <div className="flex flex-col">
+                <label className="font-semibold mb-1">Student First Name:</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.studentInfo.firstName}
+                  onChange={handleInputChange}
+                  className="p-2 border rounded"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="font-semibold mb-1">Student Last Name:</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.studentInfo.lastName}
+                  onChange={handleInputChange}
+                  className="p-2 border rounded"
+                />
+              </div>
+            </div>
+
+            <div className="mb-4">
+              <label className="font-semibold mb-1 block">
+                Why are you seeking a tutor?
+              </label>
+              <select
+                name="reason"
+                value={formData.studentInfo.reason}
+                onChange={handleInputChange}
+                className="p-2 border rounded w-full"
+              >
+                <option value="">Select</option>
+                <option value="Boost Marks">Boost Marks</option>
+                <option value="Support and Mentorship">
+                  Support and Mentorship
+                </option>
+                <option value="Exam Preparation">Exam Preparation</option>
+                <option value="A mix of all">A mix of all</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+              <label className="font-semibold mb-1 block">
+              How would you describe the current performance in school? 
+              </label>
+              <select
+                name="performance"
+                value={formData.studentInfo.performance}
+                onChange={handleInputChange}
+                className="p-2 border rounded w-full"
+              >
+                <option value="">Select</option>
+                <option value="Boost Marks">Facing Difficulties</option>
+                <option value="Exam Preparation">Fairly Average</option>
+                <option value="A mix of all">Excelling</option>
+              </select>
+            </div>
+
+            <div className="mb-4">
+            <label className="font-semibold mb-1 block">
+              Please provide us with an overview of learning needs to help us match with the perfect tutor.
+            </label>
+            <textarea
+              name="learningNeeds"
+              value={formData.studentInfo.learningNeeds}
+              onChange={handleInputChange}
+              className="p-2 border rounded w-full"
+              rows="4" // Adjust the number of rows as needed
+              placeholder="Describe the student's learning needs here..."
+            ></textarea>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
 
       const renderSubjects = (grade) => {
         const handleSubjectChange = (subject) => {
-          if (formData.selectedSubjects.includes(subject)) {
-            // Remove subject from selected subjects if it's already selected
-            setFormData({
-              ...formData,
-              selectedSubjects: formData.selectedSubjects.filter(item => item !== subject)
-            });
-          } else {
-            // Add subject to selected subjects if it's not already selected
-            setFormData({
-              ...formData,
-              selectedSubjects: [...formData.selectedSubjects, subject]
-            });
-          }
+          setFormData((prevData) => {
+            const updatedData = prevData.selectedSubjects.includes(subject)
+              ? { ...prevData, selectedSubjects: prevData.selectedSubjects.filter((item) => item !== subject) }
+              : { ...prevData, selectedSubjects: [...prevData.selectedSubjects, subject] };
+            console.log("Updated formData after subject selection:", updatedData); // Log formData after subject selection
+            return updatedData;
+          });
         };
       
         if (['K', '1', '2', '3', '4', '5', '6'].includes(grade)) {
@@ -354,7 +432,8 @@ export default function BookNow() {
               </button>
               <button
                 onClick={handleNext}
-                disabled={step === 2 && !formData.userType || step === 2 && !formData.grade || step === 2 && formData.selectedSubjects.length === 0}
+                disabled={step === 2 && !formData.userType || step === 2 && !formData.grade || step === 2 && formData.selectedSubjects.length === 0 || 
+                  step === 3 && !formData.studentInfo.firstName || step === 3 && !formData.studentInfo.lastName || step === 3 && !formData.studentInfo.performance || step === 3 && !formData.studentInfo.reason || step === 3 && !formData.studentInfo.learningNeeds }
                 className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
               >
                 Next
