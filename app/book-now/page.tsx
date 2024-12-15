@@ -21,6 +21,7 @@ export default function BookNow() {
     lessonDetails: {
       type: "",
       duration: "",
+      customDuration: "",
       frequency: "",
       availability: {
         Monday: [],
@@ -67,24 +68,26 @@ export default function BookNow() {
       return updatedData;
     });
   };
-
-  const handleLessonInputChange= (e) => {
+  const handleLessonInputChange = (e) => {
     const { name, value } = e.target;
   
     setFormData((prevData) => {
       const updatedData = {
         ...prevData,
-        // Dynamically update either studentInfo or lessonDetails based on the input field
         lessonDetails: {
           ...prevData.lessonDetails,
-          [name]: value, // Update the specific field in lessonDetails
+          [name]: value, // Update the `duration` field directly
         },
       };
   
-      console.log("Updated formData:", updatedData); // Log updated formData to the console
+      console.log("Updated formData:", updatedData); // Log updated formData
       return updatedData;
     });
   };
+  
+  
+  
+  
 
   const handleLastInputChange= (e) => {
     const { name, value } = e.target;
@@ -179,12 +182,14 @@ export default function BookNow() {
     };
   
     // Send the form data via EmailJS
-    emailjs.send(
-      "EmailJS service ID",  
-      "EmailJS template ID", 
-      emailContent,
-      "user ID"       
-    )
+  
+      emailjs.send(
+        "service_xc34br8",  // Replace with your EmailJS service ID
+        "template_ya9huar",  // Replace with your EmailJS template ID
+        emailContent,
+        "4L19u9FwDl0mVJcZz"       // Replace with your EmailJS user ID
+      )      
+    
     .then(
       (response) => {
         console.log("Email sent successfully!", response);
@@ -399,43 +404,128 @@ export default function BookNow() {
                   </div>
           
                   <div className="flex-1">
-                    <label className="font-semibold mb-1 block">Lesson Duration</label>
-                    <select
-                      name="duration"
-                      value={formData.lessonDetails.duration}
-                      onChange={handleLessonInputChange}
-                      className="p-2 border rounded w-full"
-                    >
-                      <option value="">Select</option>
-                      <option value="1 hour">1 hour</option>
-                      <option value="1.5 hour">1.5 hours</option>
-                      <option value="2 hour">2 hours</option>
-                      <option value="2.5 hour">2.5 hours</option>
-                      <option value="3 hour">3 hours</option>
-                      <option value="3.5 hour">3.5 hours</option>
-                      <option value="4 hour">4 hours</option>
-                    </select>
-                  </div>
+  <label className="font-semibold mb-1 block">Lesson Duration</label>
+  <select
+    name="duration"
+    value={formData.lessonDetails.duration.endsWith("hours")
+      ? "custom"
+      : formData.lessonDetails.duration} // Keeps "custom" selected when custom value is present
+    onChange={(e) => {
+      const value = e.target.value;
+      if (value === "custom") {
+        handleLessonInputChange({
+          target: {
+            name: "duration",
+            value: " hours", // Initialize with a default value
+          },
+        });
+      } else {
+        handleLessonInputChange({ target: { name: "duration", value } });
+      }
+    }}
+    className="p-2 border rounded w-full"
+  >
+    <option value="">Select</option>
+    <option value="1 hour">1 hour</option>
+    <option value="1.5 hour">1.5 hours</option>
+    <option value="2 hour">2 hours</option>
+    <option value="custom">custom</option>
+  </select>
+
+  {/* Render the custom input field when "custom" is selected */}
+  {formData.lessonDetails.duration.endsWith("hours") && (
+    <div className="mt-2">
+      <label className="font-semibold mb-1 block">Enter Custom Duration</label>
+      <div className="flex items-center">
+        <input
+          type="number"
+          step="0.1" // Allows decimal input up to one place
+          min="0" // Ensures positive numbers only
+          value={formData.lessonDetails.duration.replace(" hours", "")}
+          onChange={(e) => {
+            const value = e.target.value;
+            const regex = /^\d+(\.\d{1})?$/; // Allow numbers with 1 decimal place
+            if (value === "" || (regex.test(value) && parseFloat(value) <= 4)) {
+              handleLessonInputChange({
+                target: {
+                  name: "duration",
+                  value: `${value} hours`, // Store the custom value ending with "hours"
+                },
+              });
+            }
+          }}
+          placeholder="Enter hours"
+          className="p-2 border rounded w-full"
+        />
+      </div>
+    </div>
+  )}
+</div>
+
+
+
+
+
           
-                  <div className="flex-1">
-                    <label className="font-semibold mb-1 block">Lesson Frequency</label>
-                    <select
-                      name="frequency"
-                      value={formData.lessonDetails.frequency}
-                      onChange={handleLessonInputChange}
-                      className="p-2 border rounded w-full"
-                    >
-                      <option value="">Select</option>
-                      <option value="Once a week">Once a week</option>
-                      <option value="Twice a week">Twice a week</option>
-                      <option value="Thrice a week">Thrice a week</option>
-                      <option value="Twice a week">Twice a week</option>
-                      <option value="4 days a week">4 days a week</option>
-                      <option value="5 days a week">5 days a week</option>
-                      <option value="6 days a week">6 days a week</option>
-                      <option value="7 days a week">7 days a week</option>
-                    </select>
-                  </div>
+<div className="flex-1">
+  <label className="font-semibold mb-1 block">Lesson Frequency</label>
+  <select
+    name="frequency"
+    value={formData.lessonDetails.frequency.endsWith("times a week")
+      ? "custom"
+      : formData.lessonDetails.frequency} // Keeps "custom" selected when custom value is present
+    onChange={(e) => {
+      const value = e.target.value;
+      if (value === "custom") {
+        handleLessonInputChange({
+          target: {
+            name: "frequency",
+            value: "4 times a week", // Initialize custom value with a default
+          },
+        });
+      } else {
+        handleLessonInputChange({ target: { name: "frequency", value } });
+      }
+    }}
+    className="p-2 border rounded w-full"
+  >
+    <option value="">Select</option>
+    <option value="Once a week">Once a week</option>
+    <option value="Twice a week">Twice a week</option>
+    <option value="Thrice a week">Thrice a week</option>
+    <option value="custom">custom</option>
+  </select>
+
+  {/* Render the custom input field when "custom" is selected */}
+  {formData.lessonDetails.frequency.endsWith("times a week") && (
+    <div className="mt-2">
+      <label className="font-semibold mb-1 block">Enter Custom Frequency</label>
+      <div className="flex items-center">
+        <input
+          type="number"
+          min="4"
+          max="7"
+          value={formData.lessonDetails.frequency.replace(" times a week", "")}
+          onChange={(e) => {
+            const value = e.target.value;
+            const frequencyValue = parseInt(value, 10);
+            if (!value || (frequencyValue >= 4 && frequencyValue <= 7)) {
+              handleLessonInputChange({
+                target: {
+                  name: "frequency",
+                  value: `${value} times a week`, // Store custom value ending with "times a week"
+                },
+              });
+            }
+          }}
+          placeholder="Enter frequency"
+          className="p-2 border rounded w-full"
+        />
+      </div>
+    </div>
+  )}
+</div>
+
                 </div>
           
                 {/* Availability Table */}
