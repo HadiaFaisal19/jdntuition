@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import { FaBook, FaHandshake, FaRocket, FaComments } from "react-icons/fa";
+import emailjs from "emailjs-com";
 
 export default function BookNow() {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -17,7 +18,31 @@ export default function BookNow() {
       performance: "",
       learningNeeds: "",
     },
+    lessonDetails: {
+      type: "",
+      duration: "",
+      frequency: "",
+      availability: {
+        Monday: [],
+        Tuesday: [],
+        Wednesday: [],
+        Thursday: [],
+        Friday: [],
+        Saturday: [],
+        Sunday: [],
+      },
+    },
+    parentDetails: {
+      fname: "",
+      lname: "",
+      email: "",
+      phone: "",
+      suburb: "",
+      remarks: "",
+    },
   });
+
+  
 
   const handleNext = () => {
     if (step < 5 && formData.userType && formData.studentInfo ) {
@@ -43,6 +68,43 @@ export default function BookNow() {
     });
   };
 
+  const handleLessonInputChange= (e) => {
+    const { name, value } = e.target;
+  
+    setFormData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        // Dynamically update either studentInfo or lessonDetails based on the input field
+        lessonDetails: {
+          ...prevData.lessonDetails,
+          [name]: value, // Update the specific field in lessonDetails
+        },
+      };
+  
+      console.log("Updated formData:", updatedData); // Log updated formData to the console
+      return updatedData;
+    });
+  };
+
+  const handleLastInputChange= (e) => {
+    const { name, value } = e.target;
+  
+    setFormData((prevData) => {
+      const updatedData = {
+        ...prevData,
+        // Dynamically update either studentInfo or parentDetails based on the input field
+        parentDetails: {
+          ...prevData.parentDetails,
+          [name]: value, // Update the specific field in parentDetails
+        },
+      };
+  
+      console.log("Updated formData:", updatedData); // Log updated formData to the console
+      return updatedData;
+    });
+  };
+
+
   const handleGradeChange = (grade) => {
     setFormData((prevData) => {
       const updatedData = prevData.grade !== grade 
@@ -52,6 +114,95 @@ export default function BookNow() {
       return updatedData;
     });
   };
+
+  
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    const [day, time] = value.split("-"); // Split the value into day and time
+  
+    setFormData((prevFormData) => {
+      const currentAvailability = prevFormData.lessonDetails.availability[day] || [];
+  
+      let updatedAvailability;
+  
+      if (time === "Any" || time === "Unavailable") {
+        // If "Any" or "Unavailable" is selected
+        updatedAvailability = checked ? [time] : [];
+      } else {
+        // Normal checkbox behavior
+        updatedAvailability = checked
+          ? [...currentAvailability, time] // Add the time slot if checked
+          : currentAvailability.filter((item) => item !== time); // Remove the time slot if unchecked
+      }
+  
+      // Log the updated availability array for the day
+      console.log(`Updated availability for ${day}:`, updatedAvailability);
+  
+      return {
+        ...prevFormData,
+        lessonDetails: {
+          ...prevFormData.lessonDetails,
+          availability: {
+            ...prevFormData.lessonDetails.availability,
+            [day]: updatedAvailability,
+          },
+        },
+      };
+    });
+  };
+  
+  const handleSubmit = () => {
+    // Perform submission logic (e.g., save data, API call)
+    console.log("Form submitted successfully!", formData);
+  
+    // Prepare the email content using the formData
+    const emailContent = {
+      userType: formData.userType,
+      grade: formData.grade,
+      selectedSubjects: formData.selectedSubjects.join(", "),  
+      firstName: formData.studentInfo.firstName,
+      lastName: formData.studentInfo.lastName,
+      reason: formData.studentInfo.reason,
+      performance: formData.studentInfo.performance,
+      learningNeeds: formData.studentInfo.learningNeeds,
+      lessonType: formData.lessonDetails.type,
+      lessonDuration: formData.lessonDetails.duration,
+      lessonFrequency: formData.lessonDetails.frequency,
+      availability: JSON.stringify(formData.lessonDetails.availability),  
+      parentFirstName: formData.parentDetails.fname,
+      parentLastName: formData.parentDetails.lname,
+      parentEmail: formData.parentDetails.email,
+      parentPhone: formData.parentDetails.phone,
+      parentSuburb: formData.parentDetails.suburb,
+      parentRemarks: formData.parentDetails.remarks
+    };
+  
+    // Send the form data via EmailJS
+    emailjs.send(
+      "EmailJS service ID",  
+      "EmailJS template ID", 
+      emailContent,
+      "user ID"       
+    )
+    .then(
+      (response) => {
+        console.log("Email sent successfully!", response);
+        // Set the step to 6 to display the thank-you message
+        setStep(6);
+      },
+      (error) => {
+        console.error("Error sending email:", error);
+      }
+    );
+  };
+  
+  const handleClosePopup = () => {
+    // Close the popup and reset the form visibility
+    setIsFormVisible(false);
+    setStep(1); // Optional: Reset to the first step
+  };
+  
 
   const renderFormStep = () => {
     switch (step) {
@@ -140,85 +291,327 @@ export default function BookNow() {
           </div>
         );
 
-     case 3:
-        return (
-          <div className="step-content">
-            <h2 className="text-2xl font-semibold mb-4">Student Information</h2>
-            <div className="flex gap-4 mb-4">
-              <div className="flex flex-col">
-                <label className="font-semibold mb-1">Student First Name:</label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.studentInfo.firstName}
-                  onChange={handleInputChange}
-                  className="p-2 border rounded"
-                />
+        case 3:
+          return (
+            <div className="step-content">
+              <h2 className="text-2xl font-semibold mb-4">Student Information</h2>
+              
+              {/* First Name and Last Name */}
+              <div className="flex gap-4 mb-4">
+                <div className="flex flex-col flex-1">
+                  <label className="font-semibold mb-1">Student First Name:</label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.studentInfo.firstName}
+                    onChange={handleInputChange}
+                    className="p-2 border rounded w-full"
+                  />
+                </div>
+                <div className="flex flex-col flex-1">
+                  <label className="font-semibold mb-1">Student Last Name:</label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.studentInfo.lastName}
+                    onChange={handleInputChange}
+                    className="p-2 border rounded w-full"
+                  />
+                </div>
               </div>
-              <div className="flex flex-col">
-                <label className="font-semibold mb-1">Student Last Name:</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.studentInfo.lastName}
+          
+              {/* Tutor Reason */}
+              <div className="mb-4">
+                <label className="font-semibold mb-1 block">
+                  Why are you seeking a tutor?
+                </label>
+                <select
+                  name="reason"
+                  value={formData.studentInfo.reason}
                   onChange={handleInputChange}
-                  className="p-2 border rounded"
-                />
+                  className="p-2 border rounded w-full"
+                >
+                  <option value="">Select</option>
+                  <option value="Boost Marks">Boost Marks</option>
+                  <option value="Support and Mentorship">Support and Mentorship</option>
+                  <option value="Exam Preparation">Exam Preparation</option>
+                  <option value="A mix of all">A mix of all</option>
+                </select>
+              </div>
+          
+              {/* Current Performance */}
+              <div className="mb-4">
+                <label className="font-semibold mb-1 block">
+                  How would you describe the current performance in school?
+                </label>
+                <select
+                  name="performance"
+                  value={formData.studentInfo.performance}
+                  onChange={handleInputChange}
+                  className="p-2 border rounded w-full"
+                >
+                  <option value="">Select</option>
+                  <option value="Facing Difficulties">Facing Difficulties</option>
+                  <option value="Fairly Average">Fairly Average</option>
+                  <option value="Excelling">Excelling</option>
+                </select>
+              </div>
+          
+              {/* Learning Needs */}
+              <div className="mb-4">
+                <label className="font-semibold mb-1 block">
+                  Please provide us with an overview of learning needs to help us match with the perfect tutor.
+                </label>
+                <textarea
+                  name="learningNeeds"
+                  value={formData.studentInfo.learningNeeds}
+                  onChange={handleInputChange}
+                  className="p-2 border rounded w-full"
+                  rows="4"
+                  placeholder="Describe the student's learning needs here..."
+                ></textarea>
               </div>
             </div>
+          );
+          
 
-            <div className="mb-4">
-              <label className="font-semibold mb-1 block">
-                Why are you seeking a tutor?
-              </label>
-              <select
-                name="reason"
-                value={formData.studentInfo.reason}
-                onChange={handleInputChange}
-                className="p-2 border rounded w-full"
+          case 4:
+            return (
+              <div
+                className="step-content4"
+                
               >
-                <option value="">Select</option>
-                <option value="Boost Marks">Boost Marks</option>
-                <option value="Support and Mentorship">
-                  Support and Mentorship
-                </option>
-                <option value="Exam Preparation">Exam Preparation</option>
-                <option value="A mix of all">A mix of all</option>
-              </select>
-            </div>
+                <h2 className="text-2xl font-semibold mb-4">Lesson Details</h2>
+          
+                <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                  <div className="flex-1">
+                    <label className="font-semibold mb-1 block">Lesson Type</label>
+                    <select
+                      name="type"
+                      value={formData.lessonDetails.type}
+                      onChange={handleLessonInputChange}
+                      className="p-2 border rounded w-full"
+                    >
+                      <option value="">Select</option>
+                      <option value="Online">Online</option>
+                      <option value="In-person">In-person</option>
+                    </select>
+                  </div>
+          
+                  <div className="flex-1">
+                    <label className="font-semibold mb-1 block">Lesson Duration</label>
+                    <select
+                      name="duration"
+                      value={formData.lessonDetails.duration}
+                      onChange={handleLessonInputChange}
+                      className="p-2 border rounded w-full"
+                    >
+                      <option value="">Select</option>
+                      <option value="1 hour">1 hour</option>
+                      <option value="1.5 hour">1.5 hours</option>
+                      <option value="2 hour">2 hours</option>
+                      <option value="2.5 hour">2.5 hours</option>
+                      <option value="3 hour">3 hours</option>
+                      <option value="3.5 hour">3.5 hours</option>
+                      <option value="4 hour">4 hours</option>
+                    </select>
+                  </div>
+          
+                  <div className="flex-1">
+                    <label className="font-semibold mb-1 block">Lesson Frequency</label>
+                    <select
+                      name="frequency"
+                      value={formData.lessonDetails.frequency}
+                      onChange={handleLessonInputChange}
+                      className="p-2 border rounded w-full"
+                    >
+                      <option value="">Select</option>
+                      <option value="Once a week">Once a week</option>
+                      <option value="Twice a week">Twice a week</option>
+                      <option value="Thrice a week">Thrice a week</option>
+                      <option value="Twice a week">Twice a week</option>
+                      <option value="4 days a week">4 days a week</option>
+                      <option value="5 days a week">5 days a week</option>
+                      <option value="6 days a week">6 days a week</option>
+                      <option value="7 days a week">7 days a week</option>
+                    </select>
+                  </div>
+                </div>
+          
+                {/* Availability Table */}
+                <div className="overflow-x-auto">
+                  <table className="table-auto border-collapse border border-gray-300 w-full">
+                    <thead>
+                      <tr>
+                        <th className="border border-gray-300 p-2">Day</th>
+                        <th className="border border-gray-300 p-2">Early Morning <br />(Before 9am)</th>
+                        <th className="border border-gray-300 p-2">Morning <br />(9am – 12pm)</th>
+                        <th className="border border-gray-300 p-2">Early Afternoon <br />(12pm – 3pm)</th>
+                        <th className="border border-gray-300 p-2">Late Afternoon <br /> (3pm – 6pm)</th>
+                        <th className="border border-gray-300 p-2">Evening <br />(After 6pm)</th>
+                        <th className="border border-gray-300 p-2">Any Time</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day) => (
+                        <tr key={day}>
+                          <td className="border border-gray-300 p-2 font-semibold">{day}</td>
+                          {[
+                            "Early Morning",
+                            "Morning",
+                            "Early Afternoon",
+                            "Late Afternoon",
+                            "Evening",
+                            "Any",
+                          ].map((time) => {
+                            const isDisabled =
+                              formData.lessonDetails.availability[day]?.includes("Any") ||
+                              formData.lessonDetails.availability[day]?.includes("Unavailable");
+                            const isChecked =
+                              formData.lessonDetails.availability[day]?.includes(time);
+          
+                            const handleCheckboxClick = (e) => {
+                              handleCheckboxChange(e);
+                              const checkbox = e.target;
+                              checkbox.classList.add("glow");
+                              setTimeout(() => {
+                                checkbox.classList.remove("glow");
+                              }, 2000);
+                            };
+          
+                            return (
+                              <td key={time} className="border border-gray-300 p-2 text-center">
+                                <input
+                                  type="checkbox"
+                                  value={`${day}-${time}`}
+                                  onChange={handleCheckboxClick}
+                                  disabled={isDisabled && time !== "Any" && time !== "Unavailable"}
+                                  checked={isChecked}
+                                />
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            );
+          
+          
 
-            <div className="mb-4">
-              <label className="font-semibold mb-1 block">
-              How would you describe the current performance in school? 
-              </label>
-              <select
-                name="performance"
-                value={formData.studentInfo.performance}
-                onChange={handleInputChange}
-                className="p-2 border rounded w-full"
-              >
-                <option value="">Select</option>
-                <option value="Boost Marks">Facing Difficulties</option>
-                <option value="Exam Preparation">Fairly Average</option>
-                <option value="A mix of all">Excelling</option>
-              </select>
-            </div>
-
-            <div className="mb-4">
-            <label className="font-semibold mb-1 block">
-              Please provide us with an overview of learning needs to help us match with the perfect tutor.
-            </label>
-            <textarea
-              name="learningNeeds"
-              value={formData.studentInfo.learningNeeds}
-              onChange={handleInputChange}
-              className="p-2 border rounded w-full"
-              rows="4" // Adjust the number of rows as needed
-              placeholder="Describe the student's learning needs here..."
-            ></textarea>
-            </div>
-          </div>
-        );
+            
+          
+            case 5:
+              return (
+                <div className="step-content">
+                  <h2 className="text-2xl text-center font-semibold mb-4">Final Form</h2>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* Left Column */}
+                    <div className="bg-gray-100 p-6 rounded-lg shadow-md">
+                      <h2 className="text-xl font-semibold mb-4">Enter Parent's Details</h2>
+                      <div className="flex flex-col mb-4">
+                        <label className="font-semibold mb-1">First Name:</label>
+                        <input
+                          type="text"
+                          name="fname"
+                          value={formData.parentDetails.fname}
+                          onChange={handleLastInputChange}
+                          className="p-2 border rounded"
+                          placeholder="Enter first name"
+                        />
+                      </div>
+                      <div className="flex flex-col mb-4">
+                        <label className="font-semibold mb-1">Last Name:</label>
+                        <input
+                          type="text"
+                          name="lname"
+                          value={formData.parentDetails.lname}
+                          onChange={handleLastInputChange}
+                          className="p-2 border rounded"
+                          placeholder="Enter last name"
+                        />
+                      </div>
+                      <div className="flex flex-col mb-4">
+                        <label className="font-semibold mb-1">Email:</label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.parentDetails.email}
+                          onChange={handleLastInputChange}
+                          className="p-2 border rounded"
+                          placeholder="Enter email"
+                        />
+                      </div>
+                      <div className="flex flex-col mb-4">
+                        <label className="font-semibold mb-1">Suburb:</label>
+                        <input
+                          type="text"
+                          name="suburb"
+                          value={formData.parentDetails.suburb}
+                          onChange={handleLastInputChange}
+                          className="p-2 border rounded"
+                          placeholder="Enter suburb"
+                        />
+                      </div>
+                    </div>
+            
+                    {/* Right Column */}
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                      <h2 className="text-xl font-semibold mb-4">User Details</h2>
+                      <p className="mb-2">
+                        <span className="font-semibold">Grade:</span> {formData.grade || "Not selected"}
+                      </p>
+                      <p className="mb-2">
+                        <span className="font-semibold">Selected Subjects:</span>{" "}
+                        {formData.selectedSubjects.length > 0
+                          ? formData.selectedSubjects.join(", ")
+                          : "No subjects selected"}
+                      </p>
+                      <p className="mb-2">
+                        <span className="font-semibold">Lesson Type:</span> {formData.lessonDetails.type || "Not selected"}
+                      </p>
+                      <p className="mb-2">
+                        <span className="font-semibold">Lesson Duration:</span> {formData.lessonDetails.duration || "Not selected"}
+                      </p>
+                      <div className="flex flex-col mt-4">
+                        <label className="font-semibold mb-1">Remarks:</label>
+                        <textarea
+                          name="remarks"
+                          value={formData.lessonDetails.remarks || ""}
+                          onChange={handleLastInputChange}
+                          className="p-2 border rounded"
+                          placeholder="Enter any additional remarks"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            
+              case 6:
+                return (
+                  <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+                    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
+                      <h2 className="text-2xl font-semibold text-center mb-6">
+                        Thank You!
+                      </h2>
+                      <p className="text-lg text-center mb-6">
+                        Thank you for choosing <span className="font-semibold text-[#17A4A5]">JDN Tuition</span>; we're excited to help you achieve your goals and support you every step of the way! <b>We will contact you shortly.</b> 
+                      </p>
+                      <div className="flex justify-center">
+                        <button
+                          onClick={handleClosePopup}
+                          className="bg-[#17A4A5] hover:bg-[#139093] text-white font-bold py-2 px-6 rounded"
+                        >
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              
       default:
         return null;
     }
@@ -417,29 +810,51 @@ export default function BookNow() {
       {/* Conditional Form Display */}
       {isFormVisible && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
+          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-10xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
             <h2 className="text-2xl font-semibold mb-6 text-center">Step {step}</h2>
-            {/* Render Form Steps */}
-            {renderFormStep()}
+            <div className="flex justify-center items-center">
+      {/* Render Form Steps */}
+      <div className="w-full max-w-[800px]">
+        {renderFormStep()}
+      </div>
+    </div>
+
             {/* Navigation Buttons */}
-            <div className="flex justify-between mt-6">
-              <button
-                onClick={handlePrev}
-                disabled={step === 1}
-                className="bg-gray-400 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-              >
-                Previous
-              </button>
-              <button
-                onClick={handleNext}
-                disabled={step === 2 && !formData.userType || step === 2 && !formData.grade || step === 2 && formData.selectedSubjects.length === 0 || 
-                  step === 3 && !formData.studentInfo.firstName || step === 3 && !formData.studentInfo.lastName || step === 3 && !formData.studentInfo.performance || step === 3 && !formData.studentInfo.reason || step === 3 && !formData.studentInfo.learningNeeds }
-                className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
-          </div>
+<div className="flex justify-between mt-6">
+  <button
+    onClick={handlePrev}
+    disabled={step === 1}
+    className="bg-gray-400 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+  >
+    Previous
+  </button>
+  {step === 5 ? (
+    <button
+      onClick={handleSubmit}
+      className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded"
+    >
+      Submit
+    </button>
+  ) : (
+    <button
+      onClick={handleNext}
+      disabled={
+        step === 2 && !formData.userType ||
+        step === 2 && !formData.grade ||
+        step === 2 && formData.selectedSubjects.length === 0 ||
+        step === 3 && !formData.studentInfo.firstName ||
+        step === 3 && !formData.studentInfo.lastName ||
+        step === 3 && !formData.studentInfo.performance ||
+        step === 3 && !formData.studentInfo.reason ||
+        step === 3 && !formData.studentInfo.learningNeeds
+      }
+      className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+    >
+      Next
+    </button>
+  )}
+</div>
+  </div>
         </div>
       )}
 

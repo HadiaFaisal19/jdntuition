@@ -15,7 +15,19 @@
     .footer__link{
         @apply text-sm text-white hover:text-green-700 cursor-pointer text-opacity-60  mb-3 w-fit
     }
-
+    
+    
+    .step-content4 {
+      width: 108%;
+    }
+    .glow {
+      box-shadow: 0 0 10px #17A4A5;
+      border: 2px solid #17A4A5;
+      transition: box-shadow 0.1s
+    }
+    input[type="checkbox"]:checked {
+      accent-color: #17A4A5;
+    }
     
     @layer base{
     html {
