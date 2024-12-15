@@ -21,7 +21,6 @@ export default function BookNow() {
     lessonDetails: {
       type: "",
       duration: "",
-      customDuration: "",
       frequency: "",
       availability: {
         Monday: [],
@@ -39,8 +38,9 @@ export default function BookNow() {
       email: "",
       phone: "",
       suburb: "",
-      remarks: "",
+      addDetails: "",
     },
+    
   });
 
   
@@ -299,7 +299,7 @@ export default function BookNow() {
         case 3:
           return (
             <div className="step-content">
-              <h2 className="text-2xl font-semibold mb-4">Student Information</h2>
+              <h2 className="text-2xl font text-center font-semibold mb-4">Student Information</h2>
               
               {/* First Name and Last Name */}
               <div className="flex gap-4 mb-4">
@@ -328,7 +328,8 @@ export default function BookNow() {
               {/* Tutor Reason */}
               <div className="mb-4">
                 <label className="font-semibold mb-1 block">
-                  Why are you seeking a tutor?
+                {formData.userType === 'Student' ? 'Why are you seeking a tutor?' : 'Why are you seeking a tutor for your child?'}
+          
                 </label>
                 <select
                   name="reason"
@@ -347,7 +348,9 @@ export default function BookNow() {
               {/* Current Performance */}
               <div className="mb-4">
                 <label className="font-semibold mb-1 block">
-                  How would you describe the current performance in school?
+                {formData.userType === 'Student' ? 'How would you describe your current performance in school?' : "How would you describe your child's current performance in school?"}
+            
+                  
                 </label>
                 <select
                   name="performance"
@@ -363,15 +366,16 @@ export default function BookNow() {
               </div>
           
               {/* Learning Needs */}
-              <div className="mb-4">
-                <label className="font-semibold mb-1 block">
-                  Please provide us with an overview of learning needs to help us match with the perfect tutor.
+              <div className="mb-0">
+                <label className="font-semibold block">
+                {formData.userType === 'Student' ? 'Please provide us with an overview of your learning needs to help you match with the perfect tutor' : "Please provide us with an overview of your child's learning needs to help us match them with the perfect tutor."}
+                  
                 </label>
                 <textarea
                   name="learningNeeds"
                   value={formData.studentInfo.learningNeeds}
                   onChange={handleInputChange}
-                  className="p-2 border rounded w-full"
+                  className=" border rounded w-full"
                   rows="4"
                   placeholder="Describe the student's learning needs here..."
                 ></textarea>
@@ -386,9 +390,9 @@ export default function BookNow() {
                 className="step-content4"
                 
               >
-                <h2 className="text-2xl font-semibold mb-4">Lesson Details</h2>
+                <h2 className="text-2xl text-center font-semibold mb-2">Lesson Details</h2>
           
-                <div className="flex flex-col sm:flex-row gap-4 mb-4">
+                <div className="flex flex-col sm:flex-row gap-4 mb-2">
                   <div className="flex-1">
                     <label className="font-semibold mb-1 block">Lesson Type</label>
                     <select
@@ -416,7 +420,7 @@ export default function BookNow() {
         handleLessonInputChange({
           target: {
             name: "duration",
-            value: " hours", // Initialize with a default value
+            value: "0 hours", // Initialize with a default value
           },
         });
       } else {
@@ -437,15 +441,15 @@ export default function BookNow() {
     <div className="mt-2">
       <label className="font-semibold mb-1 block">Enter Custom Duration</label>
       <div className="flex items-center">
+        
         <input
           type="number"
           step="0.1" // Allows decimal input up to one place
-          min="0" // Ensures positive numbers only
           value={formData.lessonDetails.duration.replace(" hours", "")}
           onChange={(e) => {
             const value = e.target.value;
-            const regex = /^\d+(\.\d{1})?$/; // Allow numbers with 1 decimal place
-            if (value === "" || (regex.test(value) && parseFloat(value) <= 4)) {
+            const durationValue = parseInt(value, 10);
+            if (!value || (durationValue >= 2 && durationValue <= 4.0)) {
               handleLessonInputChange({
                 target: {
                   name: "duration",
@@ -463,9 +467,6 @@ export default function BookNow() {
 </div>
 
 
-
-
-
           
 <div className="flex-1">
   <label className="font-semibold mb-1 block">Lesson Frequency</label>
@@ -480,7 +481,7 @@ export default function BookNow() {
         handleLessonInputChange({
           target: {
             name: "frequency",
-            value: "4 times a week", // Initialize custom value with a default
+            value: "0 times a week", // Initialize custom value with a default
           },
         });
       } else {
@@ -501,30 +502,33 @@ export default function BookNow() {
     <div className="mt-2">
       <label className="font-semibold mb-1 block">Enter Custom Frequency</label>
       <div className="flex items-center">
-        <input
+      <input
           type="number"
           min="4"
           max="7"
+          step="1"
           value={formData.lessonDetails.frequency.replace(" times a week", "")}
           onChange={(e) => {
             const value = e.target.value;
             const frequencyValue = parseInt(value, 10);
-            if (!value || (frequencyValue >= 4 && frequencyValue <= 7)) {
+            if (!value || (frequencyValue >= 4 && frequencyValue<= 7)) {
               handleLessonInputChange({
                 target: {
                   name: "frequency",
-                  value: `${value} times a week`, // Store custom value ending with "times a week"
+                  value: `${value} times a week`, // Store the custom value ending with "hours"
                 },
               });
             }
           }}
-          placeholder="Enter frequency"
+          
+          placeholder="Enter frequency per week"
           className="p-2 border rounded w-full"
         />
       </div>
     </div>
   )}
 </div>
+
 
                 </div>
           
@@ -534,12 +538,12 @@ export default function BookNow() {
                     <thead>
                       <tr>
                         <th className="border border-gray-300 p-2">Day</th>
-                        <th className="border border-gray-300 p-2">Early Morning <br />(Before 9am)</th>
+                        <th className="border border-gray-300 p-2">Early Morning<br />(Before 9am)</th>
                         <th className="border border-gray-300 p-2">Morning <br />(9am – 12pm)</th>
                         <th className="border border-gray-300 p-2">Early Afternoon <br />(12pm – 3pm)</th>
                         <th className="border border-gray-300 p-2">Late Afternoon <br /> (3pm – 6pm)</th>
                         <th className="border border-gray-300 p-2">Evening <br />(After 6pm)</th>
-                        <th className="border border-gray-300 p-2">Any Time</th>
+                        <th className="border border-gray-300 p-2">Any <br/> Time</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -600,7 +604,7 @@ export default function BookNow() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Left Column */}
                     <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-                      <h2 className="text-xl font-semibold mb-4">Enter Parent's Details</h2>
+                      <h2 className="text-xl font-semibold mb-4">Enter Parent's/Guardian's Details</h2>
                       <div className="flex flex-col mb-4">
                         <label className="font-semibold mb-1">First Name:</label>
                         <input
@@ -634,17 +638,35 @@ export default function BookNow() {
                           placeholder="Enter email"
                         />
                       </div>
-                      <div className="flex flex-col mb-4">
-                        <label className="font-semibold mb-1">Suburb:</label>
-                        <input
-                          type="text"
-                          name="suburb"
-                          value={formData.parentDetails.suburb}
-                          onChange={handleLastInputChange}
-                          className="p-2 border rounded"
-                          placeholder="Enter suburb"
-                        />
-                      </div>
+    <div className="flex flex-col mb-4">
+      <label className="font-semibold mb-1">Phone Number:</label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        value={formData.parentDetails.phone}
+        onChange={handleLastInputChange}
+        className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring focus:ring-gray-500"
+        
+        placeholder="+61987654321"
+        required
+        maxLength={12} // Allow + followed by 11 digits (12 characters total)
+        pattern="^\+?[0-9]*$"
+      />
+    </div>
+    {formData.lessonDetails.type === "In-person" && (
+  <div className="flex flex-col mb-4">
+    <label className="font-semibold mb-1">Suburb:</label>
+    <input
+      type="text"
+      name="suburb"
+      value={formData.parentDetails.suburb}
+      onChange={handleLastInputChange}
+      className="p-2 border rounded"
+      placeholder="Enter suburb"
+    />
+  </div>
+)}
                     </div>
             
                     {/* Right Column */}
@@ -666,13 +688,14 @@ export default function BookNow() {
                         <span className="font-semibold">Lesson Duration:</span> {formData.lessonDetails.duration || "Not selected"}
                       </p>
                       <div className="flex flex-col mt-4">
-                        <label className="font-semibold mb-1">Remarks:</label>
+                        <label className="font-semibold mb-1">Additional Details:</label>
                         <textarea
-                          name="remarks"
-                          value={formData.lessonDetails.remarks || ""}
+                          name="addDetails"
+                          rows={5}
+                          value={formData.parentDetails.addDetails || ""}
                           onChange={handleLastInputChange}
                           className="p-2 border rounded"
-                          placeholder="Enter any additional remarks"
+                          placeholder="Enter any additional details"
                         />
                       </div>
                     </div>
@@ -725,7 +748,7 @@ export default function BookNow() {
                 {['English', 'Maths', 'Thinking Skills', 'Writing'].map((subject) => (
                   <button
                     key={subject}
-                    className={`p-2 px-4 border rounded ${formData.selectedSubjects.includes(subject) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
+                    className={`p-2 px-4 mb-2 border rounded ${formData.selectedSubjects.includes(subject) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
                     onClick={() => handleSubjectChange(subject)}
                   >
                     {subject}
@@ -738,7 +761,7 @@ export default function BookNow() {
                   {['NAPLAN Preparation', 'Opportunity Class Exam Preparation', 'Selective School Exam Preparation', 'HAST Exam Preparation'].map((option) => (
                     <button
                       key={option}
-                      className={`p-2 px-4 border rounded ${formData.selectedSubjects.includes(option) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
+                      className={`p-2 px-4 mb-2 border rounded ${formData.selectedSubjects.includes(option) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
                       onClick={() => handleSubjectChange(option)}
                     >
                       {option}
@@ -755,7 +778,7 @@ export default function BookNow() {
                 {['English', 'Maths', 'Science', 'NAPLAN'].map((subject) => (
                   <button
                     key={subject}
-                    className={`p-2 px-4 border rounded ${formData.selectedSubjects.includes(subject) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
+                    className={`p-2 px-4 mb-1 border rounded ${formData.selectedSubjects.includes(subject) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
                     onClick={() => handleSubjectChange(subject)}
                   >
                     {subject}
@@ -794,7 +817,7 @@ export default function BookNow() {
                     {subject.options.map((option) => (
                       <button
                         key={option}
-                        className={`p-2 px-4 border rounded ${formData.selectedSubjects.includes(option) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
+                        className={`p-2 px-4 mb-2 border rounded ${formData.selectedSubjects.includes(option) ? 'bg-[#17A4A5] text-white' : 'text-gray-700'}`}
                         onClick={() => handleSubjectChange(option)}
                       >
                         {option}
@@ -910,7 +933,7 @@ export default function BookNow() {
     </div>
 
             {/* Navigation Buttons */}
-<div className="flex justify-between mt-6">
+<div className="flex justify-between mt-5">
   <button
     onClick={handlePrev}
     disabled={step === 1}
@@ -921,7 +944,14 @@ export default function BookNow() {
   {step === 5 ? (
     <button
       onClick={handleSubmit}
-      className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded"
+      disabled={
+        step===5 && !formData.parentDetails.fname ||
+        step===5 && !formData.parentDetails.lname ||
+        step===5 && !formData.parentDetails.email ||
+        step===5 && !formData.parentDetails.phone
+      }
+      
+      className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
     >
       Submit
     </button>
@@ -936,8 +966,13 @@ export default function BookNow() {
         step === 3 && !formData.studentInfo.lastName ||
         step === 3 && !formData.studentInfo.performance ||
         step === 3 && !formData.studentInfo.reason ||
-        step === 3 && !formData.studentInfo.learningNeeds
+        step === 3 && !formData.studentInfo.learningNeeds ||
+        step ===4 && !formData.lessonDetails.type ||
+        step ===4 && !formData.lessonDetails.duration ||
+        step ===4 && !formData.lessonDetails.frequency ||
+        step ===4 && !formData.lessonDetails.availability  
       }
+    
       className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
     >
       Next

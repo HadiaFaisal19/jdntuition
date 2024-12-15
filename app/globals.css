@@ -18,7 +18,8 @@
     
     
     .step-content4 {
-      width: 108%;
+      width: 105%;
+      padding-right: 5px ;
     }
     .glow {
       box-shadow: 0 0 10px #17A4A5;
