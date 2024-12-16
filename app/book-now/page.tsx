@@ -178,7 +178,7 @@ export default function BookNow() {
       parentEmail: formData.parentDetails.email,
       parentPhone: formData.parentDetails.phone,
       parentSuburb: formData.parentDetails.suburb,
-      parentRemarks: formData.parentDetails.remarks
+      parentAddDetails: formData.parentDetails.addDetails
     };
   
     // Send the form data via EmailJS
@@ -193,6 +193,40 @@ export default function BookNow() {
     .then(
       (response) => {
         console.log("Email sent successfully!", response);
+        setFormData({
+          userType: '',
+          grade: '',
+          selectedSubjects: [],
+          studentInfo: {
+            firstName: "",
+            lastName: "",
+            reason: "",
+            performance: "",
+            learningNeeds: "",
+          },
+          lessonDetails: {
+            type: "",
+            duration: "",
+            frequency: "",
+            availability: {
+              Monday: [],
+              Tuesday: [],
+              Wednesday: [],
+              Thursday: [],
+              Friday: [],
+              Saturday: [],
+              Sunday: [],
+            },
+          },
+          parentDetails: {
+            fname: "",
+            lname: "",
+            email: "",
+            phone: "",
+            suburb: "",
+            addDetails: "",
+          },
+        });
         // Set the step to 6 to display the thank-you message
         setStep(6);
       },
@@ -366,7 +400,7 @@ export default function BookNow() {
               </div>
           
               {/* Learning Needs */}
-              <div className="mb-0">
+              <div className=" mb-0">
                 <label className="font-semibold block">
                 {formData.userType === 'Student' ? 'Please provide us with an overview of your learning needs to help you match with the perfect tutor' : "Please provide us with an overview of your child's learning needs to help us match them with the perfect tutor."}
                   
@@ -375,7 +409,7 @@ export default function BookNow() {
                   name="learningNeeds"
                   value={formData.studentInfo.learningNeeds}
                   onChange={handleInputChange}
-                  className=" border rounded w-full"
+                  className="p-2 border rounded w-full"
                   rows="4"
                   placeholder="Describe the student's learning needs here..."
                 ></textarea>
@@ -420,7 +454,7 @@ export default function BookNow() {
         handleLessonInputChange({
           target: {
             name: "duration",
-            value: "0 hours", // Initialize with a default value
+            value: " hours", // Initialize with a default value
           },
         });
       } else {
@@ -481,7 +515,7 @@ export default function BookNow() {
         handleLessonInputChange({
           target: {
             name: "frequency",
-            value: "0 times a week", // Initialize custom value with a default
+            value: " times a week", // Initialize custom value with a default
           },
         });
       } else {
@@ -671,7 +705,7 @@ export default function BookNow() {
             
                     {/* Right Column */}
                     <div className="bg-white p-6 rounded-lg shadow-md">
-                      <h2 className="text-xl font-semibold mb-4">User Details</h2>
+                      <h2 className="text-xl font-semibold mb-4">Student Lesson Details</h2>
                       <p className="mb-2">
                         <span className="font-semibold">Grade:</span> {formData.grade || "Not selected"}
                       </p>
@@ -686,6 +720,9 @@ export default function BookNow() {
                       </p>
                       <p className="mb-2">
                         <span className="font-semibold">Lesson Duration:</span> {formData.lessonDetails.duration || "Not selected"}
+                      </p>
+                      <p className="mb-2">
+                        <span className="font-semibold">Lesson Frequency:</span> {formData.lessonDetails.frequency || "Not selected"}
                       </p>
                       <div className="flex flex-col mt-4">
                         <label className="font-semibold mb-1">Additional Details:</label>
@@ -833,11 +870,48 @@ export default function BookNow() {
         return null;
       };
       
-      
+      const handleCloseForm = () => {
+        setFormData({
+          userType: "",
+          grade: "",
+          selectedSubjects: [],
+          studentInfo: {
+            firstName: "",
+            lastName: "",
+            reason: "",
+            performance: "",
+            learningNeeds: "",
+          },
+          lessonDetails: {
+            type: "",
+            duration: "",
+            frequency: "",
+            availability: {
+              Monday: [],
+              Tuesday: [],
+              Wednesday: [],
+              Thursday: [],
+              Friday: [],
+              Saturday: [],
+              Sunday: [],
+            },
+          },
+          parentDetails: {
+            fname: "",
+            lname: "",
+            email: "",
+            phone: "",
+            suburb: "",
+            addDetails: "",
+          },
+        });
+        setStep(1);
+        setIsFormVisible(false); // Hide form after reset
+      };
       
       
   return (
-    <div className="mt-20 flex flex-col items-center w-full">
+    <div className="mt-15 flex flex-col items-center w-full">
       {/* Header Section */}
       <div className="text-center py-8 px-4">
         <h1 className="text-2xl md:text-4xl font-bold mb-4">
@@ -911,7 +985,7 @@ export default function BookNow() {
       </div>
 
       {/* Button Section */}
-      <div className="mt-10 py-10">
+      <div className="mt-6 py-5">
         <button
           onClick={() => setIsFormVisible(true)} // Show the form on button click
           className="bg-[#17A4A5] text-white font-bold py-3 px-6 rounded hover:bg-[#138F8F]"
@@ -922,15 +996,43 @@ export default function BookNow() {
 
       {/* Conditional Form Display */}
       {isFormVisible && (
+        
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-          <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-10xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Step {step}</h2>
-            <div className="flex justify-center items-center">
-      {/* Render Form Steps */}
-      <div className="w-full max-w-[800px]">
-        {renderFormStep()}
-      </div>
+<div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-10xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh] relative">
+    {/* Close Button */}
+    <button
+      onClick={handleCloseForm}
+      className="absolute top-1 right-4 text-2xl text-gray-600 font-bold p-2 hover:text-gray-900"
+    >
+      X
+    </button>
+  {/* Step Progress Bar */}
+  <div className="relative mb-6 mt-6 w-full">
+    <div className="w-full bg-gray-200 h-2 rounded-full">
+      <div
+        className={`h-2 rounded-full ${
+          step === 1
+            ? "bg-[#17A4A5]"
+            : step === 2
+            ? "bg-[#17A4A5] opacity-75"
+            : step === 3
+            ? "bg-[#17A4A5] opacity-60"
+            : step === 4
+            ? "bg-[#17A4A5] opacity-50"
+            : "bg-[#17A4A5] opacity-40"
+        }`}
+        style={{ width: `${(step - 1) * 25}%` }}
+      ></div>
     </div>
+  </div>
+
+  {/* Form Content */}
+  <div className="flex justify-center items-center">
+    {/* Render Form Steps */}
+    <div className="w-full max-w-[800px]">{renderFormStep()}</div>
+  </div>
+
+
 
             {/* Navigation Buttons */}
 <div className="flex justify-between mt-5">
@@ -947,8 +1049,10 @@ export default function BookNow() {
       disabled={
         step===5 && !formData.parentDetails.fname ||
         step===5 && !formData.parentDetails.lname ||
-        step===5 && !formData.parentDetails.email ||
-        step===5 && !formData.parentDetails.phone
+        step === 5 && 
+        (!formData.parentDetails.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.parentDetails.email)) ||
+        step===5 && !formData.parentDetails.phone ||
+        step===5 && formData.lessonDetails.type==="In-person" && !formData.parentDetails.suburb
       }
       
       className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
@@ -970,7 +1074,9 @@ export default function BookNow() {
         step ===4 && !formData.lessonDetails.type ||
         step ===4 && !formData.lessonDetails.duration ||
         step ===4 && !formData.lessonDetails.frequency ||
-        step ===4 && !formData.lessonDetails.availability  
+        step ===4 && formData.lessonDetails.duration===" hours" ||
+        step ===4 && formData.lessonDetails.frequency===" times a week" ||
+        step ===4 && !Object.values(formData.lessonDetails.availability).some(day => day.length > 0) 
       }
     
       className="bg-[#17A4A5] text-white font-bold py-2 px-4 rounded disabled:opacity-50"
