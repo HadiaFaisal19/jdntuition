@@ -911,7 +911,7 @@ export default function BookNow() {
       
       
   return (
-    <div className="mt-15 flex flex-col items-center w-full">
+    <div className="mt-16 flex flex-col items-center w-full">
       {/* Header Section */}
       <div className="text-center py-8 px-4">
         <h1 className="text-2xl md:text-4xl font-bold mb-4">
@@ -923,7 +923,7 @@ export default function BookNow() {
       </div>
 
       {/* Steps Section */}
-      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 md:gap-6 px-4">
+      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 md:gap-6 px-4">
         {/* Step 1 */}
         <div className="border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
           <div className="flex items-center justify-center w-16 h-16 bg-[#17A4A5] text-white rounded-full mb-4">
@@ -1021,7 +1021,10 @@ export default function BookNow() {
             ? "bg-[#17A4A5] opacity-50"
             : "bg-[#17A4A5] opacity-40"
         }`}
-        style={{ width: `${(step - 1) * 25}%` }}
+        style={{
+          width: `${(step - 1) * 25}%`,
+          transition: "width 0.5s ease-in-out", // Animation
+        }}
       ></div>
     </div>
   </div>
