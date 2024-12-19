@@ -16,22 +16,22 @@ const SubjectsOffered = () => {
     <div>
       {/* First Section */}
       <Header
-      backgroundImage="/images/k-6.png"
+      backgroundImage="/images/7-10.png"
       tagline="Journey Development Network: Building the Pillars of Success"
-      heading="K–6 Tutoring: Building Strong Foundations"
+      heading="Years 7–10 Tutoring: Thriving Through Transition"
     />
       {/* section 2 */}
       <WhyK6
-        contentImage="/images/kg-6.jpg"
-        heading="Why K–6 is Critical"
-        description="These formative years lay the groundwork for future academic and personal success. At JDN Tuition, we specialize in making learning engaging, enjoyable, and effective. Our K–6 tutoring services are designed to develop literacy, numeracy, thinking skills, and writing, while cultivating a lifelong love for learning."
-      />
+       contentImage="/images/highschool.png"
+       heading="The Middle School Leap"
+       description="As students enter their teen years, academic challenges evolve. JDN Tuition bridges the gap between foundational knowledge and the advanced concepts required for senior school success, whilst helping our students to develop essential study habits."
+     />
       {/* 3rd Section */}
-      <WhatWeOffer pageType="k6"/>
+      <WhatWeOffer pageType="7-10"/>
       {/* 4th Section */}
-      <UniqueApproach pageType="k6"/>
+      <UniqueApproach pageType="7-10"/>
 
-      <BeyondAcademics pageType="k6"/>
+      <BeyondAcademics pageType="7-10"/>
 
       <WhyParents/>
     </div>

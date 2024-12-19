@@ -63,4 +63,45 @@ export const coursesData = [
         price: 80,
         about: "1 Hour, 90-minutes, 2 Hours",
       },
+
+      
     ]
+    // export const subjectsData=[
+    //   {
+    //     id: 1,
+    //     class: "K–6 Tutoring: Building Strong Foundations",
+    //     why: "",
+    //     whatWeOffer:"",
+    //     parentChoice:"",
+    //     beyondAcademics:"" ,
+
+    //   }
+        
+    // ]
+
+    // data/subjectData.js
+
+export const subjectData = [
+  {
+    id: "k-6",
+    title: "K–6 Tutoring: Building Strong Foundations",
+    subheading: "Offering In-person and Online Primary School Tutoring.",
+    backgroundImage: "/images/k-6.png",
+    exploreMoreLink: "/k-6-subjects",
+  },
+  {
+    id: "7-10",
+    title: "Years 7–10 Tutoring: Thriving Through Transition",
+    subheading: "Preparing students for high school success with expert guidance.",
+    backgroundImage: "/images/7-10.png",
+    exploreMoreLink: "/7-10-subjects",
+  },
+  {
+    id: "11-12",
+    title: "Years 11–12 Tutoring: Achieving Academic Excellence",
+    subheading: "Helping students excel during critical senior school years.",
+    backgroundImage: "/images/11-12.png",
+    exploreMoreLink: "/11-12-subjects",
+  },
+];
+

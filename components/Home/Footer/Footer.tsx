@@ -5,7 +5,7 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="pt-20 pb-12 bg-black">
+    <div className="pt-20 pb-12 bg-gray-200">
       <div className="w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
         <div>
             <Image 
@@ -14,7 +14,7 @@ const Footer = () => {
             height={100}
             width={100}
             />
-            <p className="text-white text-opacity-50">
+            <p className="text-black text-opacity-50">
             Journey Development Network: Building the Pillars of Success
             </p>
             <div className="flex items-center space-x-4 mt-6">
