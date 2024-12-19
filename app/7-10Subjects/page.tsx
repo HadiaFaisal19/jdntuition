@@ -27,7 +27,7 @@ const SubjectsOffered = () => {
        description="As students enter their teen years, academic challenges evolve. JDN Tuition bridges the gap between foundational knowledge and the advanced concepts required for senior school success, whilst helping our students to develop essential study habits."
      />
       {/* 3rd Section */}
-      <WhatWeOffer pageType="7-10"/>
+      <WhatWeOffer />
       {/* 4th Section */}
       <UniqueApproach pageType="7-10"/>
 

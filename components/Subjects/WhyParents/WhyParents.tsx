@@ -78,7 +78,7 @@ const WhyParents = () => {
               <Link href="/book-now">Book your first lesson</Link>
             </button>
             <button className="px-4 py-2 sm:px-6 sm:py-3 sm:w-auto border border-[#17A4A5] text-[#17A4A5] font-semibold rounded-md transition hover:bg-gray-100 transform transition-transform duration-300 hover:scale-105">
-              See More Reviews
+            <Link href="/reviews">See More Reviews</Link>
             </button>
           </div>
         </section>

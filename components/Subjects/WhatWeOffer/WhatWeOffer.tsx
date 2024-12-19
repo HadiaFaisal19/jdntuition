@@ -1,20 +1,10 @@
 "use client";
-import {
-  FaBookOpen,
-  FaCalculator,
-  FaPenFancy,
-  FaChartLine,
-  FaLaptopCode,
-  FaFlask,
-  FaGlobe,
-  FaClipboardList,
-  FaBrain,
-  FaPen,
-} from "react-icons/fa";
+import React from "react";
+import { FaBookOpen, FaCalculator, FaFlask, FaPen, FaBrain, FaPenFancy, FaChartLine, FaGlobe, FaClipboardList } from "react-icons/fa";
 
 const WhatWeOffer = ({ pageType }) => {
   // Data for K-6
-  const k6Data = [
+  const kToSixData = [
     {
       icon: <FaBookOpen className="text-6xl text-[#17A4A5] mb-4 mx-auto" />,
       title: "Comprehensive English Program",
@@ -42,35 +32,41 @@ const WhatWeOffer = ({ pageType }) => {
     {
       icon: <FaFlask className="text-6xl text-[#17A4A5] mb-4 mx-auto" />,
       title: "Science Explorations",
-      description: "We ignite curiosity about the world through engaging science lessons that encourage hands-on learning.",
+      description: `
+        We ignite curiosity about the world through engaging science lessons that encourage hands-on learning.
+      `,
       points: [
         "Understanding basic principles of biology, chemistry, and physics.",
-        "Nurturing inquisitive and critical thinking skills."
-      ]
+        "Nurturing inquisitive and critical thinking skills.",
+      ],
     },
     {
       icon: <FaPen className="text-6xl text-[#17A4A5] mb-4 mx-auto" />,
       title: "Writing Skills Development",
-      description: "Strong writing skills are crucial for communication. Our writing program builds confidence and clarity.",
+      description: `
+        Strong writing skills are crucial for communication. Our writing program builds confidence and clarity.
+      `,
       points: [
         "Constructing clear and cohesive sentences and paragraphs.",
         "Learning different writing types, including persuasive and narrative.",
-        "Building vocabulary and grammar skills through practical exercises."
-      ]
+        "Building vocabulary and grammar skills through practical exercises.",
+      ],
     },
     {
       icon: <FaBrain className="text-6xl text-[#17A4A5] mb-4 mx-auto" />,
       title: "Thinking Skills Program",
-      description: "Thinking skills are integral to solving problems and understanding the world. We equip students with the tools to think logically and creatively.",
+      description: `
+        Thinking skills are integral to solving problems and understanding the world. We equip students with the tools to think logically and creatively.
+      `,
       points: [
         "Developing critical and lateral thinking abilities.",
         "Building reasoning skills through puzzles, patterns, and challenges.",
-        "Strengthening decision-making and problem-solving through age-appropriate tasks."
-      ]
-    }
+        "Strengthening decision-making and problem-solving through age-appropriate tasks.",
+      ],
+    },
   ];
 
-  // Data for 7-10 with additional cards
+  // Data for 7-10
   const sevenToTenData = [
     {
       icon: <FaPenFancy className="text-6xl text-[#17A4A5] mb-4 mx-auto" />,
@@ -134,8 +130,8 @@ const WhatWeOffer = ({ pageType }) => {
     },
   ];
 
-  // Select the appropriate data based on pageType
-  const data = pageType === "k6" ? k6Data : sevenToTenData;
+  // Determine which data to use based on pageType
+  const data = pageType === "6k" ? kToSixData :sevenToTenData ;
 
   return (
     <section className="py-16 px-4 bg-[#17A4A5]">
@@ -147,28 +143,33 @@ const WhatWeOffer = ({ pageType }) => {
         >
           What We Offer
         </h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8">
           {data.map((item, index) => (
             <div
               key={index}
-              className={`bg-white p-8 rounded-lg shadow-lg max-w-xl w-full mx-auto transform transition-transform duration-300 hover:scale-105 ${index === data.length - 1 ? 'col-span-2' : ''}`}
+              className={`bg-white p-8 rounded-lg shadow-lg max-w-xl w-full mx-auto mb-4 transform transition-transform duration-300 hover:scale-105 ${
+                index === data.length - 1 ? "lg:col-span-2 lg:mx-auto" : ""
+              }`}
             >
               {item.icon}
               <h2 className="text-3xl font-bold text-[#17A4A5] mb-4 text-center">
                 {item.title}
               </h2>
-              <h6 className="text-gray-700 mb-4">{item.description}</h6>
-              <ul className="list-disc pl-6">
-                {item.points.map((point, i) => (
-                  <li key={i}>{point}</li>
-                ))}
-              </ul>
+              <h6 className="text-gray-700 mb-4">
+                {item.description}
+                <ul className="list-disc pl-6">
+                  {item.points.map((point, idx) => (
+                    <li key={idx}>{point}</li>
+                  ))}
+                </ul>
+              </h6>
             </div>
           ))}
         </div>
       </div>
     </section>
   );
+  
 };
 
 export default WhatWeOffer;
