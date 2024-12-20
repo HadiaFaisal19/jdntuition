@@ -131,7 +131,7 @@ const WhatWeOffer = ({ pageType }) => {
   ];
 
   // Determine which data to use based on pageType
-  const data = pageType === "6k" ? kToSixData :sevenToTenData ;
+  const data = pageType === "K-6" ? kToSixData :sevenToTenData ;
 
   return (
     <section className="py-16 px-4 bg-[#17A4A5]">

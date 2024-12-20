@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const BeyondAcademics = ({ pageType }) => {
   // Data for K-6
-  const k6Data = [
+  const kTo6Data = [
     {
       title: "Confidence Building",
       description: `Our tutors help students overcome challenges, boosting their self-esteem and resilience in both academic and non-academic settings.`,
@@ -33,10 +33,31 @@ const BeyondAcademics = ({ pageType }) => {
     },
   ];
 
-  // Select the appropriate data
-  const data = pageType === "k6" ? k6Data : sevenToTenData;
-  const imageSrc = pageType === "k6" ? "/images/whyk-6.jpg" : "/images/bey7-10.png";
+  const elevenToTwelveData =[
+    {
+      title: "Growth Mindset Development",
+      description: `Encouraging students to embrace challenges, learn from setbacks, and remain motivated throughout their HSC journey. `,
+    },
+    {
+      title: "Career and Pathway Support",
+      description: `Guidance on how HSC results translate into university or career opportunities, helping students plan for their futures. `,
+    },
+  ];
 
+ 
+  // Select the appropriate data
+   const data =
+    pageType === "K-6"
+      ? kTo6Data
+      : pageType === "7-10"
+      ? sevenToTenData
+      : elevenToTwelveData;
+  const imageSrc = 
+  pageType === "K6"
+    ? "/images/whyk-6.jpg"
+    : pageType === "7-10"
+    ? "/images/bey7-10.png"
+    : "/images/beyond11-12.png";
   return (
     <section className="relative min-h-screen flex items-center bg-gray-100">
       {/* Background Image */}
