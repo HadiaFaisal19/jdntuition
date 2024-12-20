@@ -22,7 +22,7 @@ const SubjectsOffered = () => {
     />
       {/* section 2 */}
       <WhyK6
-       contentImage="/images/seniors.png"
+       contentImage="/images/2.png"
        heading="The Middle School Leap"
        description="As students enter their teen years, academic challenges evolve. JDN Tuition bridges the gap between foundational knowledge and the advanced concepts required for senior school success, whilst helping our students to develop essential study habits."
      />

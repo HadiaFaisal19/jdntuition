@@ -62,7 +62,7 @@ const Footer = () => {
             </button> */}
         </div>
       </div>
-      <p className="text-center mt-4 text-base text-white opacity-70 "> JDN Tuition © Copyright 2024</p>
+      <p className="text-center mt-4 text-base text-black opacity-70 "> JDN Tuition © Copyright 2024</p>
     </div>
   );
 };

@@ -24,6 +24,7 @@ const WhatWeOffer12 = () => {
     <div className="bg-gray-100 p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
       <h3 className="text-2xl font-bold text-[#17A4A5] mb-4 text-center">
         English
+        (Standard, Advanced, Extension 1 & 2)
       </h3>
       <p className="text-gray-700">
         English is a compulsory HSC subject, and we ensure students are prepared to excel across all components of the syllabus.
@@ -164,12 +165,14 @@ const WhatWeOffer12 = () => {
     {/* Card 1: Subjects Covered */}
     <div className="bg-gray-100 p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
       <h3 className="text-2xl font-bold text-[#17A4A5] mb-4 text-center">
-      Creative HSC Subjects
+      Subjects Offered
       </h3>
       <ul className="list-disc pl-6 mt-4 text-gray-700">
-        <li><b>Languages:</b> German, Arabic, French, Chinese, and more.</li>
-        <li> <b>Creative Arts:</b> Visual Arts, Drama, and Music.</li>
-        <li>Portfolio and project preparation.</li>
+        <li><b>Languages:</b> <br/>
+        German, Arabic, French, Chinese, and more.</li>
+        <li> <b>Creative Arts:</b> <br/>
+        Visual Arts, Drama, and Music.<br/>
+        Portfolio and project preparation.</li>
       </ul>
     </div>
 
