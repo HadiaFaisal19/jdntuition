@@ -22,10 +22,13 @@ const WhatWeOffer12 = () => {
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
     {/* Card 1: English */}
     <div className="bg-gray-100 p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
-      <h3 className="text-2xl font-bold text-[#17A4A5] mb-4 text-center">
-        English
-        (Standard, Advanced, Extension 1 & 2)
-      </h3>
+      <h3 className="text-2xl font-bold text-[#17A4A5] mb-1 text-center">
+        English</h3>
+        <h5 className="text-1xl font-bold text-[#17A4A5] mb-4 text-center">
+          Standard, Advanced, Extension 1 & 2
+          </h5>
+        
+      
       <p className="text-gray-700">
         English is a compulsory HSC subject, and we ensure students are prepared to excel across all components of the syllabus.
       </p>
@@ -38,9 +41,13 @@ const WhatWeOffer12 = () => {
 
     {/* Card 2: Mathematics */}
     <div className="bg-gray-100 p-6 rounded-lg shadow-md transform transition-transform duration-300 hover:scale-105">
-      <h3 className="text-2xl font-bold text-[#17A4A5] mb-4 text-center">
-        Mathematics (Standard, Advanced, Extension 1 & 2)
-      </h3>
+      <h3 className="text-2xl font-bold text-[#17A4A5] mb-1 text-center">
+        Mathematics </h3>
+        <h5 
+        className="text-1xl font-bold text-[#17A4A5] mb-4 text-center">
+          Standard, Advanced, Extension 1 & 2
+        </h5>
+        
       <p className="text-gray-700">
         Our mathematics program supports students across all levels, simplifying complex concepts and strengthening problem-solving abilities.
       </p>
@@ -171,8 +178,7 @@ const WhatWeOffer12 = () => {
         <li><b>Languages:</b> <br/>
         German, Arabic, French, Chinese, and more.</li>
         <li> <b>Creative Arts:</b> <br/>
-        Visual Arts, Drama, and Music.<br/>
-        Portfolio and project preparation.</li>
+        Visual Arts, Drama, and Music, including Portfolio and project preparation.</li>
       </ul>
     </div>
 

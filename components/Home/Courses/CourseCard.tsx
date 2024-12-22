@@ -2,6 +2,7 @@
 import React from 'react'
 import Image from "next/image";
 import { FaFile } from 'react-icons/fa';
+import Link from 'next/link';
 
 type Props={
     course:{
@@ -9,6 +10,7 @@ type Props={
         image: string;
         title: string;
         price: number;
+        button: string;
         subjects: number;
         category:string;
         students: number;
@@ -50,7 +52,8 @@ const CourseCard = ({course}:Props) => {
             <button
           className="button__cls text-white bg-[#17A4A5] hover:bg-[#138F8F]"
         >
-         Learn More
+         
+         <Link href="/k-6Subjects">Learn More</Link>
         </button>
           </div>
           </div>
