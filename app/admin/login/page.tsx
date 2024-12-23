@@ -1,24 +1,24 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter for redirection
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); // Initialize the router
+  const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(""); // Reset error message
-
+    setError("");
+  
     const loginData = {
       email,
       password,
     };
-
+  
     try {
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
@@ -27,12 +27,16 @@ const LoginPage = () => {
         },
         body: JSON.stringify(loginData),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        // Redirect to the admin/blog page upon successful login
-        router.push("/admin/blog"); // Redirect to admin/blog page
+        // Store admin status and token in local storage
+        localStorage.setItem("isAdmin", data.isAdmin ? "true" : "false");
+        localStorage.setItem("token", data.token);
+  
+        router.push("/admin/dashboard");
+        
       } else {
         setError(data.error || "Invalid credentials. Please try again.");
       }
@@ -42,6 +46,7 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">

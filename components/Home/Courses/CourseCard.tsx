@@ -53,7 +53,7 @@ const CourseCard = ({course}:Props) => {
           className="button__cls text-white bg-[#17A4A5] hover:bg-[#138F8F]"
         >
          
-         <Link href="/k-6Subjects">Learn More</Link>
+         <Link href="/{button}">Learn More</Link>
         </button>
           </div>
           </div>

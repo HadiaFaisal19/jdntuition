@@ -28,7 +28,7 @@ const Header = ({ backgroundImage, tagline, heading }) => {
 
         {/* Subheading */}
         <p className="text-base sm:text-lg md:text-xl lg:text-xl xl:text-xl text-white mb-6 md:mb-8">
-          Offering In-person and Online Tutoring for All Levels.
+        Journey Development Network: Building the Pillars of Success
         </p>
 
         {/* Buttons */}
