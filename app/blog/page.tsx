@@ -6,6 +6,7 @@ import Section1 from "@/components/Blog/section1/section1";
 import WhyParents from "@/components/Subjects/WhyParents/WhyParents";
 import Categories from "@/components/Blog/Categories/Categories";
 import MostReadBlogs from "@/components/Blog/MostReadBlogs/MostReadBlogs";
+import LatestBlogs from "@/components/Blog/LatestBlogs/LatestBlogs";
 
 const Blog = () => {
   return (
@@ -17,6 +18,7 @@ const Blog = () => {
      <BlogCarousel/>
      <Categories />
      <MostReadBlogs/>
+     <LatestBlogs/>
       <WhyParents/>
     </div>
   );
