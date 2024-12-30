@@ -45,9 +45,7 @@ const WorkProcess = () => {
         {steps.map((step, i) => (
           
           <div
-          data-aos="zoom-left"
-              data-aos-anchor-placement="top-center"
-              data-aos-delay={`${i*100}`}
+          
             key={step.id}
             className="flex flex-col items-center text-center space-y-4"
           >

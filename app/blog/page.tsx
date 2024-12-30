@@ -7,14 +7,17 @@ import WhyParents from "@/components/Subjects/WhyParents/WhyParents";
 import Categories from "@/components/Blog/Categories/Categories";
 import MostReadBlogs from "@/components/Blog/MostReadBlogs/MostReadBlogs";
 import LatestBlogs from "@/components/Blog/LatestBlogs/LatestBlogs";
+import CategoryTiles from "@/components/Blog/CategoryTiles/CategoryTiles";
 
 const Blog = () => {
   return (
     <div>
+      <CategoryTiles/>
       {/* header */}
       <Header backgroundImage="/images/blog.png"/>
       
       {/* section 1 */}
+
      <BlogCarousel/>
      <Categories />
      <MostReadBlogs/>

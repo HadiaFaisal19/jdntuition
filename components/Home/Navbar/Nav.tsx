@@ -16,7 +16,7 @@ const Nav = ({ openNav }: Props) => {
 
   useEffect(() => {
     const handler = () => {
-      if (window.scrollY >= 90) {
+      if (window.scrollY >= 610) {
         setNavBg(true);
       } else {
         setNavBg(false);
@@ -31,28 +31,36 @@ const Nav = ({ openNav }: Props) => {
   return (
     <div
       className={`fixed ${
-        navBg ? "bg-white" : "bg-white"
-      } w-full transition-all duration-200 h-[12vh] z-[1000]`}
+        navBg
+          ? "bg-white border-b-2 border-[#17A4A5]"
+          : "bg-transparent border-b-2 border-[#17A4A520]"
+      } w-full transition-all duration-700 h-[12vh] z-[1000]`}
     >
       <div className="flex items-center h-full justify-between w-[90%] xl:w-[80%] mx-auto">
-        {/* Logo */}
-        <Image src="/images/LOGO.png" alt="logo" width={120} height={120} />
-        
+        {/* Logo: Change dynamically based on navBg */}
+        <Image
+          src={navBg ? "/images/LOGO.png" : "/images/LOGO13.png"}
+          alt="logo"
+          width={120}
+          height={120}
+          className="transition-all duration-500"
+        />
+
         {/* Nav Links for larger screens */}
         <div className="hidden lg:flex items-center space-x-10">
           {navLinks.map((link) => (
             <Link key={link.id} href={link.url}>
               <p
                 className={`nav__link ${
-                  navBg ? "text-black" : "text-black"
-                } transition-all duration-200`}
+                  navBg ? "text-black" : "text-white"
+                } transition-all duration-500`}
               >
                 {link.label}
               </p>
             </Link>
           ))}
         </div>
-        
+
         {/* Register Button and Mobile Menu Icon */}
         <div className="flex items-center space-x-4">
           {/* "Book Now" button */}
@@ -67,7 +75,7 @@ const Nav = ({ openNav }: Props) => {
           <HiBars3BottomRight
             onClick={openNav}
             className={`w-8 h-8 cursor-pointer ${
-              navBg ? "text-white" : "text-black"
+              navBg ? "text-black" : "text-white"
             } lg:hidden transition-all duration-200`}
           />
         </div>

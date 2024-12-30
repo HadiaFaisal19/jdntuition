@@ -22,14 +22,21 @@ export const coursesData = [
     },
     {
       id: 3,
-      image: "/images/highSchool.png",
-      title: "High School",
+      image: "/images/college.jpg",
+      title: "College (HSC)",
       price: 75,
       author: "Jane Smith",
-      button: "7-10Subjects",
-      subjects: 7,
-      students: 120,
-      category: "Class 7-12",
+      button: "11-12Subjects",
+      subjects: 16,
+      students: 140,
+      category: "Class 11-12",
+    },
+    {
+      id: 4,
+      image: "/images/soon1.jpg",
+      title: "UniEdge",
+      button: "11-12Subjects",
+      category: "Universities",
     },
   ];
   export const teamData = [
