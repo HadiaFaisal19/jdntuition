@@ -21,7 +21,7 @@ const BlogSection = () => {
       {tiles.map((tile, index) => (
         <div
           key={index}
-          className="cursor-pointer  relative flex items-center justify-center text-white p-4 overflow-hidden group"
+          className="cursor-pointer relative flex items-center justify-center text-white p-4 overflow-hidden group"
         >
           {/* Next.js Image */}
           <Image

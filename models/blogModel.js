@@ -3,20 +3,30 @@ import mongoose from "mongoose";
 const blogSchema = new mongoose.Schema({
     title:{
         type: String,
-        required:[true, "username Required"],
+        required:[true, "title Required"],
         },
     topic:{
         type: String,
-        required:[true, "username Required"],
+        required:[true, "topic Required"],
     },
     Image:{
         type: String,
-        required:[true, "email Required"],
+        required:[true, "Image Required"],
         unique: true,
     },
     category:{
         type: String,
-        required:[true, "password Required"]
+        required:[true, "category Required"]
+    },
+    isLatest:{
+        type: Boolean,
+        unique: true,
+    },
+    isMostRead:{
+        type: Boolean,
+    },
+    isFeatured:{
+        type: Boolean,
     },
     date:{
         type: Date,
