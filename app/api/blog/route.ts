@@ -8,15 +8,14 @@ connectDB();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { title, topic, Image, category, isLatest, isMostRead, isFeatured, date } = reqBody;
+    const { title, Image, category, isLatest, isMostRead, isFeatured, date } = reqBody;
 
-    if (!title || !topic || !Image || !category) {
+    if (!title || !Image || !category) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
     const newBlog = new Blog({
       title,
-      topic,
       Image,
       category,
       isLatest,
@@ -47,7 +46,7 @@ export async function GET() {
 export async function PUT(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { id, title, topic, Image, category, isLatest, isMostRead } = reqBody;
+    const { id, title, Image, category, isLatest, isMostRead, isFeatured } = reqBody;
 
     if (!id) {
       return NextResponse.json({ error: "Blog ID is required" }, { status: 400 });
@@ -55,7 +54,7 @@ export async function PUT(request: NextRequest) {
 
     const updatedBlog = await Blog.findByIdAndUpdate(
       id,
-      { title, topic, Image, category, isLatest, isMostRead },
+      { title, Image, category, isLatest, isMostRead, isFeatured },
       { new: true }
     );
 

@@ -1,44 +1,52 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function TopPostsSection() {
-  const posts = [
-    {
-      title: "How Much Online Learning is Effective than Physical learning",
-      category: "Online Learning",
-      date: "25th December 2024",
-      imageUrl: "/images/online.jpg",
-    },
-    {
-      title: "Importance of Classroom engagement while teaching",
-      category: "Tutors",
-      date: "25th December 2024",
-      imageUrl: "/images/kg.jpg",
-    },
-    {
-      title: "Benefits Of Creative and Fun Activities For A Student",
-      category: "Student Wellbeing",
-      date: "25th December 2024",
-      imageUrl: "/images/whyk-6.jpg",
-    },
-    {
-      title: "Benefits Of Creative and Fun Activities For A Student",
-      category: "Student Wellbeing",
-      date: "25th December 2024",
-      imageUrl: "/images/whyk-6.jpg",
-    },
-    {
-      title: "How Much Online Learning is Effective than Physical learning",
-      category: "Online Learning",
-      date: "25th December 2024",
-      imageUrl: "/images/online.jpg",
-    },
-    {
-      title: "Importance of Classroom engagement while teaching",
-      category: "Tutors",
-      date: "25th December 2024",
-      imageUrl: "/images/kg.jpg",
-    },
-  ];
+  const [latestBlogs, setLatestBlogs] = useState([]);
+
+  // Function to format the date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+
+    const day = date.getDate();
+    const month = date.toLocaleString("default", { month: "long" });
+    const year = date.getFullYear();
+
+    const getOrdinalSuffix = (day) => {
+      if (day > 3 && day < 21) return "th";
+      switch (day % 10) {
+        case 1:
+          return "st";
+        case 2:
+          return "nd";
+        case 3:
+          return "rd";
+        default:
+          return "th";
+      }
+    };
+
+    const ordinalSuffix = getOrdinalSuffix(day);
+    return `${day}${ordinalSuffix} ${month} ${year}`;
+  };
+
+  // Fetch latest blogs
+  useEffect(() => {
+    const fetchLatestBlogs = async () => {
+      try {
+        const response = await axios.get("/api/blog"); // Replace with your API endpoint
+        const blogs = response.data.blogs;
+        // Filter blogs that have isLatest set to true
+        const filteredBlogs = blogs.filter((blog) => blog.isLatest);
+        setLatestBlogs(filteredBlogs);
+      } catch (error) {
+        console.error("Error fetching latest blogs:", error);
+      }
+    };
+
+    fetchLatestBlogs();
+  }, []);
 
   return (
     <section className="py-12 bg-gray-100">
@@ -53,7 +61,7 @@ export default function TopPostsSection() {
 
         {/* Posts Grid */}
         <div className="grid md:grid-cols-3 gap-6">
-          {posts.map((post, index) => (
+          {latestBlogs.map((post, index) => (
             <div
               key={index}
               className="relative w-full h-72 md:h-96 overflow-hidden shadow-lg group"
@@ -61,7 +69,7 @@ export default function TopPostsSection() {
               {/* Background Image with Hover Effect */}
               <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
                 <Image
-                  src={post.imageUrl}
+                  src={post.Image}
                   alt={post.title}
                   layout="fill"
                   objectFit="cover"
@@ -94,7 +102,7 @@ export default function TopPostsSection() {
                         d="M8 7V3m8 4V3m-9 4h10M5 21h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v11a2 2 0 002 2z"
                       />
                     </svg>
-                    <span className="text-gray-500">{post.date}</span>
+                    <span className="text-gray-500">{formatDate(post.date)}</span>
                   </div>
                 </div>
               </div>

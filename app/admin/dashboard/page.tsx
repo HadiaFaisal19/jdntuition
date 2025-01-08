@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import SignupPage from "../signup/page";  // Assuming you have this component
+import Blogs from "@/components/Admin/Blogs/Blogs";
 
 const AdminDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("Register Users");
@@ -11,7 +12,7 @@ const AdminDashboard = () => {
       case "Register Users":
         return <SignupPage />;
       case "Manage Blogs":
-        //return <ManageBlogs />;
+        return <Blogs />;
       default:
         return <div>Select an option from the sidebar.</div>;
     }
