@@ -52,11 +52,11 @@ const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
     <div className="bg-[#17A4A5]">
       
       <section id="second-section">
-        <div className="container  pt-20 ">
+        <div className="container  pt-20 mx-auto ">
           <h2 className="text-4xl font-bold text-white mb-2 text-center">
             {category}
           </h2>
-          <div className="mx-auto border-b-4 border-white mb-4 w-40"></div>
+          <div className="mx-auto border-b-4 mb-4 w-40"></div>
 
           {/* Category Tiles Section */}
           <section className=" bg-[#17A4A5] flex justify-center">
@@ -64,7 +64,7 @@ const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
               {initialBlogs.map((blog) => (
                 <div
                   key={blog._id}
-                  className="bg-white border rounded-lg shadow-lg  w-96"
+                  className="bg-white border rounded-lg shadow-lg w-96"
                 >
                   <div className="relative">
                     <Image
