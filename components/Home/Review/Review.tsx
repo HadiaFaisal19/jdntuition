@@ -6,7 +6,7 @@ import { BsQuote } from "react-icons/bs";
 
 const Review = () => {
   return (
-    <div className="pt-[13vh] pb-16 bg-black">
+    <div className="pt-[13vh] pb-16 bg-gray-600">
       <div className="w-[80%] mx-auto grid grid-cols-1 xl:grid-cols-3 items-center gap-20">
         {/* Text Content */}
         <div className="xl:col-span-1 mt-6">

@@ -3,80 +3,94 @@
 @tailwind utilities;
 
 @layer components {
-    .nav__link {
-        @apply relative text-xl w-fit block after:block after:content-[''] font-semibold after:absolute after:h-[3px] after:bg-[#17A4A5] text-white after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right
-    }
-    .button__cls{
-        @apply md:px-12 md:py-2.5 px-6 py-1.5 font-semibold text-sm md:text-lg transition-all duration-200 rounded-lg
-    }
-    .footer__heading{
-        @apply text-lg text-black font-bold mb-4
-    }
-    .footer__link{
-        @apply text-sm text-black hover:text-[#17A4A5] cursor-pointer text-opacity-60  mb-3 w-fit
-    }
-    
-    
-    .step-content4 {
-      width: 105%;
-      padding-right: 5px ;
-    }
-    .glow {
-      box-shadow: 0 0 10px #17A4A5;
-      border: 2px solid #17A4A5;
-      transition: box-shadow 0.1s
-    }
-    input[type="checkbox"]:checked {
-      accent-color: #17A4A5;
-    }
-    
-    @layer base{
+  .nav__link {
+    @apply relative text-xl w-fit block after:block after:content-[''] font-semibold after:absolute after:h-[3px] after:bg-[#17A4A5] text-white after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right;
+  }
+  
+  .button__cls {
+    @apply md:px-12 md:py-2.5 px-6 py-1.5 font-semibold text-sm md:text-lg transition-all duration-200 rounded-lg;
+  }
+  
+  .footer__heading {
+    @apply text-lg text-black font-bold mb-4;
+  }
+  
+  .footer__link {
+    @apply text-sm text-black hover:text-[#17A4A5] cursor-pointer text-opacity-60 mb-3 w-fit;
+  }
+
+  .step-content4 {
+    width: 105%;
+    padding-right: 5px;
+  }
+  
+  .glow {
+    box-shadow: 0 0 10px #17A4A5;
+    border: 2px solid #17A4A5;
+    transition: box-shadow 0.1s;
+  }
+  
+  input[type="checkbox"]:checked {
+    accent-color: #17A4A5;
+  }
+
+  @layer base {
     html {
-        @apply scroll-smooth;
-      }
+      @apply scroll-smooth;
     }
-
-/* Animation for scrolling circles */
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
   }
-  100% {
-    transform: translateX(-100%);
+
+  /* Animation for scrolling circles */
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
-}
 
-.animate-scroll {
-  animation: scroll 30s linear infinite;
-}
+  .animate-scroll {
+    animation: scroll 30s linear infinite;
+  }
 
-.animate-scroll:hover {
-  animation-play-state: paused;
-}
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
 
+  @keyframes shake {
+    0% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-2px);
+    }
+    50% {
+      transform: translateX(2px);
+    }
+    75% {
+      transform: translateX(-2px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 
-    
-    @keyframes shake {
-        0% {
-          transform: translateX(0);
-        }
-        25% {
-          transform: translateX(-2px);
-        }
-        50% {
-          transform: translateX(2px);
-        }
-        75% {
-          transform: translateX(-2px);
-        }
-        100% {
-          transform: translateX(0);
-        }
-      }
-      
-      .animate-shake:hover {
-        animation: shake 0.3s ease-in-out;
-      }
-      
-      
+  .animate-shake:hover {
+    animation: shake 0.3s ease-in-out;
+  }
+
+  /* Animation for up-and-down movement */
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+  }
 }

@@ -21,13 +21,13 @@ export const navLinks = [
     },
     {
         id: 5,
-        url: "/feature",
+        url: "/jobs",
         label: "Jobs"
     },
     {
         id: 6,
         url: "/#review",
-        label: "Review"
+        label: "Reviews"
     },
     {
         id: 7,

@@ -4,63 +4,13 @@ import React from "react";
 import Image from "next/image";
 
 const CategoryTiles = () => {
-  const blogs = [
-    {
-      id: 1,
-      date: "3 JAN",
-      title:
-        "Finding Balance: The Key To Academic Success And Personal Wellbeing",
-      categories: "Academic Success",
-      image: "/images/kg.jpg", 
-    },
-    {
-      id: 2,
-      date: "3 JAN",
-      title:
-        "Finding Balance: The Key To Academic Success And Personal Wellbeing",
-      categories: "Academic Success",
-      image: "/images/kg.jpg", 
-    },
-    {
-      id: 3,
-      date: "3 JAN",
-      title:
-        "Finding Balance: The Key To Academic Success And Personal Wellbeing",
-      categories: "Academic Success",
-      image: "/images/kg.jpg", 
-    },
-    {
-      id: 4,
-      date: "4 JAN",
-      title:
-        "Finding Balance: The Key To Academic Success And Personal Wellbeing",
-      categories: "Academic Success",
-      image: "/images/kg.jpg", 
-    },
-    {
-      id: 5,
-      date: "4 JAN",
-      title:
-        "Finding Balance: The Key To Academic Success And Personal Wellbeing",
-      categories: "Academic Success",
-      image: "/images/kg.jpg", 
-    },
-    {
-      id: 6,
-      date: "4 JAN",
-      title:
-        "Finding Balance: The Key To Academic Success And Personal Wellbeing",
-      categories: "Academic Success",
-      image: "/images/kg.jpg", 
-    },
-  ];
 
   return (
     <section className="p-6 bg-gray-100 flex justify-center">
       <div className="grid grid-cols-3 gap-6">
         {blogs.map((blog) => (
           <div
-            key={blog.id}
+            key={blog._id}
             className="bg-white border rounded-lg shadow-lg overflow-hidden w-96"
           >
             {/* Blog Image */}

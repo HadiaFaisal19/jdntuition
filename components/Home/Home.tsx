@@ -54,12 +54,13 @@ const Home = () => {
       id="pricing">
         <Pricing />
       </div>
-      <div id="why-choose-us">
-        <WhyChooseUs />
-      </div>
+      
       <div 
       id="review">
         <Review />
+      </div>
+      <div id="why-choose-us">
+        <WhyChooseUs />
       </div>
       <div id="team">
         <Team />

@@ -7,7 +7,7 @@ export const coursesData = [
       button: "k-6Subjects",
       subjects: 6,
       students: 150,
-      category: "Class K-6",
+      category: "Year K-6",
     },
     {
       id: 2,
@@ -18,25 +18,25 @@ export const coursesData = [
       button: "7-10Subjects",
       subjects: 7,
       students: 120,
-      category: "Class 7-12",
+      category: "Year 7-12",
     },
     {
       id: 3,
       image: "/images/college.jpg",
-      title: "College (HSC)",
+      title: "HSC Preparation",
       price: 75,
       author: "Jane Smith",
       button: "11-12Subjects",
       subjects: 16,
       students: 140,
-      category: "Class 11-12",
+      category: "Year 11-12",
     },
     {
       id: 4,
       image: "/images/soon1.jpg",
       title: "UniEdge",
-      button: "11-12Subjects",
-      category: "Universities",
+      button: "",
+      category: "University",
     },
   ];
   export const teamData = [
@@ -44,7 +44,7 @@ export const coursesData = [
       id: 1,
       name: "Hani Lum",
       image: "/images/hanilum1.jpg",
-      title: "Maths, Economic Teacher",
+      title: "Maths, EconomicS Teacher",
       about: "As a tutor and also a mentor, my aim is always to help my students feel confident in their ability to tackle any given task. Whether they’re approaching their HSC, or just getting started with tutoring, my goal is to create a supportive environment where they can ask me anything. In a way, it’s a friendship, a collaborative effort supported by the strong ",
     },
     {

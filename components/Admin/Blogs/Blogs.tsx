@@ -5,6 +5,16 @@ import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 
 const API_URL = "/api/blog";
 
+
+const categoryMap = {
+  "academic-success": "Academic Success",
+  "exam-preparation": "Exam Preparation",
+  "student-wellbeing": "Student Wellbeing",
+  "parent-support": "Parent Support",
+  "success-stories": "Success Stories",
+  "learning-resources": "Learning Resources",
+};
+
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
@@ -183,12 +193,12 @@ const handleDeleteBlog = async (id) => {
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
             >
-              <option value="Academic Success">Academic Success</option>
-              <option value="Exam Preparation">Exam Preparation</option>
-              <option value="Student Wellbeing">Student Wellbeing</option>
-              <option value="Parent Support">Parent Support</option>
-              <option value="Success Stories">Success Stories</option>
-              <option value="Learning Resources">Learning Resources</option>
+              <option value="academic-success">Academic Success</option>
+              <option value="exam-preparation">Exam Preparation</option>
+              <option value="student-wellbeing">Student Wellbeing</option>
+              <option value="parent-support">Parent Support</option>
+              <option value="success-stories">Success Stories</option>
+              <option value="learning-resources">Learning Resources</option>
             </select>
           </div>
           <div className="mb-4 flex gap-4">

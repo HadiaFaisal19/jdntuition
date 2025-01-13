@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   FaChalkboardTeacher,
   FaDollarSign,
@@ -22,7 +23,7 @@ const ReasonsToChooseUs = () => {
       id: 2,
       icon: <FaDollarSign size={30} />,
       title: "Transparent Pricing",
-      description: "All prices are inclusive of GST, so no extra or hidden costs",
+      description: "All prices are inclusive of GST, so no extra or hidden costs.",
     },
     {
       id: 3,
@@ -40,7 +41,7 @@ const ReasonsToChooseUs = () => {
     {
       id: 5,
       icon: <FaUserGraduate size={30} />,
-      title: "Personalized Learning",
+      title: "Personalised Learning",
       description: "Pathways tailored to individual learning styles.",
     },
     {
@@ -59,22 +60,22 @@ const ReasonsToChooseUs = () => {
       id: 9,
       icon: <FaClipboardList size={30} />,
       title: "Comprehensive Support",
-      description: "Receive mentorship and personalized guidance.",
+      description: "Receive mentorship and personalised guidance.",
     },
   ];
 
   return (
-    <section className="bg-[#17A4A5] py-16">
+    <section className="relative py-16" style={{ backgroundImage: "url('/images/beyond11-12.png')", backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold text-white">Why Choose Us</h2>
           <p className="text-gray-200 mt-2">
-            Discover the benefits of choosing us for your tutoring needs.
+            Discover The Benefits Of Choosing Us For Your Tutoring Needs.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {reasons.map((reason, i) => (
+          {reasons.map((reason) => (
             <div
               key={reason.id}
               className="bg-white shadow-lg p-6 rounded-lg flex flex-col items-center text-center transition-all duration-300 hover:animate-shake"

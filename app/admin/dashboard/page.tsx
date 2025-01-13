@@ -20,7 +20,7 @@ const AdminDashboard = () => {
 
   return (
     
-    <div className="flex h-screen">
+    <div className="flex h-full">
       {/* Sidebar */}
       
       <aside className="w-1/4 bg-[#17A4A5] text-white p-4">

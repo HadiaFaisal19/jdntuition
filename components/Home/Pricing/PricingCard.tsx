@@ -50,7 +50,6 @@ const PricingCard = ({ price }: Props) => {
         </h2>
         
         {/* About */}
-        <p className="mt-4 text-sm text-gray-600">{price.about}</p>
         
         {/* Button */}
         <button

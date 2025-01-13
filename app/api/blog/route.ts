@@ -33,9 +33,17 @@ export async function POST(request: NextRequest) {
 }
 
 // Handle GET (Fetch Blogs)
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const blogs = await Blog.find();
+    const { searchParams } = new URL(req.url);
+    const category = searchParams.get("category");
+
+    let filter = {};
+    if (category) {
+      filter = { category }; // Filter blogs by category if provided
+    }
+
+    const blogs = await Blog.find(filter); // Fetch blogs matching the filter
     return NextResponse.json({ blogs }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
