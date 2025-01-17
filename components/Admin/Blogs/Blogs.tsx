@@ -1,10 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import dynamic from "next/dynamic";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
 
-const API_URL = "/api/blog";
+// Dynamically import ReactQuill from react-quill-new
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import "react-quill-new/dist/quill.snow.css";
 
+const API_URL = "/api/blog";
 
 const categoryMap = {
   "academic-success": "Academic Success",
@@ -24,10 +28,11 @@ const Blogs = () => {
   const [blogForm, setBlogForm] = useState({
     title: "",
     Image: "",
-    category: "Academic Success",
+    category: "academic-success",
     isLatest: false,
     isMostRead: false,
     isFeatured: false,
+    content: "",
   });
 
   const fetchBlogs = async () => {
@@ -48,6 +53,10 @@ const Blogs = () => {
     }));
   };
 
+  const handleContentChange = (value) => {
+    setBlogForm((prev) => ({ ...prev, content: value }));
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -66,19 +75,15 @@ const Blogs = () => {
     }
   };
 
-  // Delete Blog
-// Delete Blog
-const handleDeleteBlog = async (id) => {
+  const handleDeleteBlog = async (id) => {
     try {
-      // Change URL to /api/blog instead of /api/blogs
       await axios.delete(`/api/blog?id=${id}`);
       alert("Blog deleted successfully!");
-      fetchBlogs();  // Refresh the list after deleting
+      fetchBlogs();
     } catch (error) {
       console.error("Error deleting blog:", error);
     }
   };
-  
 
   const handleUpdateBlog = (blog) => {
     setBlogForm(blog);
@@ -90,10 +95,11 @@ const handleDeleteBlog = async (id) => {
     setBlogForm({
       title: "",
       Image: "",
-      category: "Academic Success",
+      category: "academic-success",
       isLatest: false,
       isMostRead: false,
       isFeatured: false,
+      content: "",
     });
     setEditingBlogId(null);
   };
@@ -117,7 +123,6 @@ const handleDeleteBlog = async (id) => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Blogs</h1>
         <button
@@ -131,7 +136,6 @@ const handleDeleteBlog = async (id) => {
         </button>
       </div>
 
-      {/* Filters */}
       <div className="flex gap-4 mb-6">
         {["all", "mostRead", "featured", "latest"].map((filterType) => (
           <button
@@ -143,15 +147,15 @@ const handleDeleteBlog = async (id) => {
             }`}
             onClick={() => handleFilter(filterType)}
           >
-            {filterType === "all" ? "All Blogs" : filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+            {filterType === "all"
+              ? "All Blogs"
+              : filterType.charAt(0).toUpperCase() + filterType.slice(1)}
           </button>
         ))}
       </div>
 
-      {/* Add/Update Form */}
       {isFormVisible && (
         <form onSubmit={handleFormSubmit} className="bg-white p-4 rounded shadow mb-6 relative">
-          {/* Close Button */}
           <button
             type="button"
             className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-lg p-2"
@@ -193,12 +197,11 @@ const handleDeleteBlog = async (id) => {
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
             >
-              <option value="academic-success">Academic Success</option>
-              <option value="exam-preparation">Exam Preparation</option>
-              <option value="student-wellbeing">Student Wellbeing</option>
-              <option value="parent-support">Parent Support</option>
-              <option value="success-stories">Success Stories</option>
-              <option value="learning-resources">Learning Resources</option>
+              {Object.entries(categoryMap).map(([key, value]) => (
+                <option key={key} value={key}>
+                  {value}
+                </option>
+              ))}
             </select>
           </div>
           <div className="mb-4 flex gap-4">
@@ -215,19 +218,23 @@ const handleDeleteBlog = async (id) => {
               </label>
             ))}
           </div>
-          <button type="submit" className="p-2 bg-blue-500 text-white rounded">
+          <div className="mb-4">
+            <label className="block font-medium">Content</label>
+            <ReactQuill
+              value={blogForm.content}
+              onChange={handleContentChange}
+              className="h-64"
+            />
+          </div>
+          <button type="submit" className="mt-8 p-2 bg-blue-500 text-white rounded">
             {editingBlogId ? "Update Blog" : "Add Blog"}
           </button>
         </form>
       )}
 
-      {/* Blog Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredBlogs.map((blog) => (
-          <div
-            key={blog._id}
-            className="bg-white shadow-md rounded p-4 flex flex-col h-full"
-          >
+          <div key={blog._id} className="bg-white shadow-md rounded p-4 flex flex-col h-full">
             <img
               src={blog.Image}
               alt={blog.title}

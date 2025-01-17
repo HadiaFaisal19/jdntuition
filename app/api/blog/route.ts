@@ -8,9 +8,9 @@ connectDB();
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { title, Image, category, isLatest, isMostRead, isFeatured, date } = reqBody;
+    const { title, Image, category, isLatest, isMostRead, isFeatured, date, content } = reqBody;
 
-    if (!title || !Image || !category) {
+    if (!title || !Image || !category ) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
@@ -22,15 +22,18 @@ export async function POST(request: NextRequest) {
       isMostRead,
       isFeatured,
       date: date || new Date(),
+      content,
     });
 
     const savedBlog = await newBlog.save();
 
     return NextResponse.json({ message: "Blog added successfully", blog: savedBlog }, { status: 201 });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+
 
 // Handle GET (Fetch Blogs)
 export async function GET(req: Request) {
@@ -50,29 +53,23 @@ export async function GET(req: Request) {
   }
 }
 
+
+
 // Handle PUT (Update Blog)
-export async function PUT(request: NextRequest) {
+export async function PUT(request) {
   try {
-    const reqBody = await request.json();
-    const { id, title, Image, category, isLatest, isMostRead, isFeatured } = reqBody;
+      const reqBody = await request.json();
+      const { id, title, Image, category, isLatest, isMostRead, isFeatured, date, content } = reqBody;
 
-    if (!id) {
-      return NextResponse.json({ error: "Blog ID is required" }, { status: 400 });
-    }
+      const updatedBlog = await Blog.findByIdAndUpdate(
+          id,
+          { title, Image, category, isLatest, isMostRead, isFeatured, date, content },
+          { new: true }
+      );
 
-    const updatedBlog = await Blog.findByIdAndUpdate(
-      id,
-      { title, Image, category, isLatest, isMostRead, isFeatured },
-      { new: true }
-    );
-
-    if (!updatedBlog) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
-    }
-
-    return NextResponse.json({ message: "Blog updated successfully", blog: updatedBlog }, { status: 200 });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ success: true, blog: updatedBlog });
+  } catch (error) {
+      return NextResponse.json({ success: false, error: error.message });
   }
 }
 

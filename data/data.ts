@@ -44,7 +44,7 @@ export const coursesData = [
       id: 1,
       name: "Hani Lum",
       image: "/images/hanilum1.jpg",
-      title: "Maths, EconomicS Teacher",
+      title: "Maths, Economics Teacher",
       about: "As a tutor and also a mentor, my aim is always to help my students feel confident in their ability to tackle any given task. Whether they’re approaching their HSC, or just getting started with tutoring, my goal is to create a supportive environment where they can ask me anything. In a way, it’s a friendship, a collaborative effort supported by the strong ",
     },
     {

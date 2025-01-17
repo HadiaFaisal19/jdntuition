@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import BlogSection from "@/components/Blog/BlogTiles/BlogTiles";
+import Link from "next/link";
 
 interface Blog {
   id: string;
@@ -83,12 +84,14 @@ const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
                       {blog.title}
                     </h3>
                     <div className="mt-4">
-                      <a
-                        href="#"
-                        className="text-[#17A4A5] text-sm font-semibold hover:underline"
-                      >
-                        CONTINUE READING
-                      </a>
+
+<Link
+  href={`/categories/${category}/${blog._id}`}
+  className="text-[#17A4A5] text-sm font-semibold hover:underline"
+>
+  CONTINUE READING
+</Link>
+
                     </div>
                   </div>
                 </div>

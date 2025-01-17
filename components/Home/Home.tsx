@@ -47,9 +47,7 @@ const Home = () => {
       id="our-process">
         <OurProcess />
       </div>
-      <div>
-        <WhyJDNTuition/>
-      </div>
+      
       <div 
       id="pricing">
         <Pricing />
@@ -62,9 +60,13 @@ const Home = () => {
       <div id="why-choose-us">
         <WhyChooseUs />
       </div>
+      <div>
+        <WhyJDNTuition/>
+      </div>
       <div id="team">
         <Team />
       </div>
+      
     </div>
   );
 };

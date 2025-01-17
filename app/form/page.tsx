@@ -98,7 +98,7 @@ export default function MultiStepForm() {
   const renderSubjects = () => {
     const subjects =
       gradeSubjects[formData.grade] ||
-      gradeSubjects["1-6"]; // Default fallback for primary
+      gradeSubjects["1-6"]; 
 
     return subjects.map((subject) => (
       <div key={subject} className="relative">

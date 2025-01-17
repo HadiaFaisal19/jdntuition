@@ -4,9 +4,9 @@ import { FaFacebookF, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <div className="mt-16 relative pt-24 pb-12 bg-gray-200">
+    <div className=" relative pt-24 pb-12 bg-gray-200">
       {/* Subscribe Now Section */}
-      <div className=" absolute -top-24 w-[50%] h-[40%] left-1/2 transform -translate-x-1/2 bg-[#17A4A5] rounded-lg shadow-lg py-12 px-8 flex flex-col sm:flex-row items-center justify-between text-white space-y-6 sm:space-y-0 sm:space-x-4">
+      {/* <div className=" absolute -top-24 w-[50%] h-[40%] left-1/2 transform -translate-x-1/2 bg-[#17A4A5] rounded-lg shadow-lg py-12 px-8 flex flex-col sm:flex-row items-center justify-between text-white space-y-6 sm:space-y-0 sm:space-x-4">
         <div>
           <h2 className="text-2xl font-bold text-center sm:text-left">
             Confused to make a Decision? Give Us a Chance
@@ -21,7 +21,7 @@ const Footer = () => {
            Avail Offer Now
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Main Footer */}
       <div className="mt-6 w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
