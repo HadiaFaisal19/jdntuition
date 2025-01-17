@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 export default function TopPostsSection() {
   const [latestBlogs, setLatestBlogs] = useState([]);
@@ -128,6 +129,20 @@ export default function TopPostsSection() {
                 </div>
               ))}
         </div>
+
+        {/* View All Blogs Button */}
+        <div className="text-center mt-8">
+        <Link
+    href="/blogs/all-blogs"
+    className="mt-6 relative inline-block px-8 py-4 text-xl font-semibold text-white bg-[#17A4A5] rounded shadow-lg overflow-hidden group w-fit"
+  >
+    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#145D5E] via-[#17A4A5] to-[#1BB6B7] transition-all duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></span>
+    <span className="absolute inset-0 w-full h-full bg-[#17A4A5] transition-all duration-300 ease-out group-hover:bg-opacity-0"></span>
+    <span className="relative group-hover:translate-x-2 transition-transform duration-300">
+      See All Blogs
+    </span>
+  </Link>
+</div>
       </div>
     </section>
   );

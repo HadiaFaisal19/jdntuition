@@ -60,9 +60,9 @@ const Home = () => {
       <div id="why-choose-us">
         <WhyChooseUs />
       </div>
-      <div>
+      {/* <div>
         <WhyJDNTuition/>
-      </div>
+      </div> */}
       <div id="team">
         <Team />
       </div>

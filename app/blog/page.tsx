@@ -21,11 +21,12 @@ const Blog = () => {
       <div id="MostRecentBlogs">
   <MostRecentArticles />
 </div>
+<br/>
 <div id="LatestBlogs">
   <LatestBlogs />
 </div>
 
-      <WhyParents/>
+      {/* <WhyParents/> */}
     </div>
   );
 };
