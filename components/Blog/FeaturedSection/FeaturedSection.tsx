@@ -12,7 +12,7 @@ export default function WhyChooseUs() {
       try {
         const response = await axios.get("/api/blog");
         const blogs = response.data.blogs;
-        const filteredBlogs = blogs.filter((blog) => blog.isFeatured);
+        const filteredBlogs = blogs.filter((blog:any) => blog.isFeatured);
         setFeaturedBlogs(filteredBlogs);
       } catch (error) {
         console.error("Error fetching featured blogs:", error);

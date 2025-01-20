@@ -78,8 +78,8 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
         const blogs = response.data.blogs;
 
         const filteredBlogs = blogs
-          .filter((blog) => blog.isLatest)
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          .filter((blog:any) => blog.isLatest)
+          .sort((a:any, b:any) => new Date(b.date).getTime() - new Date(a.date).getTime())
           .slice(0, 5);
 
         setLatestBlogs(filteredBlogs);
@@ -98,8 +98,8 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
         const blogs = response.data.blogs;
 
         const filteredBlogs = blogs
-          .filter((blog) => blog.isMostRead)
-          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+          .filter((blog:any) => blog.isMostRead)
+          .sort((a:any, b:any) => new Date(a.date).getTime() - new Date(b.date).getTime())
           .slice(0, 5);
 
         setMostReadBlogs(filteredBlogs);
@@ -118,10 +118,10 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
       </div>
     );
   }
-  const formatCategory = (category) => {
+  const formatCategory = (category:any) => {
     return category
       .split("-") // Split by hyphen
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .map((word:any) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); // Join words with spaces
   };
   return (

@@ -11,7 +11,7 @@ const SignupForm = () => {
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const router = useRouter(); // Initialize the router
 
-  const handleSignup = async (e) => {
+  const handleSignup = async (e:any) => {
     e.preventDefault();
     setLoading(true);
     setError(""); // Reset error message

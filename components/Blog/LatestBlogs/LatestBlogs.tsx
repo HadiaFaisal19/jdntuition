@@ -8,14 +8,14 @@ export default function TopPostsSection() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Function to format the date
-  const formatDate = (dateString) => {
+  const formatDate = (dateString:any) => {
     const date = new Date(dateString);
 
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
 
-    const getOrdinalSuffix = (day) => {
+    const getOrdinalSuffix = (day:any) => {
       if (day > 3 && day < 21) return "th";
       switch (day % 10) {
         case 1:
@@ -34,10 +34,10 @@ export default function TopPostsSection() {
   };
 
   // Function to format the category
-  const formatCategory = (category) => {
+  const formatCategory = (category:any) => {
     return category
       .split("-") // Split by hyphen
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .map((word:any) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); // Join words with spaces
   };
 
@@ -49,7 +49,7 @@ export default function TopPostsSection() {
         const response = await axios.get("/api/blog"); // Replace with your API endpoint
         const blogs = response.data.blogs;
         // Filter blogs that have isLatest set to true
-        const filteredBlogs = blogs.filter((blog) => blog.isLatest);
+        const filteredBlogs = blogs.filter((blog:any) => blog.isLatest);
         setLatestBlogs(filteredBlogs);
         setIsLoading(false); // End loading
       } catch (error) {

@@ -57,7 +57,7 @@ export default function BookNow() {
       
     }
   };
-  const handleInputChange = (e) => {
+  const handleInputChange = (e:any) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const updatedData = {
@@ -68,7 +68,7 @@ export default function BookNow() {
       return updatedData;
     });
   };
-  const handleLessonInputChange = (e) => {
+  const handleLessonInputChange = (e:any) => {
     const { name, value } = e.target;
   
     setFormData((prevData) => {
@@ -89,7 +89,7 @@ export default function BookNow() {
   
   
 
-  const handleLastInputChange= (e) => {
+  const handleLastInputChange= (e:any) => {
     const { name, value } = e.target;
   
     setFormData((prevData) => {
@@ -108,7 +108,7 @@ export default function BookNow() {
   };
 
 
-  const handleGradeChange = (grade) => {
+  const handleGradeChange = (grade:any) => {
     setFormData((prevData) => {
       const updatedData = prevData.grade !== grade 
         ? { ...prevData, grade, selectedSubjects: [] } 
@@ -120,7 +120,7 @@ export default function BookNow() {
 
   
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e:any) => {
     const { value, checked } = e.target;
     const [day, time] = value.split("-"); // Split the value into day and time
   
@@ -136,7 +136,7 @@ export default function BookNow() {
         // Normal checkbox behavior
         updatedAvailability = checked
           ? [...currentAvailability, time] // Add the time slot if checked
-          : currentAvailability.filter((item) => item !== time); // Remove the time slot if unchecked
+          : currentAvailability.filter((item:any) => item !== time); // Remove the time slot if unchecked
       }
   
       // Log the updated availability array for the day

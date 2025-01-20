@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -18,8 +17,7 @@ interface Props {
 }
 
 const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
-  const [selectedCategory, setSelectedCategory] = useState(category);
-
+  
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

@@ -8,12 +8,12 @@ export default function MostRecentArticles() {
   const [latestBlogs, setLatestBlogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const formatDate = (dateString) => {
+  const formatDate = (dateString:any) => {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
-    const getOrdinalSuffix = (day) => {
+    const getOrdinalSuffix = (day:any) => {
       if (day > 3 && day < 21) return "th";
       switch (day % 10) {
         case 1:
@@ -36,7 +36,7 @@ export default function MostRecentArticles() {
         setIsLoading(true); // Start loading
         const response = await axios.get("/api/blog");
         const blogs = response.data.blogs;
-        const filteredBlogs = blogs.filter((blog) => blog.isMostRead);
+        const filteredBlogs = blogs.filter((blog:any) => blog.isMostRead);
         setLatestBlogs(filteredBlogs);
         setIsLoading(false); // End loading
       } catch (error) {
@@ -47,10 +47,10 @@ export default function MostRecentArticles() {
     fetchLatestBlogs();
   }, []);
 
-  const formatCategory = (category) => {
+  const formatCategory = (category:any) => {
     return category
       .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .map((word:any) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); 
   };
 

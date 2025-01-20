@@ -53,11 +53,11 @@ const Blogs = () => {
     }));
   };
 
-  const handleContentChange = (value) => {
+  const handleContentChange = (value:any) => {
     setBlogForm((prev) => ({ ...prev, content: value }));
   };
 
-  const handleFormSubmit = async (e) => {
+  const handleFormSubmit = async (e:any) => {
     e.preventDefault();
     try {
       if (editingBlogId) {
@@ -75,7 +75,7 @@ const Blogs = () => {
     }
   };
 
-  const handleDeleteBlog = async (id) => {
+  const handleDeleteBlog = async (id:any) => {
     try {
       await axios.delete(`/api/blog?id=${id}`);
       alert("Blog deleted successfully!");
@@ -85,7 +85,7 @@ const Blogs = () => {
     }
   };
 
-  const handleUpdateBlog = (blog) => {
+  const handleUpdateBlog = (blog:any) => {
     setBlogForm(blog);
     setEditingBlogId(blog._id);
     setIsFormVisible(true);
@@ -105,7 +105,7 @@ const Blogs = () => {
     setEditingBlogId(null);
   };
 
-  const handleFilter = (filterType) => {
+  const handleFilter = (filterType:any) => {
     setFilter(filterType);
     if (filterType === "all") {
       setFilteredBlogs(blogs);
