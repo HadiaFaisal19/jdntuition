@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // Import for app directory
+import { usePathname } from "next/navigation"; 
 import { navLinks } from "@/constant/constant";
 import { HiBars3BottomRight } from "react-icons/hi2";
 
@@ -34,7 +34,12 @@ const Nav = ({ openNav }: Props) => {
   const isCategoriesPage =
     pathname.startsWith("/categories/") && pathname.split("/").length === 3;
 
+  const isCategoriesBlogPage = pathname.startsWith("/categories/") && pathname.split("/").length === 4; // To match the BlogId path
+
   const isWhiteOutline = routesWithOutline.includes(pathname) || isCategoriesPage;
+
+  // Check if the current page is the blog page
+  const isBlogPage = pathname.startsWith("/categories/") && pathname.split("/").length === 4;
 
   return (
     <div
@@ -46,7 +51,7 @@ const Nav = ({ openNav }: Props) => {
     >
       <div className="flex items-center h-full justify-between w-[90%] xl:w-[80%] mx-auto">
         <Image
-          src={navBg ? "/images/LOGO.png" : "/images/LOGO13.png"}
+          src={isBlogPage ? "/images/LOGO.png" : navBg ? "/images/LOGO.png" : "/images/LOGO13.png"}
           alt="logo"
           width={120}
           height={120}
@@ -58,7 +63,7 @@ const Nav = ({ openNav }: Props) => {
             <Link key={link.id} href={link.url}>
               <p
                 className={`nav__link ${
-                  navBg ? "text-black" : "text-white"
+                  (navBg || isCategoriesBlogPage) ? "text-black" : "text-white"
                 } transition-all duration-500`}
               >
                 {link.label}
@@ -78,9 +83,7 @@ const Nav = ({ openNav }: Props) => {
 
           <HiBars3BottomRight
             onClick={openNav}
-            className={`w-8 h-8 cursor-pointer ${
-              navBg ? "text-black" : "text-white"
-            } lg:hidden transition-all duration-200`}
+            className={`w-8 h-8 cursor-pointer ${navBg || isCategoriesBlogPage ? "text-black" : "text-white"} lg:hidden transition-all duration-200`}
           />
         </div>
       </div>

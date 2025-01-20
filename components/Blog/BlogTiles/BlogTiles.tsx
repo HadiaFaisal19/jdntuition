@@ -51,7 +51,7 @@ const BlogSection: React.FC<BlogSectionProps> = ({
         router.push(`/categories/learning-resources`);
         break;
       default:
-        router.push("/blog");
+        router.push("/blog/all-blogs");
     }
   };
   

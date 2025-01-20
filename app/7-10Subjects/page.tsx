@@ -6,10 +6,6 @@ import UniqueApproach from "@/components/Subjects/UniqueApproach/UniqueApproach"
 import WhatWeOffer from "@/components/Subjects/WhatWeOffer/WhatWeOffer";
 import WhyK6 from "@/components/Subjects/WhyK6/WhyK6";
 import WhyParents from "@/components/Subjects/WhyParents/WhyParents";
-import Image from "next/image";
-import Link from "next/link";
-import { FaBookOpen, FaCalculator, FaFlask, FaPen, FaBrain } from 'react-icons/fa';
-import { FaPiggyBank, FaDesktop, FaNewspaper, FaWrench, FaCheck } from "react-icons/fa";
 
 const SubjectsOffered = () => {
   return (

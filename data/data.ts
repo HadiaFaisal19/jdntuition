@@ -84,20 +84,6 @@ export const coursesData = [
 
       
     ]
-    // export const subjectsData=[
-    //   {
-    //     id: 1,
-    //     class: "K–6 Tutoring: Building Strong Foundations",
-    //     why: "",
-    //     whatWeOffer:"",
-    //     parentChoice:"",
-    //     beyondAcademics:"" ,
-
-    //   }
-        
-    // ]
-
-    // data/subjectData.js
 
 export const subjectData = [
   {

@@ -82,9 +82,12 @@ export default function WhyChooseUs() {
             </h3>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-extrabold mb-6 leading-snug">
-            {currentBlog.title}
-          </h1>
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-4 leading-snug">
+  {currentBlog.title}
+</h1>
+<p className="text-lg text-gray-200 mb-6">
+  {currentBlog.description}
+</p>
 
           <div className="flex items-center gap-2 mb-6">
             <FaCalendarAlt className="text-xl text-gray-200" />

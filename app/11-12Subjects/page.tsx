@@ -4,14 +4,9 @@ import BeyondAcademics from "@/components/Subjects/BeyondAcademics/BeyondAcademi
 import Header from "@/components/Subjects/Header/Header";
 import HolisticSupport from "@/components/Subjects/HolisticSupport/HolisticSupport";
 import UniqueApproach from "@/components/Subjects/UniqueApproach/UniqueApproach";
-import WhatWeOffer from "@/components/Subjects/WhatWeOffer/WhatWeOffer";
 import WhatWeOffer12 from "@/components/Subjects/WhatWeOffer12/WhatWeOffer12";
 import WhyK6 from "@/components/Subjects/WhyK6/WhyK6";
 import WhyParents from "@/components/Subjects/WhyParents/WhyParents";
-import Image from "next/image";
-import Link from "next/link";
-import { FaBookOpen, FaCalculator, FaFlask, FaPen, FaBrain } from 'react-icons/fa';
-import { FaPiggyBank, FaDesktop, FaNewspaper, FaWrench, FaCheck } from "react-icons/fa";
 
 const SubjectsOffered = () => {
   return (

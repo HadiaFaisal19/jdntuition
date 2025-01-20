@@ -48,7 +48,7 @@ const SignupForm = () => {
 
   const handleModalClose = () => {
     setShowModal(false);
-    router.push("/login"); // Redirect to the login page when the modal is closed
+    router.push("/admin/dashboard"); // Redirect to the login page when the modal is closed
   };
 
   return (

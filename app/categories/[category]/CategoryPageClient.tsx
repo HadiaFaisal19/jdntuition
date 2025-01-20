@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import BlogSection from "@/components/Blog/BlogTiles/BlogTiles";
 import Link from "next/link";
 
 interface Blog {

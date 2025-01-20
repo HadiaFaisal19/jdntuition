@@ -3,6 +3,30 @@
 @tailwind utilities;
 
 @layer components {
+  /* Add this to your global or component-specific CSS */
+.group .absolute {
+  transition: all 0.3s ease;
+}
+
+.group .absolute[data-direction="top"] {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.group .absolute[data-direction="right"] {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.group .absolute[data-direction="left"] {
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.group .absolute[data-direction="bottom"] {
+  transform: scaleY(0);
+  transform-origin: bottom;
+}
   .nav__link {
     @apply relative text-xl w-fit block after:block after:content-[''] font-semibold after:absolute after:h-[3px] after:bg-[#17A4A5] text-white after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-right;
   }
@@ -33,6 +57,8 @@
   input[type="checkbox"]:checked {
     accent-color: #17A4A5;
   }
+
+  
 
   @layer base {
     html {

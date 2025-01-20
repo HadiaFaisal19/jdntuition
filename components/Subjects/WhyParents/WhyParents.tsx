@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaQuoteLeft, FaQuoteRight } from 'react-icons/fa';
+import { FaQuoteLeft } from 'react-icons/fa';
 
 const WhyParents = () => {
     return (

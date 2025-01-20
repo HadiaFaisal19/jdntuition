@@ -1,6 +1,4 @@
 "use client";
-import { FaBookOpen, FaCalculator, FaFlask, FaPen, FaBrain } from 'react-icons/fa';
-
 
 const HolisticSupport = () => {
     return (

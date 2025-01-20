@@ -9,8 +9,13 @@ const font = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  icons:{
+    icon: "/images/LOGO.png",
+    apple: "/images/LOGO.png"
+
+  },
   title: "JDN Tuition",
-  description: "Educational and Learning website",
+  description: "Australia's Best Tutoring Website",
 };
 
 export default function RootLayout({

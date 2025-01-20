@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
 import Hero from "./Hero/Hero";
 import About from "./About/About";
@@ -9,64 +9,46 @@ import Pricing from "./Pricing/Pricing";
 import OurProcess from "./OurProcess/OurProcess";
 import WhyChooseUs from "./WhyChooseUs/WhyChooseUs";
 
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-import WhyJDNTuition from "./WhyJDNTuition/WhyJDNTuition";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Home = () => {
-
-  useEffect(()=>{
-    const initAOS = async ()=>{
-      await import('aos')
-      AOS.init({
-        duration:1000,
-        easing: "ease",
-        once: true,
-        anchorPlacement: "top-bottom"
-      });
-    };
-
-    initAOS();
-  })
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      easing: "ease",
+      once: true,
+      anchorPlacement: "top-bottom",
+    });
+    AOS.refresh();
+  }, []);
 
   return (
     <div>
-      <div 
-      id="hero">
+      <div id="hero">
         <Hero />
       </div>
-      <div 
-      id="about">
+      <div id="about">
         <About />
       </div>
-      <div 
-      id="courses">
+      <div id="courses">
         <Courses />
       </div>
-      <div 
-      id="our-process">
+      <div id="our-process">
         <OurProcess />
       </div>
-      
-      <div 
-      id="pricing">
+      <div id="pricing">
         <Pricing />
       </div>
-      
-      <div 
-      id="review">
+      <div id="review">
         <Review />
       </div>
       <div id="why-choose-us">
         <WhyChooseUs />
       </div>
-      {/* <div>
-        <WhyJDNTuition/>
-      </div> */}
       <div id="team">
         <Team />
       </div>
-      
     </div>
   );
 };

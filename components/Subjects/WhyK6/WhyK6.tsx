@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 const WhyK6 = ({ heading, description, contentImage }) => {
+  
   return (
     <section>
       <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col lg:flex-row items-center lg:items-start space-y-10 lg:space-y-0 lg:space-x-16">
