@@ -34,8 +34,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-
-
 // Handle GET (Fetch Blogs)
 export async function GET(req: Request) {
   try {
