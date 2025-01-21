@@ -4,13 +4,9 @@ import { connectDB } from "@/dbConfig/dbConfig";
 
 connectDB();
 
-export async function GET(
-  req: Request,
-  context: { params: { id: string } } // Context includes params
-) {
+export async function GET(req: Request, { params }: { params: { id: string } }) {
   try {
-    const { params } = context;
-    const { id } = await params; // Await params for proper handling
+    const { id } = params; // Directly access the id from params
 
     if (!id) {
       return NextResponse.json({ error: "Blog ID not provided" }, { status: 400 });
@@ -23,7 +19,7 @@ export async function GET(
 
     return NextResponse.json(blog, { status: 200 });
   } catch (error) {
-    console.log(error)
-    return NextResponse.json("error ", { status: 500 });
+    console.error(error); // Log the error for debugging
+    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
   }
 }
