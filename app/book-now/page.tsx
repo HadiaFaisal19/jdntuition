@@ -163,7 +163,7 @@ export default function BookNow() {
 
   
 
-  const handleCheckboxChange = (e) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     const [day, time] = value.split("-"); // Split the value into day and time
   
