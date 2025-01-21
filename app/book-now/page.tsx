@@ -162,15 +162,15 @@ export default function BookNow() {
   };
 
   
-
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     const [day, time] = value.split("-"); // Split the value into day and time
   
-    setFormData((prevFormData) => {
-      const currentAvailability = prevFormData.lessonDetails.availability[day] || [];
+    setFormData((prevFormData: FormData) => {
+      // Ensure that the day is a valid key of the Availability object
+      const currentAvailability = prevFormData.lessonDetails.availability[day as keyof Availability] || [];
   
-      let updatedAvailability;
+      let updatedAvailability: string[];
   
       if (time === "Any" || time === "Unavailable") {
         // If "Any" or "Unavailable" is selected
@@ -191,12 +191,13 @@ export default function BookNow() {
           ...prevFormData.lessonDetails,
           availability: {
             ...prevFormData.lessonDetails.availability,
-            [day]: updatedAvailability,
+            [day as keyof Availability]: updatedAvailability, // Update the specific day's availability
           },
         },
       };
     });
   };
+  
   
   const handleSubmit = () => {
     // Perform submission logic (e.g., save data, API call)
