@@ -50,7 +50,7 @@ const BlogCarousel = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("/api/blog");
-        const blogs = response.data.blogs; // Replace with your API's response format
+        const blogs = response.data.blogs; 
         const featured = blogs.filter((blog) => blog.isFeatured);
         setFeaturedBlogs(featured);
       } catch (error) {

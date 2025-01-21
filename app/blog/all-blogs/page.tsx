@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { BsFilterLeft } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
+import Link from "next/link";
 
 interface Blog {
   title: string;
@@ -21,6 +22,7 @@ const Blogs = () => {
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [showDropdown, setShowDropdown] = useState<boolean>(false);
   const [direction, setDirection] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true); // Loading state
 
   const fetchBlogs = async () => {
     try {
@@ -30,8 +32,10 @@ const Blogs = () => {
       );
       setBlogs(sortedBlogs);
       setFilteredBlogs(sortedBlogs);
+      setLoading(false); // Set loading to false after data is fetched
     } catch (error) {
       console.error("Error fetching blogs:", error);
+      setLoading(false); // Set loading to false in case of error as well
     }
   };
 
@@ -92,13 +96,14 @@ const Blogs = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); // Join words with spaces
   };
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#17A4A5] via-[#106F70] to-gray-600 text-white">
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto py-10 ">
         <h2 className="text-5xl font-bold text-center mt-16 mb-8">All Blogs</h2>
 
         {/* Filter and Search Section */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex justify-between items-center mb-8 mx-8 ">
           {/* Filter and Search Buttons */}
           <div className="flex items-center space-x-2">
             <div className="relative">
@@ -109,7 +114,7 @@ const Blogs = () => {
                 <BsFilterLeft className="font-bold" />
               </button>
               {showDropdown && (
-                <div className="absolute left-0 top-full mt-2 flex space-x-4 bg-white text-black rounded shadow-md z-10">
+                <div className="opacity-90 absolute left-0 top-full mt-3 flex space-x-4 bg-white text-black rounded shadow-md z-10">
                   <button
                     onClick={() => {
                       setFilter("all");
@@ -173,12 +178,8 @@ const Blogs = () => {
           {/* Sort Buttons */}
           <div className="space-x-4">
             <button
-              onClick={() => {
-                setFilteredBlogs(
-                  [...filteredBlogs].sort(
-                    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-                  )
-                );
+               onClick={() => {
+                setFilteredBlogs([...filteredBlogs].filter((blog) => blog.isLatest));
               }}
               className="px-4 py-2 bg-gray-200 text-[#17A4A5] font-bold rounded"
             >
@@ -186,7 +187,7 @@ const Blogs = () => {
             </button>
             <button
               onClick={() => {
-                setFilteredBlogs([...filteredBlogs].filter((blog) => blog.mostRead));
+                setFilteredBlogs([...filteredBlogs].filter((blog) => blog.isMostRead));
               }}
               className="px-4 py-2 bg-[#17A4A5] text-white font-bold rounded"
             >
@@ -195,53 +196,64 @@ const Blogs = () => {
           </div>
         </div>
 
+        {/* Loading Spinner */}
+        {loading && (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full border-t-4 border-b-4 border-[#17A4A5] w-16 h-16"></div>
+          </div>
+        )}
+
         {/* Blog Tiles */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {filteredBlogs.map((blog, index) => (
-            <div
-              key={index}
-              className="relative group overflow-hidden cursor-pointer"
-              onMouseEnter={handleHover}
-              onMouseLeave={() => setDirection("")}
-            >
-              {/* Blog Image with Dark Overlay */}
-              <div className="relative w-full h-60">
-                <img
-                  src={blog.Image}
-                  alt={blog.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-45"></div>
-              </div>
-
-              {/* Display Title, Category, Date */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0">
-                <h3 className="text-lg font-semibold text-center">{blog.title}</h3>
-                <p className="text-sm text-center">{formatCategory(blog.category)}</p>
-                <span className="text-xs mt-1 text-center">{formatDate(blog.date)}</span>
-              </div>
-
-              {/* Hover Content (Read More Button) */}
+        {!loading && (
+          <div className="mx-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {filteredBlogs.map((blog, index) => (
               <div
-                className={`absolute inset-0 flex items-center justify-center text-white opacity-0 transition-opacity duration-300 transform ${
-                  direction === "top"
-                    ? "translate-y-[-100%]"
-                    : direction === "bottom"
-                    ? "translate-y-[100%]"
-                    : direction === "left"
-                    ? "translate-x-[-100%]"
-                    : direction === "right"
-                    ? "translate-x-[100%]"
-                    : ""
-                } group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0`}
+                key={index}
+                className="relative group overflow-hidden cursor-pointer"
+                onMouseEnter={handleHover}
+                onMouseLeave={() => setDirection("")}
               >
-                <button className="px-4 py-2 bg-[#17A4A5] text-white font-semibold rounded">
-                  Read More
-                </button>
+                {/* Blog Image with Dark Overlay */}
+                <div className="relative w-full h-60">
+                  <img
+                    src={blog.Image}
+                    alt={blog.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-45"></div>
+                </div>
+
+                {/* Display Title, Category, Date */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-white opacity-100 transition-opacity duration-300 group-hover:opacity-0">
+                  <h3 className="text-lg font-semibold text-center">{blog.title}</h3>
+                  <p className="text-sm text-center">{formatCategory(blog.category)}</p>
+                  <span className="text-xs mt-1 text-center">{formatDate(blog.date)}</span>
+                </div>
+
+                {/* Hover Content (Read More Button) */}
+                <div
+                  className={`absolute inset-0 flex items-center justify-center text-white opacity-0 transition-opacity duration-300 transform ${
+                    direction === "top"
+                      ? "translate-y-[-100%]"
+                      : direction === "bottom"
+                      ? "translate-y-[100%]"
+                      : direction === "left"
+                      ? "translate-x-[-100%]"
+                      : direction === "right"
+                      ? "translate-x-[100%]"
+                      : ""
+                  } group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0`}
+                >
+                  <button className="px-4 py-2 bg-[#17A4A5] text-white font-semibold rounded">
+                    <Link href={`/categories/${blog.category}/${blog._id}`} passHref>
+                      Read More
+                    </Link>
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

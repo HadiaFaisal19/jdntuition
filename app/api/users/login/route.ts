@@ -38,7 +38,11 @@ export async function POST(request: NextRequest) {
       { message: "Login successful", token, isAdmin: user.isAdmin || false },
       { status: 200 }
     );
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    // Fallback for unknown error type
+    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
   }
 }

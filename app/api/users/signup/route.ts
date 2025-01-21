@@ -3,12 +3,13 @@ import bcryptjs from "bcryptjs";
 import User from "@/models/userModel";
 import { connectDB } from "@/dbConfig/dbConfig";
 
-connectDB()
+connectDB();
+
 export async function POST(request: NextRequest) {
     try {
-        const reqBody= await request.json()
+        const reqBody = await request.json();
 
-        const { username, email, password } = reqBody
+        const { username, email, password } = reqBody;
         console.log(reqBody);
 
         if (!username || !email || !password) {
@@ -24,16 +25,20 @@ export async function POST(request: NextRequest) {
         const salt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(password, salt);
 
-        const newUser = new User({ 
-            username, 
-            email, 
-            password: hashedPassword 
+        const newUser = new User({
+            username,
+            email,
+            password: hashedPassword,
         });
         const savedUser = await newUser.save();
         console.log(savedUser);
 
         return NextResponse.json({ message: "User created successfully" }, { status: 201 });
-    } catch (error:any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+        // Fallback for unknown error type
+        return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
     }
 }

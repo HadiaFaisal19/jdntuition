@@ -32,11 +32,11 @@ const Footer = () => {
           </p>
           <div className="flex items-center space-x-4 mt-6">
             <FaFacebookF className="w-6 h-6 text-blue-600" />
-            <Image
+            {/* <Image
               src="https://static.vecteezy.com/system/resources/previews/031/737/215/non_2x/twitter-new-logo-twitter-icons-new-twitter-logo-x-2023-x-social-media-icon-free-png.png"
               alt="Twitter Logo"
               className="w-8 h-8"
-            />
+            /> */}
             <FaLinkedin className="w-6 h-6 text-blue-800" />
             <FaInstagram className="w-6 h-6 text-pink-600" />
           </div>

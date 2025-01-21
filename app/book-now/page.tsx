@@ -402,7 +402,7 @@ export default function BookNow() {
               {/* Learning Needs */}
               <div className=" mb-0">
                 <label className="font-semibold block">
-                {formData.userType === 'Student' ? 'Please provide us with an overview of your learning needs to help you match with the perfect tutor' : "Please provide us with an overview of your child's learning needs to help us match them with the perfect tutor."}
+                {formData.userType === 'Student' ? 'Please provide us with an overview of your learning needs to help you match with the perfect tutor' : "Please provide us with an overview of your child&apos;s learning needs to help us match them with the perfect tutor."}
                   
                 </label>
                 <textarea
@@ -598,7 +598,7 @@ export default function BookNow() {
                             const isChecked =
                               formData.lessonDetails.availability[day]?.includes(time);
           
-                            const handleCheckboxClick = (e) => {
+                            const handleCheckboxClick = (e:any) => {
                               handleCheckboxChange(e);
                               const checkbox = e.target;
                               checkbox.classList.add("glow");
@@ -638,7 +638,7 @@ export default function BookNow() {
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Left Column */}
                     <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-                      <h2 className="text-xl font-semibold mb-4">Enter Parent's/Guardian's Details</h2>
+                      <h2 className="text-xl font-semibold mb-4">Enter Parent&apos;s/Guardian&apos;s Details</h2>
                       <div className="flex flex-col mb-4">
                         <label className="font-semibold mb-1">First Name:</label>
                         <input
@@ -748,7 +748,7 @@ export default function BookNow() {
                         Thank You!
                       </h2>
                       <p className="text-lg text-center mb-6">
-                        Thank you for choosing <span className="font-semibold text-[#17A4A5]">JDN Tuition</span>; we're excited to help you achieve your goals and support you every step of the way! <b>We will contact you shortly.</b> 
+                        Thank you for choosing <span className="font-semibold text-[#17A4A5]">JDN Tuition</span>; we&apos;re excited to help you achieve your goals and support you every step of the way! <b>We will contact you shortly.</b> 
                       </p>
                       <div className="flex justify-center">
                         <button
@@ -767,11 +767,11 @@ export default function BookNow() {
     }
   };
 
-      const renderSubjects = (grade) => {
-        const handleSubjectChange = (subject) => {
-          setFormData((prevData) => {
+      const renderSubjects = (grade:any) => {
+        const handleSubjectChange = (subject:any) => {
+          setFormData((prevData:any) => {
             const updatedData = prevData.selectedSubjects.includes(subject)
-              ? { ...prevData, selectedSubjects: prevData.selectedSubjects.filter((item) => item !== subject) }
+              ? { ...prevData, selectedSubjects: prevData.selectedSubjects.filter((item:any) => item !== subject) }
               : { ...prevData, selectedSubjects: [...prevData.selectedSubjects, subject] };
             console.log("Updated formData after subject selection:", updatedData); // Log formData after subject selection
             return updatedData;
@@ -934,7 +934,7 @@ export default function BookNow() {
           </h2>
           <p className="text-gray-700 text-sm text-center leading-5">
             Start by filling our booking form to share your details and
-            tutoring needs. There’s no commitment at this stage — it’s just to
+            tutoring needs. There&apos;s no commitment at this stage — it&apos;s just to
             help us understand how we can assist you best.
           </p>
         </div>
@@ -965,7 +965,7 @@ export default function BookNow() {
           <p className="text-gray-700 text-sm text-center leading-5">
             Meet your tutor for a quick, no-obligation consultation. This is
             your opportunity to ask questions, discuss your goals, and make sure
-            that it’s the right fit.
+            that it&apos;s the right fit.
           </p>
         </div>
 
@@ -978,7 +978,7 @@ export default function BookNow() {
             Start The Journey
           </h2>
           <p className="text-gray-700 text-sm text-center leading-5">
-            If everything feels right, we’ll schedule your first lesson and set
+            If everything feels right, we&apos;ll schedule your first lesson and set
             you on the path to success!
           </p>
         </div>

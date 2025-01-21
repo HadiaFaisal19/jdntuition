@@ -6,13 +6,9 @@ import { useRouter } from "next/navigation";
 
 interface BlogSectionProps {
   selectedCategory: string;
-  setSelectedCategory: (category: string) => void;
 }
 
-const BlogSection: React.FC<BlogSectionProps> = ({
-  selectedCategory,
-  setSelectedCategory,
-}) => {
+const BlogSection: React.FC<BlogSectionProps> = ({ selectedCategory }) => {
   const router = useRouter();
 
   // Scroll to a specific section within the current page
@@ -54,7 +50,6 @@ const BlogSection: React.FC<BlogSectionProps> = ({
         router.push("/blog/all-blogs");
     }
   };
-  
 
   // Define tiles data
   const tiles = [
