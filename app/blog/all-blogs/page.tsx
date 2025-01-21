@@ -8,6 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 interface Blog {
+  _id: string;
   title: string;
   category: string;
   date: string;
