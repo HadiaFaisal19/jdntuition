@@ -1,12 +1,12 @@
 import CategoryPageClient from "./CategoryPageClient";
 
 interface Props {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }
 
 // Server Component
 const CategoryPage = async ({ params }: Props) => {
-  const { category } = params;
+  const { category } = await params; // Await the params to destructure the category
 
   // Fetch blogs on the server side, passing the category parameter
   const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/blog?category=${category}`);
