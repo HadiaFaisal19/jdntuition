@@ -39,7 +39,7 @@ const SignupForm = () => {
       } else {
         setError(data.error || "An error occurred. Please try again.");
       }
-    } catch (error) {
+    } catch (error: any) {
       setError("Failed to sign up. Please try again.");
     } finally {
       setLoading(false);
