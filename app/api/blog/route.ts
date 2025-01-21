@@ -5,12 +5,13 @@ import { connectDB } from "@/dbConfig/dbConfig";
 connectDB();
 
 // Handle POST (Add Blog)
+// Handle POST (Add Blog)
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
     const { title, Image, category, description, isLatest, isMostRead, isFeatured, date, content } = reqBody;
 
-    if (!title || !Image || !category ) {
+    if (!title || !Image || !category) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
@@ -30,7 +31,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ message: "Blog added successfully", blog: savedBlog }, { status: 201 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const err = error as Error;
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
@@ -42,33 +44,33 @@ export async function GET(req: Request) {
 
     let filter = {};
     if (category) {
-      filter = { category }; // Filter blogs by category if provided
+      filter = { category };
     }
 
-    const blogs = await Blog.find(filter); // Fetch blogs matching the filter
+    const blogs = await Blog.find(filter);
     return NextResponse.json({ blogs }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const err = error as Error;
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
 
-
-
 // Handle PUT (Update Blog)
-export async function PUT(request) {
+export async function PUT(request: NextRequest) {
   try {
-      const reqBody = await request.json();
-      const { id, title, Image, category, description, isLatest, isMostRead, isFeatured, date, content } = reqBody;
+    const reqBody = await request.json();
+    const { id, title, Image, category, description, isLatest, isMostRead, isFeatured, date, content } = reqBody;
 
-      const updatedBlog = await Blog.findByIdAndUpdate(
-          id,
-          { title, Image, category, description, isLatest, isMostRead, isFeatured, date, content },
-          { new: true }
-      );
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { title, Image, category, description, isLatest, isMostRead, isFeatured, date, content },
+      { new: true }
+    );
 
-      return NextResponse.json({ success: true, blog: updatedBlog });
+    return NextResponse.json({ success: true, blog: updatedBlog });
   } catch (error) {
-      return NextResponse.json({ success: false, error: error.message });
+    const err = error as Error;
+    return NextResponse.json({ success: false, error: err.message });
   }
 }
 
@@ -89,6 +91,7 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ message: "Blog deleted successfully" }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    const err = error as Error;
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }
