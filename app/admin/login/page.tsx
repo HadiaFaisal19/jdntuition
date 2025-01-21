@@ -5,20 +5,20 @@ import { useRouter } from "next/navigation";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // error is still used
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
-  
+    setError(""); // reset error on new attempt
+
     const loginData = {
       email,
       password,
     };
-  
+
     try {
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
@@ -27,26 +27,26 @@ const LoginPage = () => {
         },
         body: JSON.stringify(loginData),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         // Store admin status and token in local storage
         localStorage.setItem("isAdmin", data.isAdmin ? "true" : "false");
         localStorage.setItem("token", data.token);
-  
+
         router.push("/admin/dashboard");
         
       } else {
         setError(data.error || "Invalid credentials. Please try again.");
       }
-    } catch (error) {
+    } catch (err) {
+      // Here you can use the 'err' parameter (instead of the previously defined 'error' variable) 
       setError("Failed to log in. Please try again.");
     } finally {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">

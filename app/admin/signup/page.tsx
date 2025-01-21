@@ -6,12 +6,12 @@ const SignupForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState(""); // Initialize password state
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string>(""); // Explicitly set the type for error as string
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const router = useRouter(); // Initialize the router
 
-  const handleSignup = async (e:any) => {
+  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError(""); // Reset error message
