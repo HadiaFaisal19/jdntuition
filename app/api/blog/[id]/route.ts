@@ -4,9 +4,9 @@ import { connectDB } from "@/dbConfig/dbConfig";
 
 connectDB();
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(req: Request, context: { params: { id: string } }) {
   try {
-    const { id } = params; // Directly access the id from params
+    const { id } = context.params; // Access id from context.params
 
     if (!id) {
       return NextResponse.json({ error: "Blog ID not provided" }, { status: 400 });
