@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Blog {
-  _id: string;
+  id: string;
   Image: string;
   title: string;
   category: string;
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
+  
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -39,10 +40,7 @@ const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
     const ordinalSuffix = getOrdinalSuffix(day);
     return (
       <>
-        <div className="text-lg font-bold">
-          {day}
-          {ordinalSuffix}
-        </div>
+        <div className="text-lg font-bold">{day}{ordinalSuffix}</div>
         <div className="text-sm uppercase">{month}</div>
       </>
     );
@@ -50,15 +48,16 @@ const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
 
   return (
     <div className="bg-[#17A4A5]">
+      
       <section id="second-section">
-        <div className="container pt-20 mx-auto ">
+        <div className="container  pt-20 mx-auto ">
           <h2 className="text-4xl font-bold text-white mb-2 text-center">
             {category}
           </h2>
           <div className="mx-auto border-b-4 mb-4 w-40"></div>
 
           {/* Category Tiles Section */}
-          <section className="bg-[#17A4A5] flex justify-center">
+          <section className=" bg-[#17A4A5] flex justify-center">
             <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
               {initialBlogs.map((blog) => (
                 <div
@@ -82,12 +81,14 @@ const CategoryPageClient = ({ category, blogs: initialBlogs }: Props) => {
                       {blog.title}
                     </h3>
                     <div className="mt-4">
-                      <Link
-                        href={`/categories/${category}/${blog._id}`}
-                        className="text-[#17A4A5] text-sm font-semibold hover:underline"
-                      >
-                        CONTINUE READING
-                      </Link>
+
+<Link
+  href={`/categories/${category}/${blog._id}`}
+  className="text-[#17A4A5] text-sm font-semibold hover:underline"
+>
+  CONTINUE READING
+</Link>
+
                     </div>
                   </div>
                 </div>
