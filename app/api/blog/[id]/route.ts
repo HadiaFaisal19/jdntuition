@@ -5,18 +5,15 @@ import mongoose from "mongoose"; // Ensure mongoose is imported
 
 connectDB();
 
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-){
+export async function GET(request: Request, context: { params: { id: string } }) {
   try {
-    const { id } = params;
+    const { id } = context.params;
 
     if (!id) {
       return NextResponse.json({ error: "Blog ID not provided" }, { status: 400 });
     }
 
-    // Convert string ID to ObjectId
+    // Check if the provided ID is valid for MongoDB
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid Blog ID" }, { status: 400 });
     }
