@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface Blog {
-  id: string;
+  _id: string;
   Image: string;
   title: string;
   category: string;

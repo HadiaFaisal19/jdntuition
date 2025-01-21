@@ -5,9 +5,9 @@ import mongoose from "mongoose"
 
 connectDB()
 
-export async function GET(request: NextRequest, context: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params } : { params: Promise<{ id: string }>  }) {
   try {
-    const { id } = context.params
+    const { id } = await params
 
     if (!id) {
       return NextResponse.json({ error: "Blog ID not provided" }, { status: 400 })
