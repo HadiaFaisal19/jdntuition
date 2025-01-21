@@ -5,11 +5,13 @@ import mongoose from "mongoose";
 
 connectDB();
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }  // Fixed params type
-): Promise<NextResponse> {
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(request: NextRequest, props: Props): Promise<NextResponse> {
   try {
+    const params = await props.params;
     const { id } = params;
 
     if (!id) {
