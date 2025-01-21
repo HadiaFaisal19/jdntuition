@@ -22,7 +22,8 @@ export async function GET(
     }
 
     return NextResponse.json(blog, { status: 200 });
-  } catch (error) {
-    return NextResponse.json("error ", { status: 500 });
+  } catch (err) { // Use a more descriptive name for the error
+    console.error(err); // Log the actual error to the console for debugging
+    return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });
   }
 }

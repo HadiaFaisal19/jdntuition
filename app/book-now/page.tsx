@@ -4,48 +4,48 @@ import React, { useState } from "react";
 import { FaBook, FaHandshake, FaRocket, FaComments } from "react-icons/fa";
 import emailjs from "emailjs-com";
 
-interface Availability {
-  Monday: string[];
-  Tuesday: string[];
-  Wednesday: string[];
-  Thursday: string[];
-  Friday: string[];
-  Saturday: string[];
-  Sunday: string[];
-}
+// interface Availability {
+//   Monday: string[];
+//   Tuesday: string[];
+//   Wednesday: string[];
+//   Thursday: string[];
+//   Friday: string[];
+//   Saturday: string[];
+//   Sunday: string[];
+// }
 
-interface StudentInfo {
-  firstName: string;
-  lastName: string;
-  reason: string;
-  performance: string;
-  learningNeeds: string;
-}
+// interface StudentInfo {
+//   firstName: string;
+//   lastName: string;
+//   reason: string;
+//   performance: string;
+//   learningNeeds: string;
+// }
 
-interface ParentDetails {
-  fname: string;
-  lname: string;
-  email: string;
-  phone: string;
-  suburb: string;
-  addDetails: string;
-}
+// interface ParentDetails {
+//   fname: string;
+//   lname: string;
+//   email: string;
+//   phone: string;
+//   suburb: string;
+//   addDetails: string;
+// }
 
-interface LessonDetails {
-  type: string;
-  duration: string;
-  frequency: string;
-  availability: Availability;
-}
+// interface LessonDetails {
+//   type: string;
+//   duration: string;
+//   frequency: string;
+//   availability: Availability;
+// }
 
-interface FormData {
-  userType: string;
-  grade: string;
-  selectedSubjects: string[];
-  studentInfo: StudentInfo;
-  lessonDetails: LessonDetails;
-  parentDetails: ParentDetails;
-}
+// interface FormData {
+//   userType: string;
+//   grade: string;
+//   selectedSubjects: string[];
+//   studentInfo: StudentInfo;
+//   lessonDetails: LessonDetails;
+//   parentDetails: ParentDetails;
+// }
 
 export default function BookNow() {
   const [isFormVisible, setIsFormVisible] = useState(false);

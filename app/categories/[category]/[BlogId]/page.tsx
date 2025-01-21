@@ -167,11 +167,15 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
         </div>
 
         {/* Image Section */}
+        
         <div className="w-full">
-          <img
-            src={blog.Image}
-            alt={blog.title}
+          <Image
+            src={blog.Image}  
+            alt={blog.title}  
             className="w-full max-w-7xl mx-auto h-auto md:h-[75vh] object-cover rounded-lg shadow-lg"
+            layout="responsive"  
+            width={700}  
+            height={500} 
           />
         </div>
       </div>
