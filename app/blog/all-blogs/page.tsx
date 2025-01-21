@@ -91,7 +91,7 @@ const Blogs = () => {
     return new Date(dateString).toLocaleDateString();
   };
 
-  const formatCategory = (category) => {
+  const formatCategory = (category:string) => {
     return category
       .split("-") // Split by hyphen
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
