@@ -5,7 +5,10 @@ import mongoose from "mongoose"; // Ensure mongoose is imported
 
 connectDB();
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+){
   try {
     const { id } = params;
 
