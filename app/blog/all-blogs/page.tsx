@@ -12,7 +12,8 @@ interface Blog {
   category: string;
   date: string;
   image: string;
-  mostRead: boolean;
+  isLatest?: boolean; 
+  isMostRead?: boolean; 
 }
 
 const Blogs = () => {
