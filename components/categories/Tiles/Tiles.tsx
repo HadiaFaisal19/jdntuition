@@ -8,7 +8,7 @@ const CategoryTiles = () => {
   return (
     <section className="p-6 bg-gray-100 flex justify-center">
       <div className="grid grid-cols-3 gap-6">
-        {blogs.map((blog:any) => (
+        {blogs.map((blog) => (
           <div
             key={blog._id}
             className="bg-white border rounded-lg shadow-lg overflow-hidden w-96"

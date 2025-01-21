@@ -90,7 +90,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     return NextResponse.json({ message: "Blog deleted successfully" }, { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
