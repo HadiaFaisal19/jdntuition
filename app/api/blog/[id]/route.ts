@@ -5,25 +5,25 @@ import mongoose from "mongoose"; // Ensure mongoose is imported
 
 connectDB();
 
-export async function GET(request: Request, context: { params: { id: string } }) {
+export async function GET(request: Request, { params }: { params: { id: string } }) {
   try {
-    const { id } = context.params;
+    const { id } = params;  // Retrieve the 'id' from the dynamic route params
 
     if (!id) {
       return NextResponse.json({ error: "Blog ID not provided" }, { status: 400 });
     }
 
-    // Check if the provided ID is valid for MongoDB
+    // Convert string ID to ObjectId
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: "Invalid Blog ID" }, { status: 400 });
     }
 
-    const blog = await Blog.findById(id); // Fetch the blog by ID
+    const blog = await Blog.findById(id);  // Fetch the blog by ID
     if (!blog) {
       return NextResponse.json({ error: "Blog not found" }, { status: 404 });
     }
 
-    return NextResponse.json(blog, { status: 200 });
+    return NextResponse.json(blog, { status: 200 });  // Return blog data as JSON
   } catch (error) {
     console.error("Error in GET /api/blog/:id:", error);
     return NextResponse.json({ error: "An unexpected error occurred" }, { status: 500 });

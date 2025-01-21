@@ -137,13 +137,6 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
     );
   }
 
-  const formatCategory = (category: string): string => {
-    return category
-      .split("-") // Split by hyphen
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-      .join(" "); // Join words with spaces
-  };
-
   return (
     <div className="min-h-screen bg-white text-black">
       <div className="max-w-[85%] mx-auto px-4">
@@ -151,7 +144,7 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
         <div className="text-center ">
           <div className="flex items-center justify-center space-x-4">
             <span className="mt-32 mb-4 p-2 bg-[#17A4A5]/80 text-sm font-medium text-gray-100 uppercase rounded">
-              {formatCategory(blog.category)}
+            {blog.category}
             </span>
             <span className="mt-32 mb-4 text-sm font-semibold text-gray-700">
               {new Date(blog.date).toDateString()}
