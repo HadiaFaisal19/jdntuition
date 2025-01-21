@@ -39,8 +39,12 @@ const SignupForm = () => {
       } else {
         setError(data.error || "An error occurred. Please try again.");
       }
-    } catch (error: any) {
-      setError("Failed to sign up. Please try again.");
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);  // Use the message property of the error
+      } else {
+        setError("Failed to sign up. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
