@@ -5,7 +5,10 @@ import mongoose from "mongoose"
 
 connectDB()
 
-export async function GET(request: NextRequest, { params } : { params: Promise<{ id: string }>  }) {
+export async function GET(request: NextRequest, { params } : { params: Promise<{ id: string }>  })
+: Promise<NextResponse>
+
+{
   try {
     const { id } = await params
 
