@@ -4,6 +4,49 @@ import React, { useState } from "react";
 import { FaBook, FaHandshake, FaRocket, FaComments } from "react-icons/fa";
 import emailjs from "emailjs-com";
 
+interface Availability {
+  Monday: string[];
+  Tuesday: string[];
+  Wednesday: string[];
+  Thursday: string[];
+  Friday: string[];
+  Saturday: string[];
+  Sunday: string[];
+}
+
+interface StudentInfo {
+  firstName: string;
+  lastName: string;
+  reason: string;
+  performance: string;
+  learningNeeds: string;
+}
+
+interface ParentDetails {
+  fname: string;
+  lname: string;
+  email: string;
+  phone: string;
+  suburb: string;
+  addDetails: string;
+}
+
+interface LessonDetails {
+  type: string;
+  duration: string;
+  frequency: string;
+  availability: Availability;
+}
+
+interface FormData {
+  userType: string;
+  grade: string;
+  selectedSubjects: string[];
+  studentInfo: StudentInfo;
+  lessonDetails: LessonDetails;
+  parentDetails: ParentDetails;
+}
+
 export default function BookNow() {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [step, setStep] = useState(1);
@@ -57,7 +100,7 @@ export default function BookNow() {
       
     }
   };
-  const handleInputChange = (e:any) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => {
       const updatedData = {
@@ -68,7 +111,7 @@ export default function BookNow() {
       return updatedData;
     });
   };
-  const handleLessonInputChange = (e:any) => {
+  const handleLessonInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
   
     setFormData((prevData) => {
@@ -89,7 +132,7 @@ export default function BookNow() {
   
   
 
-  const handleLastInputChange= (e:any) => {
+  const handleLastInputChange= (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
   
     setFormData((prevData) => {
@@ -108,7 +151,7 @@ export default function BookNow() {
   };
 
 
-  const handleGradeChange = (grade:any) => {
+  const handleGradeChange = (grade:string) => {
     setFormData((prevData) => {
       const updatedData = prevData.grade !== grade 
         ? { ...prevData, grade, selectedSubjects: [] } 
@@ -120,7 +163,7 @@ export default function BookNow() {
 
   
 
-  const handleCheckboxChange = (e:any) => {
+  const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     const [day, time] = value.split("-"); // Split the value into day and time
   
@@ -136,7 +179,7 @@ export default function BookNow() {
         // Normal checkbox behavior
         updatedAvailability = checked
           ? [...currentAvailability, time] // Add the time slot if checked
-          : currentAvailability.filter((item:any) => item !== time); // Remove the time slot if unchecked
+          : currentAvailability.filter((item) => item !== time); // Remove the time slot if unchecked
       }
   
       // Log the updated availability array for the day
@@ -598,7 +641,7 @@ export default function BookNow() {
                             const isChecked =
                               formData.lessonDetails.availability[day]?.includes(time);
           
-                            const handleCheckboxClick = (e:any) => {
+                            const handleCheckboxClick = (e) => {
                               handleCheckboxChange(e);
                               const checkbox = e.target;
                               checkbox.classList.add("glow");
@@ -767,11 +810,11 @@ export default function BookNow() {
     }
   };
 
-      const renderSubjects = (grade:any) => {
-        const handleSubjectChange = (subject:any) => {
-          setFormData((prevData:any) => {
+      const renderSubjects = (grade) => {
+        const handleSubjectChange = (subject) => {
+          setFormData((prevData) => {
             const updatedData = prevData.selectedSubjects.includes(subject)
-              ? { ...prevData, selectedSubjects: prevData.selectedSubjects.filter((item:any) => item !== subject) }
+              ? { ...prevData, selectedSubjects: prevData.selectedSubjects.filter((item) => item !== subject) }
               : { ...prevData, selectedSubjects: [...prevData.selectedSubjects, subject] };
             console.log("Updated formData after subject selection:", updatedData); // Log formData after subject selection
             return updatedData;

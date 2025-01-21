@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 
 const Categories = () => {
@@ -27,13 +28,15 @@ const Categories = () => {
               className="flex flex-col items-center shrink-0 space-y-4"
             >
               {/* Circle with Image */}
-              <div className="w-72 h-72 bg-white rounded-full shadow-lg flex items-center justify-center overflow-hidden">
-                <img
-                  src={category.imageUrl}
-                  alt={`Category ${category.id}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <div className="relative w-72 h-72 bg-white rounded-full shadow-lg overflow-hidden">
+  <Image
+    src={category.imageUrl}
+    alt={`Category ${category.id}`}
+    fill
+    className="object-cover"
+  />
+</div>
+
               {/* Button */}
               <a
                 href={category.link}

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import Image from "next/image";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 import "react-quill-new/dist/quill.snow.css";
@@ -18,13 +19,38 @@ const categoryMap = {
   "learning-resources": "Learning Resources",
 };
 
+// Blog interface
+interface Blog {
+  _id: string;
+  title: string;
+  Image: string;
+  category: string;
+  description: string;
+  isLatest: boolean;
+  isMostRead: boolean;
+  isFeatured: boolean;
+  content: string;
+}
+
+// BlogForm interface (similar to Blog but without `_id`)
+interface BlogForm {
+  title: string;
+  Image: string;
+  category: string;
+  description: string;
+  isLatest: boolean;
+  isMostRead: boolean;
+  isFeatured: boolean;
+  content: string;
+}
+
 const Blogs = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [filteredBlogs, setFilteredBlogs] = useState([]);
-  const [filter, setFilter] = useState("all");
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
+  const [filter, setFilter] = useState<string>("all");
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [editingBlogId, setEditingBlogId] = useState(null);
-  const [blogForm, setBlogForm] = useState({
+  const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
+  const [blogForm, setBlogForm] = useState<BlogForm>({
     title: "",
     Image: "",
     category: "academic-success",
@@ -37,7 +63,7 @@ const Blogs = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axios.get<{ blogs: Blog[] }>(API_URL);
       setBlogs(response.data.blogs);
       setFilteredBlogs(response.data.blogs);
     } catch (error) {
@@ -45,7 +71,9 @@ const Blogs = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value, type, checked } = e.target;
     setBlogForm((prev) => ({
       ...prev,
@@ -53,11 +81,11 @@ const Blogs = () => {
     }));
   };
 
-  const handleContentChange = (value:any) => {
+  const handleContentChange = (value: string) => {
     setBlogForm((prev) => ({ ...prev, content: value }));
   };
 
-  const handleFormSubmit = async (e:any) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (editingBlogId) {
@@ -75,7 +103,7 @@ const Blogs = () => {
     }
   };
 
-  const handleDeleteBlog = async (id:any) => {
+  const handleDeleteBlog = async (id: string) => {
     try {
       await axios.delete(`/api/blog?id=${id}`);
       alert("Blog deleted successfully!");
@@ -85,7 +113,7 @@ const Blogs = () => {
     }
   };
 
-  const handleUpdateBlog = (blog:any) => {
+  const handleUpdateBlog = (blog: Blog) => {
     setBlogForm(blog);
     setEditingBlogId(blog._id);
     setIsFormVisible(true);
@@ -105,7 +133,7 @@ const Blogs = () => {
     setEditingBlogId(null);
   };
 
-  const handleFilter = (filterType:any) => {
+  const handleFilter = (filterType: string) => {
     setFilter(filterType);
     if (filterType === "all") {
       setFilteredBlogs(blogs);
@@ -236,9 +264,11 @@ const Blogs = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredBlogs.map((blog) => (
           <div key={blog._id} className="bg-white shadow-md rounded p-4 flex flex-col h-full">
-            <img
+            <Image
               src={blog.Image}
               alt={blog.title}
+              width={768}
+              height={192}
               className="w-full h-48 object-cover rounded mb-4"
             />
             <h2 className="text-xl font-bold mb-2">{blog.title}</h2>

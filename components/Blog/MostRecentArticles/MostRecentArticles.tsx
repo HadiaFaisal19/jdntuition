@@ -4,16 +4,25 @@ import axios from "axios";
 import { FaTag } from "react-icons/fa";
 import Link from "next/link";
 
+interface Blog {
+  _id: string;
+  title: string;
+  category: string;
+  date: string;
+  Image: string;
+  isMostRead: boolean;
+}
+
 export default function MostRecentArticles() {
-  const [latestBlogs, setLatestBlogs] = useState([]);
+  const [latestBlogs, setLatestBlogs] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const formatDate = (dateString:any) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
-    const getOrdinalSuffix = (day:any) => {
+    const getOrdinalSuffix = (day: number): string => {
       if (day > 3 && day < 21) return "th";
       switch (day % 10) {
         case 1:
@@ -35,8 +44,8 @@ export default function MostRecentArticles() {
       try {
         setIsLoading(true); // Start loading
         const response = await axios.get("/api/blog");
-        const blogs = response.data.blogs;
-        const filteredBlogs = blogs.filter((blog:any) => blog.isMostRead);
+        const blogs: Blog[] = response.data.blogs;
+        const filteredBlogs = blogs.filter((blog) => blog.isMostRead);
         setLatestBlogs(filteredBlogs);
         setIsLoading(false); // End loading
       } catch (error) {
@@ -47,10 +56,10 @@ export default function MostRecentArticles() {
     fetchLatestBlogs();
   }, []);
 
-  const formatCategory = (category:any) => {
+  const formatCategory = (category: string): string => {
     return category
       .split("-")
-      .map((word:any) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); 
   };
 
@@ -78,38 +87,37 @@ export default function MostRecentArticles() {
                 </div>
               ))
             : // Render blogs if not loading
-              latestBlogs.map((post, index) => (
+              latestBlogs.map((post) => (
                 <div
-                  key={index}
+                  key={post._id}
                   className="relative w-full h-72 md:h-96 shadow-lg group transition-transform duration-300 ease-in-out"
                 >
                   <Link href={`/categories/${post.category}/${post._id}`} passHref>
-                    
-                      <div className="absolute top-0 left-0 w-full h-full">
-                        <Image
-                          src={post.Image}
-                          alt={post.title}
-                          layout="fill"
-                          objectFit="cover"
-                          className="absolute w-full h-full transition-transform duration-300 ease-in-out"
-                        />
+                    <div className="absolute top-0 left-0 w-full h-full">
+                      <Image
+                        src={post.Image}
+                        alt={post.title}
+                        layout="fill"
+                        objectFit="cover"
+                        className="absolute w-full h-full transition-transform duration-300 ease-in-out"
+                      />
+                    </div>
+                    <div className="absolute top-0 left-0 w-full h-full bg-[#0F7A7A] scale-x-0 origin-center opacity-0 transition-all duration-500 ease-in-out group-hover:opacity-50 group-hover:scale-x-100"></div>
+                    <div className="absolute top-2 left-2 bg-[#17A4A5] text-white text-sm font-medium px-3 py-1 rounded shadow-md">
+                      {formatDate(post.date)}
+                    </div>
+                    <div
+                      className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-[90%] bg-white px-6 py-4 shadow-lg border-t-4 border-[#17A4A5] 
+                      z-20 transition-all duration-300 ease-in-out group-hover:translate-y-[-20px] group-hover:border-l-4 group-hover:border-r-4 group-hover:border-b-4"
+                    >
+                      <h3 className="text-lg font-bold text-gray-800 mt-2 mb-2">
+                        {post.title}
+                      </h3>
+                      <div className="flex items-center text-sm text-gray-500 font-medium mb-4">
+                        <FaTag className="fas fa-tag text-[#17A4A5] mr-2" />
+                        {formatCategory(post.category)}
                       </div>
-                      <div className="absolute top-0 left-0 w-full h-full bg-[#0F7A7A] scale-x-0 origin-center opacity-0 transition-all duration-500 ease-in-out group-hover:opacity-50 group-hover:scale-x-100"></div>
-                      <div className="absolute top-2 left-2 bg-[#17A4A5] text-white text-sm font-medium px-3 py-1 rounded shadow-md">
-                        {formatDate(post.date)}
-                      </div>
-                      <div
-                        className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-[90%] bg-white px-6 py-4 shadow-lg border-t-4 border-[#17A4A5] 
-                        z-20 transition-all duration-300 ease-in-out group-hover:translate-y-[-20px] group-hover:border-l-4 group-hover:border-r-4 group-hover:border-b-4"
-                      >
-                        <h3 className="text-lg font-bold text-gray-800 mt-2 mb-2">
-                          {post.title}
-                        </h3>
-                        <div className="flex items-center text-sm text-gray-500 font-medium mb-4">
-                          <FaTag className="fas fa-tag text-[#17A4A5] mr-2" />
-                          {formatCategory(post.category)}
-                        </div>
-                      </div>
+                    </div>
                   </Link>
                 </div>
               ))}

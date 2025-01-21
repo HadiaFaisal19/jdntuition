@@ -5,6 +5,7 @@ import axios from "axios";
 import { BsFilterLeft } from "react-icons/bs";
 import { FiSearch } from "react-icons/fi";
 import Link from "next/link";
+import Image from "next/image";
 
 interface Blog {
   title: string;
@@ -214,11 +215,14 @@ const Blogs = () => {
                 onMouseLeave={() => setDirection("")}
               >
                 {/* Blog Image with Dark Overlay */}
+                {/* Blog Image with Dark Overlay */}
                 <div className="relative w-full h-60">
-                  <img
-                    src={blog.Image}
+                  <Image
+                    src={blog.Image} // Use `Image` from `next/image`
                     alt={blog.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    layout="fill" // Ensures the image fills the container
+                    objectFit="cover" // Maintain aspect ratio and fill container
+                    className="transition-transform duration-300 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-45"></div>
                 </div>

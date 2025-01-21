@@ -4,6 +4,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { MdOutlineDateRange } from "react-icons/md";
 import Link from "next/link";
+import Image from "next/image";
 
 
 const SkeletonLoader = () => {
@@ -122,10 +123,12 @@ const BlogCarousel = () => {
             >
               {/* Image */}
               <div className="w-full md:w-1/2 relative min-h-[50vh] bg-white bg-opacity-70">
-                <img
+                <Image
                   src={blog.Image}
                   alt={blog.title}
-                  className="object-cover w-full h-full rounded-t-lg md:rounded-l-lg md:rounded-t-none"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-t-lg md:rounded-l-lg md:rounded-t-none"
                 />
               </div>
 

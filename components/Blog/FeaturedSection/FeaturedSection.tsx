@@ -3,16 +3,27 @@ import Image from "next/image";
 import axios from "axios";
 import { FaArrowLeft, FaArrowRight, FaTag, FaCalendarAlt } from "react-icons/fa";
 
+// Define the blog structure
+interface Blog {
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  Image: string;
+  isFeatured: boolean;
+}
+
 export default function WhyChooseUs() {
-  const [featuredBlogs, setFeaturedBlogs] = useState([]);
+  const [featuredBlogs, setFeaturedBlogs] = useState<Blog[]>([]); // Specify type
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const fetchFeaturedBlogs = async () => {
       try {
         const response = await axios.get("/api/blog");
-        const blogs = response.data.blogs;
-        const filteredBlogs = blogs.filter((blog:any) => blog.isFeatured);
+        const blogs: Blog[] = response.data.blogs; // Type the response
+        const filteredBlogs = blogs.filter((blog) => blog.isFeatured); // Typed automatically
         setFeaturedBlogs(filteredBlogs);
       } catch (error) {
         console.error("Error fetching featured blogs:", error);
@@ -83,11 +94,11 @@ export default function WhyChooseUs() {
           </div>
 
           <h1 className="text-3xl md:text-4xl font-extrabold mb-4 leading-snug">
-  {currentBlog.title}
-</h1>
-<p className="text-lg text-gray-200 mb-6">
-  {currentBlog.description}
-</p>
+            {currentBlog.title}
+          </h1>
+          <p className="text-lg text-gray-200 mb-6">
+            {currentBlog.description}
+          </p>
 
           <div className="flex items-center gap-2 mb-6">
             <FaCalendarAlt className="text-xl text-gray-200" />

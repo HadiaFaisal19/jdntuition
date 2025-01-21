@@ -25,7 +25,7 @@ const Courses = () => {
         </h1>
       
         <div className="md:mt-12 mt-10 grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-10">
-          {coursesData.map((course, i) => {
+          {coursesData.map((course) => {
             return (
               <div key={course.id}
               className="relative z-20">

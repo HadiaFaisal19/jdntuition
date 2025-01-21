@@ -3,19 +3,28 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
+type BlogPost = {
+  _id: string;
+  title: string;
+  category: string;
+  date: string;
+  Image: string;
+  isLatest: boolean;
+};
+
 export default function TopPostsSection() {
-  const [latestBlogs, setLatestBlogs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [latestBlogs, setLatestBlogs] = useState<BlogPost[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Function to format the date
-  const formatDate = (dateString:any) => {
+  const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
 
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
 
-    const getOrdinalSuffix = (day:any) => {
+    const getOrdinalSuffix = (day: number): string => {
       if (day > 3 && day < 21) return "th";
       switch (day % 10) {
         case 1:
@@ -34,10 +43,10 @@ export default function TopPostsSection() {
   };
 
   // Function to format the category
-  const formatCategory = (category:any) => {
+  const formatCategory = (category: string): string => {
     return category
       .split("-") // Split by hyphen
-      .map((word:any) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); // Join words with spaces
   };
 
@@ -47,9 +56,9 @@ export default function TopPostsSection() {
       try {
         setIsLoading(true); // Start loading
         const response = await axios.get("/api/blog"); // Replace with your API endpoint
-        const blogs = response.data.blogs;
+        const blogs: BlogPost[] = response.data.blogs;
         // Filter blogs that have isLatest set to true
-        const filteredBlogs = blogs.filter((blog:any) => blog.isLatest);
+        const filteredBlogs = blogs.filter((blog) => blog.isLatest);
         setLatestBlogs(filteredBlogs);
         setIsLoading(false); // End loading
       } catch (error) {
@@ -87,9 +96,9 @@ export default function TopPostsSection() {
                 </div>
               ))
             : // Render blogs if not loading
-              latestBlogs.map((post, index) => (
+              latestBlogs.map((post) => (
                 <Link
-                  key={index}
+                  key={post._id}
                   href={`/categories/${post.category}/${post._id}`} // Dynamic URL for each blog
                   passHref
                 >
