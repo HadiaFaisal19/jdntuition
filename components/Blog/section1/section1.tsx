@@ -6,14 +6,22 @@ import { MdOutlineDateRange } from "react-icons/md";
 import Link from "next/link";
 import Image from "next/image";
 
+// Define Type for Blog
+interface Blog {
+  _id: string;
+  title: string;
+  description: string;
+  category: string;
+  date: string;
+  Image: string;
+  isFeatured: boolean;
+}
 
+// Skeleton Loader for Blogs
 const SkeletonLoader = () => {
   return (
     <div className="flex flex-col md:flex-row items-center min-h-[80vh] w-full rounded-lg overflow-hidden bg-gray-200 animate-pulse">
-      {/* Image Skeleton */}
       <div className="w-full md:w-1/2 min-h-[50vh] bg-gray-300"></div>
-
-      {/* Content Skeleton */}
       <div className="w-full md:w-1/2 px-4 flex flex-col justify-center min-h-[50vh] bg-gray-200">
         <div className="h-6 w-24 bg-gray-400 rounded mb-4"></div>
         <div className="h-8 w-3/4 bg-gray-400 rounded mb-4"></div>
@@ -26,9 +34,11 @@ const SkeletonLoader = () => {
 };
 
 const BlogCarousel = () => {
-  const [featuredBlogs, setFeaturedBlogs] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  // Define types for state variables
+  const [featuredBlogs, setFeaturedBlogs] = useState<Blog[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  // Define type for the carousel responsive layout
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -51,7 +61,7 @@ const BlogCarousel = () => {
     const fetchBlogs = async () => {
       try {
         const response = await axios.get("/api/blog");
-        const blogs = response.data.blogs; 
+        const blogs: Blog[] = response.data.blogs;
         const featured = blogs.filter((blog) => blog.isFeatured);
         setFeaturedBlogs(featured);
       } catch (error) {
@@ -94,7 +104,6 @@ const BlogCarousel = () => {
         backgroundImage: "/images/blog.png",
       }}
     >
-      {/* Section Title */}
       <div className="text-center my-6 mt-8 bg-white bg-opacity-70 rounded">
         <h2 className="text-4xl font-bold text-gray-800 mb-4">
           <span className="text-[#17A4A5]">Featured</span> Posts
@@ -102,7 +111,6 @@ const BlogCarousel = () => {
         <div className="mx-auto border-b-4 border-[#17A4A5] w-32 mb-2"></div>
       </div>
 
-      {/* Carousel */}
       <div className="w-screen z-10 bg-white bg-opacity-0 p-6 rounded ">
         <Carousel
           responsive={responsive}
@@ -113,7 +121,7 @@ const BlogCarousel = () => {
           containerClass="carousel-container h-full w-full"
           itemClass="carousel-item flex items-center justify-center h-full w-full"
         >
-          {featuredBlogs.map((blog) => (
+          {featuredBlogs.map((blog: Blog) => (
             <div
               key={blog._id}
               className="flex flex-col md:flex-row items-center min-h-[80vh] w-full rounded-lg overflow-hidden bg-fixed bg-center bg-cover bg-no-repeat"
@@ -121,7 +129,6 @@ const BlogCarousel = () => {
                 backgroundImage: `url('https://images.pexels.com/photos/29509451/pexels-photo-29509451/free-photo-of-2025-agenda-planner-with-pen-on-desk.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
               }}
             >
-              {/* Image */}
               <div className="w-full md:w-1/2 relative min-h-[50vh] bg-white bg-opacity-70">
                 <Image
                   src={blog.Image}
@@ -132,7 +139,6 @@ const BlogCarousel = () => {
                 />
               </div>
 
-              {/* Content */}
               <div className="w-full md:w-1/2 px-4 flex flex-col justify-center min-h-[50vh] bg-white bg-opacity-70">
                 <span className="inline bg-[#17A4A5] text-white text-sm font-semibold px-3 py-1 rounded mb-4 max-w-fit">
                   {blog.category}
@@ -151,8 +157,7 @@ const BlogCarousel = () => {
                   })}
                 </p>
 
-                {/* Read More Button */}
-                <Link href={`/categories/${blog.category}/${blog._id}`}passHref>
+                <Link href={`/categories/${blog.category}/${blog._id}`} passHref>
                   <button className="relative inline-block px-6 py-2 text-sm font-semibold text-white bg-[#17A4A5] rounded shadow-lg overflow-hidden group w-fit">
                     <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#145D5E] via-[#17A4A5] to-[#1BB6B7] transition-all duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></span>
                     <span className="absolute inset-0 w-full h-full bg-[#17A4A5] transition-all duration-300 ease-out group-hover:bg-opacity-0"></span>

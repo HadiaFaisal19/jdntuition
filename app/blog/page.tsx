@@ -9,7 +9,7 @@ const Blog = () => {
   return (
     <div>
       {/* header */}
-      <BlogSection/>
+      <BlogSection selectedCategory="all"/>
       <BlogCarousel/>
       {/* section 1 */}
       {/* <FeaturedSection/> */}
