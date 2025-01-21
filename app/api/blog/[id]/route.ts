@@ -5,12 +5,12 @@ import mongoose from "mongoose"
 
 connectDB()
 
-export async function GET(request: NextRequest, { params } : { params: Promise<{ id: string }>  })
+export async function GET(request: Request, { params } : { params: Promise<{ id: string }>  })
 : Promise<NextResponse>
 
 {
   try {
-    const { id } = await params
+    const  id  = (await params).id
 
     if (!id) {
       return NextResponse.json({ error: "Blog ID not provided" }, { status: 400 })
