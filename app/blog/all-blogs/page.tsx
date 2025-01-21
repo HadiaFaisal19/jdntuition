@@ -11,7 +11,7 @@ interface Blog {
   title: string;
   category: string;
   date: string;
-  image: string;
+  Image: string;
   isLatest?: boolean; 
   isMostRead?: boolean; 
 }
