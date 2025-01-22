@@ -2,7 +2,11 @@
 import React from "react";
 import { FaBookOpen, FaCalculator, FaFlask, FaPen, FaBrain, FaPenFancy, FaChartLine, FaGlobe, FaClipboardList } from "react-icons/fa";
 
-const WhatWeOffer = ({ pageType }) => {
+interface WhatWeOfferProps {
+  pageType: "K-6" | "7-10" | "11-12"; // Restricting pageType to these specific string literals
+}
+
+const WhatWeOffer: React.FC<WhatWeOfferProps> = ({ pageType }) => {
   // Data for K-6
   const kToSixData = [
     {

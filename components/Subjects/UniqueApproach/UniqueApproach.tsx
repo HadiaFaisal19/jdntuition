@@ -8,7 +8,11 @@ import {
   FaUserGraduate,
 } from "react-icons/fa";
 
-const UniqueApproach = ({ pageType }) => {
+interface UniqueApproachProps {
+  pageType: "K-6" | "7-10" | "11-12"; // Restricting pageType to these specific string literals
+}
+
+const UniqueApproach: React.FC<UniqueApproachProps> = ({ pageType }) => {
   // Data for K-6
   const kTo6Data = [
     {

@@ -1,6 +1,10 @@
 import Image from "next/image";
 
-const BeyondAcademics = ({ pageType }) => {
+interface BeyondAcademicsProps {
+  pageType: "K-6" | "7-10" | "11-12"; // Restricting pageType to specific string literals
+}
+
+const BeyondAcademics: React.FC<BeyondAcademicsProps> = ({ pageType }) => {
   // Data for K-6
   const kTo6Data = [
     {
@@ -33,31 +37,32 @@ const BeyondAcademics = ({ pageType }) => {
     },
   ];
 
-  const elevenToTwelveData =[
+  const elevenToTwelveData = [
     {
       title: "Growth Mindset Development",
-      description: `Encouraging students to embrace challenges, learn from setbacks, and remain motivated throughout their HSC journey. `,
+      description: `Encouraging students to embrace challenges, learn from setbacks, and remain motivated throughout their HSC journey.`,
     },
     {
       title: "Career and Pathway Support",
-      description: `Guidance on how HSC results translate into university or career opportunities, helping students plan for their futures. `,
+      description: `Guidance on how HSC results translate into university or career opportunities, helping students plan for their futures.`,
     },
   ];
 
- 
   // Select the appropriate data
-   const data =
+  const data =
     pageType === "K-6"
       ? kTo6Data
       : pageType === "7-10"
       ? sevenToTenData
       : elevenToTwelveData;
-  const imageSrc = 
-  pageType === "K6"
-    ? "/images/whyk-6.jpg"
-    : pageType === "7-10"
-    ? "/images/bey7-10.png"
-    : "/images/beyond11-12.png";
+
+  const imageSrc =
+    pageType === "K-6"
+      ? "/images/whyk-6.jpg"
+      : pageType === "7-10"
+      ? "/images/bey7-10.png"
+      : "/images/beyond11-12.png";
+
   return (
     <section className="relative min-h-screen flex items-center bg-gray-100">
       {/* Background Image */}
@@ -95,3 +100,4 @@ const BeyondAcademics = ({ pageType }) => {
 };
 
 export default BeyondAcademics;
+
