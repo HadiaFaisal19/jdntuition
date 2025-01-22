@@ -1,10 +1,14 @@
 import Image from "next/image";
 
-const Header = ({ backgroundImage }) => {
+interface HeaderProps {
+  backgroundImage: string; // Define backgroundImage as a string
+}
+
+const Header: React.FC<HeaderProps> = ({ backgroundImage }) => {
   return (
-    <section className=" relative h-[50vh] flex items-center justify-center">
+    <section className="relative h-[50vh] flex items-center justify-center">
       {/* Background Image */}
-      <div className=" absolute inset-0 -z-10">
+      <div className="absolute inset-0 -z-10">
         <Image
           src={backgroundImage}
           alt="Blog Background"
