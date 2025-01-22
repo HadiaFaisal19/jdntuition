@@ -1,29 +1,43 @@
-import CategoryPageClient from "./CategoryPageClient";
+import { notFound } from "next/navigation"
+import CategoryPageClient from "./CategoryPageClient"
 
 interface Props {
-  params: Promise<{ category: string }>;
+  params: { category: string }
 }
 
-// Server Component
-const CategoryPage = async ({ params }: Props) => {
-  const { category } = await params; // Await the params to destructure the category
+async function getBlogs(category: string) {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://jdntuition-596yvk2hw-hadia-faisals-projects.vercel.app"
+  const res = await fetch(`${apiUrl}/api/blog?category=${category}`, { next: { revalidate: 3600 } })
 
-  // Fetch blogs on the server side, passing the category parameter
-  const response = await fetch(`https://jdntuition-596yvk2hw-hadia-faisals-projects.vercel.app/api/blog?category=${category}`);
-  const data = await response.json();
+  if (!res.ok) {
+    throw new Error("Failed to fetch blogs")
+  }
 
-  // Map category format to display-friendly format
-  const formattedCategory = category
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+  return res.json()
+}
 
-  // Filter blogs based on category
-  const filteredBlogs = data.blogs.filter(
-    (blog: { category: string }) => blog.category.toLowerCase() === category.toLowerCase()
-  );
+export default async function CategoryPage({ params }: Props) {
+  const { category } = params
 
-  return <CategoryPageClient category={formattedCategory} blogs={filteredBlogs} />;
-};
+  try {
+    const data = await getBlogs(category)
 
-export default CategoryPage;
+    const formattedCategory = category
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")
+
+    // Assuming the API now returns filtered results
+    const filteredBlogs = data.blogs
+
+    if (filteredBlogs.length === 0) {
+      notFound()
+    }
+
+    return <CategoryPageClient category={formattedCategory} blogs={filteredBlogs} />
+  } catch (error) {
+    console.error("Error fetching blogs:", error)
+    throw new Error("Failed to load blogs")
+  }
+}
+
