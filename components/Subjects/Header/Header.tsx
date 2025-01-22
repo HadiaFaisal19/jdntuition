@@ -1,8 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const Header = ({ backgroundImage, tagline, heading }) => {
-  return (
+interface HeaderProps {
+  backgroundImage: string; // backgroundImage is a string (URL for the image)
+  tagline: string;         // tagline is a string
+  heading: string;         // heading is a string
+}
+
+const Header: React.FC<HeaderProps> = ({ backgroundImage, tagline, heading }) => {
+  return(
     <section className="relative h-screen flex items-center justify-center px-4">
       {/* Background Image */}
       <div className="absolute inset-0 -z-10">
