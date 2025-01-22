@@ -435,7 +435,7 @@ export default function BookNow() {
                 value={formData.studentInfo.learningNeeds}
                 onChange={handleInputChange}
                 className="p-2 border rounded w-full"
-                rows="4"
+                rows={4}
                 placeholder="Describe the student's learning needs here..."
               ></textarea>
             </div>
