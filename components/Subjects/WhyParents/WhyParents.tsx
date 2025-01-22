@@ -60,7 +60,7 @@ const WhyParents = () => {
                     </div>
 
                     <p className="text-gray-700 leading-relaxed mt-8 relative z-0">
-                        My son’s tutor not only helped him improve in maths but also showed him how to approach problems with confidence. The change has been incredible.
+                        My son&apos;s tutor not only helped him improve in maths but also showed him how to approach problems with confidence. The change has been incredible.
                         <span className="font-bold"> – Lisa K., Parent</span>
                     </p>
                 </div>
