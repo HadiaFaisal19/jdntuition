@@ -243,7 +243,7 @@ const Blogs = () => {
                 <input
                   type="checkbox"
                   name={field}
-                  checked={(blogForm as any)[field] as boolean}
+                  checked={Boolean(blogForm[field as keyof BlogForm])}
                   onChange={handleInputChange}
                   className="mr-2"
                 />
