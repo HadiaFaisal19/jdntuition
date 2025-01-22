@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { FaFile } from "react-icons/fa";
 import Link from "next/link";
 
 type Props = {
