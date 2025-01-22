@@ -161,14 +161,13 @@ export default function BookNow() {
     });
   };
 
-  
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target;
     const [day, time] = value.split("-"); // Split the value into day and time
   
-    setFormData((prevFormData: FormData) => {
+    setFormData((prevFormData) => {
       // Ensure that the day is a valid key of the Availability object
-      const currentAvailability = prevFormData.lessonDetails.availability[day as keyof Availability] || [];
+      const currentAvailability = prevFormData.lessonDetails.availability[day as keyof typeof prevFormData.lessonDetails.availability] || [];
   
       let updatedAvailability: string[];
   
@@ -191,7 +190,7 @@ export default function BookNow() {
           ...prevFormData.lessonDetails,
           availability: {
             ...prevFormData.lessonDetails.availability,
-            [day as keyof Availability]: updatedAvailability, // Update the specific day's availability
+            [day]: updatedAvailability, // Update the specific day's availability
           },
         },
       };
