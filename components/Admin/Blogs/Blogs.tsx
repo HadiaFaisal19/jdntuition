@@ -1,14 +1,15 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import dynamic from "next/dynamic";
-import { FaEdit, FaPlus, FaTrash } from "react-icons/fa";
-import Image from "next/image";
+"use client"
+import type React from "react"
+import { useState, useEffect } from "react"
+import axios from "axios"
+import dynamic from "next/dynamic"
+import { FaEdit, FaPlus, FaTrash } from "react-icons/fa"
+import Image from "next/image"
 
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
-import "react-quill-new/dist/quill.snow.css";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false })
+import "react-quill-new/dist/quill.snow.css"
 
-const API_URL = "/api/blog";
+const API_URL = "/api/blog"
 
 const categoryMap = {
   "academic-success": "Academic Success",
@@ -17,39 +18,39 @@ const categoryMap = {
   "parent-support": "Parent Support",
   "success-stories": "Success Stories",
   "learning-resources": "Learning Resources",
-};
+}
 
 // Blog interface
 interface Blog {
-  _id: string;
-  title: string;
-  Image: string;
-  category: string;
-  description: string;
-  isLatest: boolean;
-  isMostRead: boolean;
-  isFeatured: boolean;
-  content: string;
+  _id: string
+  title: string
+  Image: string
+  category: string
+  description: string
+  isLatest: boolean
+  isMostRead: boolean
+  isFeatured: boolean
+  content: string
 }
 
 // BlogForm interface (similar to Blog but without `_id`)
 interface BlogForm {
-  title: string;
-  Image: string;
-  category: string;
-  description: string;
-  isLatest: boolean;
-  isMostRead: boolean;
-  isFeatured: boolean;
-  content: string;
+  title: string
+  Image: string
+  category: string
+  description: string
+  isLatest: boolean
+  isMostRead: boolean
+  isFeatured: boolean
+  content: string
 }
 
 const Blogs = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
-  const [filter, setFilter] = useState<string>("all");
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [editingBlogId, setEditingBlogId] = useState<string | null>(null);
+  const [blogs, setBlogs] = useState<Blog[]>([])
+  const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([])
+  const [filter, setFilter] = useState<string>("all")
+  const [isFormVisible, setIsFormVisible] = useState(false)
+  const [editingBlogId, setEditingBlogId] = useState<string | null>(null)
   const [blogForm, setBlogForm] = useState<BlogForm>({
     title: "",
     Image: "",
@@ -59,65 +60,72 @@ const Blogs = () => {
     isMostRead: false,
     isFeatured: false,
     content: "",
-  });
+  })
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get<{ blogs: Blog[] }>(API_URL);
-      setBlogs(response.data.blogs);
-      setFilteredBlogs(response.data.blogs);
+      const response = await axios.get<{ blogs: Blog[] }>(API_URL)
+      setBlogs(response.data.blogs)
+      setFilteredBlogs(response.data.blogs)
     } catch (error) {
-      console.error("Error fetching blogs:", error);
+      console.error("Error fetching blogs:", error)
     }
-  };
+  }
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value, type, checked } = e.target;
-    setBlogForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target
+
+    if (type === "checkbox") {
+      const target = e.target as HTMLInputElement
+      setBlogForm((prev) => ({
+        ...prev,
+        [name]: target.checked,
+      }))
+    } else {
+      setBlogForm((prev) => ({
+        ...prev,
+        [name]: value,
+      }))
+    }
+  }
 
   const handleContentChange = (value: string) => {
-    setBlogForm((prev) => ({ ...prev, content: value }));
-  };
+    setBlogForm((prev) => ({ ...prev, content: value }))
+  }
 
   const handleFormSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
       if (editingBlogId) {
-        await axios.put(API_URL, { id: editingBlogId, ...blogForm });
-        alert("Blog updated successfully!");
+        await axios.put(API_URL, { id: editingBlogId, ...blogForm })
+        alert("Blog updated successfully!")
       } else {
-        await axios.post(API_URL, blogForm);
-        alert("Blog added successfully!");
+        await axios.post(API_URL, blogForm)
+        alert("Blog added successfully!")
       }
-      resetForm();
-      fetchBlogs();
-      setIsFormVisible(false);
+      resetForm()
+      fetchBlogs()
+      setIsFormVisible(false)
     } catch (error) {
-      console.error("Error submitting blog:", error);
+      console.error("Error submitting blog:", error)
     }
-  };
+  }
 
   const handleDeleteBlog = async (id: string) => {
     try {
-      await axios.delete(`/api/blog?id=${id}`);
-      alert("Blog deleted successfully!");
-      fetchBlogs();
+      await axios.delete(`/api/blog?id=${id}`)
+      alert("Blog deleted successfully!")
+      fetchBlogs()
     } catch (error) {
-      console.error("Error deleting blog:", error);
+      console.error("Error deleting blog:", error)
     }
-  };
+  }
 
   const handleUpdateBlog = (blog: Blog) => {
-    setBlogForm(blog);
-    setEditingBlogId(blog._id);
-    setIsFormVisible(true);
-  };
+    setBlogForm(blog)
+    setEditingBlogId(blog._id)
+    setIsFormVisible(true)
+  }
 
   const resetForm = () => {
     setBlogForm({
@@ -129,26 +137,26 @@ const Blogs = () => {
       isMostRead: false,
       isFeatured: false,
       content: "",
-    });
-    setEditingBlogId(null);
-  };
+    })
+    setEditingBlogId(null)
+  }
 
   const handleFilter = (filterType: string) => {
-    setFilter(filterType);
+    setFilter(filterType)
     if (filterType === "all") {
-      setFilteredBlogs(blogs);
+      setFilteredBlogs(blogs)
     } else if (filterType === "mostRead") {
-      setFilteredBlogs(blogs.filter((blog) => blog.isMostRead));
+      setFilteredBlogs(blogs.filter((blog) => blog.isMostRead))
     } else if (filterType === "featured") {
-      setFilteredBlogs(blogs.filter((blog) => blog.isFeatured));
+      setFilteredBlogs(blogs.filter((blog) => blog.isFeatured))
     } else if (filterType === "latest") {
-      setFilteredBlogs(blogs.filter((blog) => blog.isLatest));
+      setFilteredBlogs(blogs.filter((blog) => blog.isLatest))
     }
-  };
+  }
 
   useEffect(() => {
-    fetchBlogs();
-  }, []);
+    fetchBlogs()
+  }, [])
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
@@ -157,8 +165,8 @@ const Blogs = () => {
         <button
           className="p-2 bg-[#17A4A5] text-white rounded hover:bg-[#138F8F] flex items-center gap-2"
           onClick={() => {
-            resetForm();
-            setIsFormVisible(true);
+            resetForm()
+            setIsFormVisible(true)
           }}
         >
           <FaPlus />
@@ -170,15 +178,11 @@ const Blogs = () => {
           <button
             key={filterType}
             className={`p-2 rounded ${
-              filter === filterType
-                ? "bg-[#17A4A5] text-white"
-                : "bg-gray-200 hover:bg-gray-300"
+              filter === filterType ? "bg-[#17A4A5] text-white" : "bg-gray-200 hover:bg-gray-300"
             }`}
             onClick={() => handleFilter(filterType)}
           >
-            {filterType === "all"
-              ? "All Blogs"
-              : filterType.charAt(0).toUpperCase() + filterType.slice(1)}
+            {filterType === "all" ? "All Blogs" : filterType.charAt(0).toUpperCase() + filterType.slice(1)}
           </button>
         ))}
       </div>
@@ -189,8 +193,8 @@ const Blogs = () => {
             type="button"
             className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-lg p-2"
             onClick={() => {
-              resetForm();
-              setIsFormVisible(false);
+              resetForm()
+              setIsFormVisible(false)
             }}
           >
             &times;
@@ -239,7 +243,7 @@ const Blogs = () => {
                 <input
                   type="checkbox"
                   name={field}
-                  checked={blogForm[field]}
+                  checked={(blogForm as any)[field] as boolean}
                   onChange={handleInputChange}
                   className="mr-2"
                 />
@@ -249,11 +253,7 @@ const Blogs = () => {
           </div>
           <div className="mb-4">
             <label className="block font-medium">Content</label>
-            <ReactQuill
-              value={blogForm.content}
-              onChange={handleContentChange}
-              className="h-64"
-            />
+            <ReactQuill value={blogForm.content} onChange={handleContentChange} className="h-64" />
           </div>
           <button type="submit" className="mt-8 p-2 bg-blue-500 text-white rounded">
             {editingBlogId ? "Update Blog" : "Add Blog"}
@@ -265,7 +265,7 @@ const Blogs = () => {
         {filteredBlogs.map((blog) => (
           <div key={blog._id} className="bg-white shadow-md rounded p-4 flex flex-col h-full">
             <Image
-              src={blog.Image}
+              src={blog.Image || "/placeholder.svg"}
               alt={blog.title}
               width={768}
               height={192}
@@ -290,7 +290,8 @@ const Blogs = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Blogs;
+export default Blogs
+
