@@ -1,43 +1,20 @@
-import { notFound } from "next/navigation"
-import CategoryPageClient from "./CategoryPageClient"
+import CategoryPageClient from "./CategoryPageClient";
 
 interface Props {
-  params: { category: string }
+  params: { category: string };
 }
 
-async function getBlogs(category: string) {
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://jdntuition-596yvk2hw-hadia-faisals-projects.vercel.app"
-  const res = await fetch(`${apiUrl}/api/blog?category=${category}`, { next: { revalidate: 3600 } })
+// Server Component (Passing category to client component)
+const CategoryPage = ({ params }: Props) => {
+  const { category } = params;
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch blogs")
-  }
+  // Format category string for display
+  const formattedCategory = category
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 
-  return res.json()
-}
+  return <CategoryPageClient category={formattedCategory} />;
+};
 
-export default async function CategoryPage({ params }: Props) {
-  const { category } = params
-
-  try {
-    const data = await getBlogs(category)
-
-    const formattedCategory = category
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")
-
-    // Assuming the API now returns filtered results
-    const filteredBlogs = data.blogs
-
-    if (filteredBlogs.length === 0) {
-      notFound()
-    }
-
-    return <CategoryPageClient category={formattedCategory} blogs={filteredBlogs} />
-  } catch (error) {
-    console.error("Error fetching blogs:", error)
-    throw new Error("Failed to load blogs")
-  }
-}
-
+export default CategoryPage;
