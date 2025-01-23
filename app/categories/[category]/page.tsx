@@ -1,12 +1,9 @@
 import CategoryPageClient from "./CategoryPageClient";
 
-interface Props {
-  params: { category: string };
-}
+interface Props { params: Promise<{ category: string }> }
 
 // Server Component (Passing category to client component)
-const CategoryPage = ({ params }: Props) => {
-  const { category } = params;
+const CategoryPage = async ({ params }: Props) => { const { category } = await params // Await the params to destructure the category
 
   // Format category string for display
   const formattedCategory = category
