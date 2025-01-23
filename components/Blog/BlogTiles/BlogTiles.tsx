@@ -81,14 +81,14 @@ const BlogSection: React.FC<BlogSectionProps> = ({ selectedCategory }) => {
           />
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <h3
-            className={`z-10 ${
-              tile.title === selectedCategory ? "text-[#17A4A5] text-4xl underline" : ""
-            } ${
-              tile.title === "BLOG"
-                ? "sm:text-3xl md:text-5xl lg:text-7xl font-bold"
-                : "text-xl font-bold"
-            }`}
-          >
+  className={`z-10 text-center ${
+    tile.title === selectedCategory ? "text-[#17A4A5] text-4xl underline" : ""
+  } ${
+    tile.title === "BLOG"
+      ? "text-3xl font-bold sm:text-xl md:text-7xl lg:text-7xl"
+      : "text-xl font-bold"
+  }`}
+>
             {tile.title}
           </h3>
         </div>

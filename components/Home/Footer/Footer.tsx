@@ -1,5 +1,7 @@
 import Image from "next/image";
 import React from "react";
+import Link from "next/link";
+import { navLinks } from "@/constant/constant";
 import { FaFacebookF, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
@@ -26,7 +28,7 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="mt-6 w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
         <div>
-          <Image src={"/images/logo.png"} alt="logo" height={100} width={100} />
+          <Image src={"/images/LOGO.png"} alt="logo" height={100} width={100} />
           <p className="text-black text-opacity-50">
             Journey Development Network: Building the Pillars of Success
           </p>
@@ -51,16 +53,15 @@ const Footer = () => {
           <p className="footer__link"> Geography</p>
         </div>
         <div>
-          <h1 className="footer__heading">Quick Links</h1>
-          <p className="footer__link"> Home</p>
-          <p className="footer__link"> About</p>
-          <p className="footer__link"> Subjects</p>
-          <p className="footer__link"> Jobs</p>
-          <p className="footer__link"> Contact Us</p>
-          <p className="footer__link"> Privacy Policy</p>
-        </div>
+      <h1 className="footer__heading">Quick Links</h1>
+      {navLinks.map((link) => (
+        <p key={link.id} className="footer__link">
+          <Link href={link.url}>{link.label}</Link>
+        </p>
+      ))}
+    </div>
         <div>
-          <h1 className="footer__heading">Subscribe to our NewsLetter</h1>
+          <h1 className="footer__heading">Subscribe to our Newsletter</h1>
           <input
             type="text"
             placeholder="Enter your Email"

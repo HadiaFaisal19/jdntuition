@@ -12,7 +12,7 @@ const HeroContent = () => {
       <h1 data-aos="fade-left"
       data-aos-delay="200"
       className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-5xl font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[4rem] text-white">
-      Australia&apos;s Higest Rated Tutoring Platform - The Trusted Choice
+      Australia&apos;s Highest Rated Tutoring Platform - The Trusted Choice
       </h1>
       
       <div className="mt-8 flex items-center space-x-4">

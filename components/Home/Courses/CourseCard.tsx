@@ -9,7 +9,6 @@ type Props = {
     image: string;
     title: string;
     button: string;
-   // subjects: string;
     category: string;
   };
 };
@@ -18,12 +17,12 @@ const CourseCard = ({ course }: Props) => {
   return (
     <div className="bg-white rounded-lg overflow-hidden cursor-pointer shadow-lg transition-all">
       {/* Image Section */}
-      <div className="w-full h-[30rem] relative">
+      <div className="relative w-full h-64 sm:h-80 md:h-[30rem]">
         <Image
           src={course.image}
           alt={course.title}
-          width={400}
-          height={400}
+          layout="fill"
+          objectFit="cover"
           className="w-full h-full transition-transform duration-300 transform group-hover:scale-110"
         />
       </div>
@@ -38,12 +37,6 @@ const CourseCard = ({ course }: Props) => {
         <h1 className="text-xl text-black font-bold mt-2">{course.title}</h1>
         <div className="mt-6 mb-6 w-full h-[2px] bg-gray-500 opacity-15"></div>
         <div className="flex mb-6 items-center justify-between">
-          {/* <div className="flex items-center space-x-2">
-            <FaFile className="w-4 h-4 text-orange-600" />
-            <p className="text-base font-semibold text-gray-800">
-              {course.subjects} Subjects
-            </p>
-          </div> */}
           <div className="flex items-center space-x-2">
             {/* Learn More Button */}
             <Link href={`/${course.button}`}>
