@@ -13,7 +13,7 @@ type Props = {
 
 const Nav = ({ openNav }: Props) => {
   const [navBg, setNavBg] = useState(false);
-  const pathname = usePathname(); // Get current path for app directory
+  const pathname = usePathname(); 
 
   useEffect(() => {
     const handler = () => {
@@ -51,7 +51,7 @@ const Nav = ({ openNav }: Props) => {
     >
       <div className="flex items-center h-full justify-between w-[90%] xl:w-[80%] mx-auto">
         <Image
-          src={isBlogPage ? "/images/LOGO.png" : navBg ? "/images/LOGO.png" : "/images/LOGOWhite.png"}
+          src={isBlogPage ? "/images/LOGO.png" : navBg ? "/images/LOGO.png" : "/images/LOGOW.png"}
           alt="logo"
           width={120}
           height={120}
