@@ -14,7 +14,7 @@ export const coursesData = [
       
       button: "7-10Subjects",
       //subjects: "7",
-      category: "Years 7-12",
+      category: "Years 7-10",
     },
     {
       id: 3,
