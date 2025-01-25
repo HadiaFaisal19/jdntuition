@@ -861,7 +861,7 @@ export default function BookNow() {
           <div className="mt-4">
             <p className="font-semibold">Other:</p>
             <div className="flex flex-wrap space-x-4 mt-2">
-              {["Visual Arts", "Music", "Design and Technology", "Drama", "PDHPE"].map((option) => (
+              {["History", "Geography", "Commerce", "Visual Arts", "Music"].map((option) => (
                 <button
                   key={option}
                   className={`p-2 px-4 border rounded ${formData.selectedSubjects.includes(option) ? "bg-[#17A4A5] text-white" : "text-gray-700"}`}
@@ -974,7 +974,7 @@ export default function BookNow() {
       {/* Steps Section */}
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8 md:gap-6 px-4">
         {/* Step 1 */}
-        <div className="border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
+        <div className="mt-4 border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
           <div className="flex items-center justify-center w-16 h-16 bg-[#17A4A5] text-white rounded-full mb-4">
             <FaBook size={28} />
           </div>
@@ -986,19 +986,20 @@ export default function BookNow() {
         </div>
 
         {/* Step 2 */}
-        <div className="border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
+        <div className="mt-4 border-2 border-[#17A4A5] rounded-lg p-5 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
           <div className="flex items-center justify-center w-16 h-16 bg-[#17A4A5] text-white rounded-full mb-4">
             <FaHandshake size={28} />
           </div>
           <h2 className="text-lg font-semibold mb-4 text-center">Find Your Perfect Tutor</h2>
           <p className="text-gray-700 text-sm text-center leading-5">
-            Based on your requirements, we carefully match you with the most suitable tutor. We consider factors such as
-            subject expertise, teaching style, location, availability, and personality.
+          Based on your requirements, we carefully match you with the most suitable tutor of ours. We consider 
+          factors such as subject expertise, teaching style, location, availability, and even personality to ensure
+          the best fit.
           </p>
         </div>
 
         {/* Step 3 */}
-        <div className="border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
+        <div className="mt-4 border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
           <div className="flex items-center justify-center w-16 h-16 bg-[#17A4A5] text-white rounded-full mb-4">
             <FaComments size={28} />
           </div>
@@ -1010,11 +1011,11 @@ export default function BookNow() {
         </div>
 
         {/* Step 4 */}
-        <div className="border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
+        <div className=" mt-4 border-2 border-[#17A4A5] rounded-lg p-6 shadow-lg flex flex-col items-center max-w-[250px] mx-auto">
           <div className="flex items-center justify-center w-16 h-16 bg-[#17A4A5] text-white rounded-full mb-4">
             <FaRocket size={28} />
           </div>
-          <h2 className="text-lg font-semibold mb-4 text-center">Start The Journey</h2>
+          <h2 className="text-lg font-semibold mb-4 text-center">Start Your Journey</h2>
           <p className="text-gray-700 text-sm text-center leading-5">
             If everything feels right, we&apos;ll schedule your first lesson and set you on the path to success!
           </p>
@@ -1126,7 +1127,7 @@ export default function BookNow() {
       )}
 
       {/* Footer Section */}
-      <div className="mt-20 mb-20 bg-black w-full py-6 flex justify-center items-center">
+      <div className="mt-20 mb-20 bg-gray-800 w-full py-6 flex justify-center items-center">
         <Image src="/images/LOGO.png" alt="JDN Logo" width={150} height={50} />
       </div>
     </div>

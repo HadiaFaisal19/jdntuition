@@ -38,7 +38,7 @@ const HeroContent = () => {
   data-aos-delay="500">
     <p 
     className="md:text-xl lg:text-2xl text-base text-white font-bold">
-      20+
+      70+
     </p>
     <p
       className="w-[100px] h-[3px] bg-green-600 mt-2 mb-2 rounded-lg"
@@ -53,7 +53,7 @@ const HeroContent = () => {
     <p 
     
     className="md:text-xl lg:text-2xl text-base text-white font-bold">
-      500+
+      100+
     </p>
     <p
       className="w-[100px] h-[3px] bg-blue-600 mt-2 mb-2 rounded-lg"
@@ -73,7 +73,7 @@ const HeroContent = () => {
       className="w-[100px] h-[3px] bg-pink-600 mt-2 mb-2 rounded-lg"
     ></p>
     <p className="md:text-lg text-sm text-white text-opacity-70">
-      Courses
+      Subjects
     </p>
   </div>
 </div>

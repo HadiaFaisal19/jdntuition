@@ -1,40 +1,40 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { use } from "react";
-import axios from "axios";
-import { MdKeyboardArrowRight } from "react-icons/md";
-import { FaFacebookF, FaInstagram, FaWhatsapp, FaLinkedinIn, FaEnvelope } from "react-icons/fa";
-import Image from "next/image";
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { use } from "react"
+import axios from "axios"
+import { MdKeyboardArrowRight } from "react-icons/md"
+import { FaFacebookF, FaInstagram, FaWhatsapp, FaLinkedinIn, FaEnvelope } from "react-icons/fa"
+import Image from "next/image"
 
-type Params = { category: string; BlogId: string };
+type Params = { category: string; BlogId: string }
 
 // Define the types for blog data
 interface Blog {
-  _id: string;
-  category: string;
-  date: string;
-  title: string;
-  description: string;
-  author: string;
-  Image: string;
-  content: string;
-  isLatest?: boolean;
-  isMostRead?: boolean;
+  _id: string
+  category: string
+  date: string
+  title: string
+  description: string
+  author: string
+  Image: string
+  content: string
+  isLatest?: boolean
+  isMostRead?: boolean
 }
 
 // Define the type for the state arrays
-type BlogArray = Blog[];
+type BlogArray = Blog[]
 
 const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
-  const router = useRouter();
-  const { BlogId } = use(params);
+  const router = useRouter()
+  const { BlogId } = use(params)
 
   // Update the state with specific types
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [latestBlogs, setLatestBlogs] = useState<BlogArray>([]);
-  const [mostReadBlogs, setMostReadBlogs] = useState<BlogArray>([]);
+  const [blog, setBlog] = useState<Blog | null>(null)
+  const [latestBlogs, setLatestBlogs] = useState<BlogArray>([])
+  const [mostReadBlogs, setMostReadBlogs] = useState<BlogArray>([])
 
   const categories = [
     "Academic Success",
@@ -43,116 +43,112 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
     "Parent Support",
     "Success Stories",
     "Learning Resources",
-  ];
+  ]
 
   const handleTileClick = (title: string) => {
     switch (title) {
       case "Academic Success":
-        router.push(`/categories/academic-success`);
-        break;
+        router.push(`/categories/academic-success`)
+        break
       case "Exam Preparation":
-        router.push(`/categories/exam-preparation`);
-        break;
+        router.push(`/categories/exam-preparation`)
+        break
       case "Student Wellbeing":
-        router.push(`/categories/student-wellbeing`);
-        break;
+        router.push(`/categories/student-wellbeing`)
+        break
       case "Parent Support":
-        router.push(`/categories/parent-support`);
-        break;
+        router.push(`/categories/parent-support`)
+        break
       case "Success Stories":
-        router.push(`/categories/success-stories`);
-        break;
+        router.push(`/categories/success-stories`)
+        break
       case "Learning Resources":
-        router.push(`/categories/learning-resources`);
-        break;
+        router.push(`/categories/learning-resources`)
+        break
       default:
-        break;
+        break
     }
-  };
+  }
 
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`/api/blog/${BlogId}`);
+        const response = await fetch(`/api/blog/${BlogId}`)
         if (!response.ok) {
-          throw new Error("Failed to fetch blog details");
+          throw new Error("Failed to fetch blog details")
         }
-        const data: Blog = await response.json(); // Explicit type definition here
-        setBlog(data);
+        const data: Blog = await response.json()
+        setBlog(data)
       } catch (error) {
-        console.error("Error fetching blog details:", error);
+        console.error("Error fetching blog details:", error)
       }
-    };
+    }
 
     if (BlogId) {
-      fetchBlog();
+      fetchBlog()
     }
-  }, [BlogId]);
+  }, [BlogId])
 
   useEffect(() => {
     const fetchLatestBlogs = async () => {
       try {
-        const response = await axios.get("/api/blog");
-        const blogs: Blog[] = response.data.blogs; // Explicit type for blogs array
+        const response = await axios.get("/api/blog")
+        const blogs: Blog[] = response.data.blogs // Explicit type for blogs array
 
         const filteredBlogs = blogs
           .filter((blog) => blog.isLatest)
           .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 5);
+          .slice(0, 5)
 
-        setLatestBlogs(filteredBlogs);
+        setLatestBlogs(filteredBlogs)
       } catch (error) {
-        console.error("Error fetching latest blogs:", error);
+        console.error("Error fetching latest blogs:", error)
       }
-    };
+    }
 
-    fetchLatestBlogs();
-  }, []);
+    fetchLatestBlogs()
+  }, [])
 
   useEffect(() => {
     const fetchMostReadBlogs = async () => {
       try {
-        const response = await axios.get("/api/blog");
-        const blogs: Blog[] = response.data.blogs; // Explicit type for blogs array
+        const response = await axios.get("/api/blog")
+        const blogs: Blog[] = response.data.blogs // Explicit type for blogs array
 
         const filteredBlogs = blogs
           .filter((blog) => blog.isMostRead)
-          .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-          .slice(0, 5);
+          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+          .slice(0, 5)
 
-        setMostReadBlogs(filteredBlogs);
+        setMostReadBlogs(filteredBlogs)
       } catch (error) {
-        console.error("Error fetching most-read blogs:", error);
+        console.error("Error fetching most-read blogs:", error)
       }
-    };
+    }
 
-    fetchMostReadBlogs();
-  }, []);
+    fetchMostReadBlogs()
+  }, [])
 
   if (!blog) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-black via-gray-800 to-black">
         <p className="text-lg font-semibold text-gray-300">Loading blog...</p>
       </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen bg-white text-black">
-      <div className="max-w-[85%] mx-auto px-4">
+      <div className="max-w-[100%] mx-auto px-4">
         {/* Title Section */}
         <div className="text-center ">
-          <div className="flex items-center justify-center space-x-4">
-            <span className="mt-32 mb-4 p-2 bg-[#17A4A5]/80 text-sm font-medium text-gray-100 uppercase rounded">
-            {blog.category}
+          <div className="flex items-center justify-center space-x-4  ">
+            <span className="mt-36 mb-4 p-2 bg-[#17A4A5]/90 text-sm font-medium text-gray-100 uppercase rounded">
+              {blog.category}
             </span>
-            <span className="mt-32 mb-4 text-sm font-semibold text-gray-700">
-              {new Date(blog.date).toDateString()}
-            </span>
+            <span className="mt-36 mb-4 text-sm font-semibold text-gray-700">{new Date(blog.date).toDateString()}</span>
           </div>
-          <h1 className="text-4xl font-extrabold text-black leading-tight mb-8">
-            {blog.title}
-          </h1>
+          <h1 className="lg:text-5xl xl:text-5xl md:text-4xl sm:text-xl font-extrabold text-black leading-tight mb-8">{blog.title}</h1>
           <p className="text-lg text-gray-800 mb-6">{blog.description}</p>
           <p className="text-gray-600 text-base italic mb-8">
             Written By: <span className="text-[#17A4A5] font-bold">{blog.author}</span>
@@ -160,26 +156,24 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
         </div>
 
         {/* Image Section */}
-        
-        <div className="w-full">
+
+        <div className="w-full max-w-[90%] mx-auto mt-8 mb-16">
           <Image
-            src={blog.Image}  
-            alt={blog.title}  
-            className="w-full max-w-7xl mx-auto h-auto md:h-[75vh] object-cover rounded-lg shadow-lg"
-            layout="responsive"  
-            width={700}  
-            height={500} 
+            src={blog.Image || "/placeholder.svg"}
+            alt={blog.title}
+            className="w-full h-auto object-cover rounded-lg shadow-lg"
+            width={1920}
+            height={1080}
+            layout="responsive"
+            priority
           />
         </div>
       </div>
 
-      <div className="max-w-[85%] mx-auto mt-16 flex flex-col lg:flex-row gap-8">
+      <div className="max-w-[100%] px-4 lg:max-w-[90%] mx-auto mt-16 flex flex-col lg:flex-row gap-8">
         {/* Main Content */}
         <div className="lg:flex-1 mb-16">
-          <div
-            className="prose text-black max-w-none"
-            dangerouslySetInnerHTML={{ __html: blog.content }}
-          />
+          <div className="prose text-black max-w-none" dangerouslySetInnerHTML={{ __html: blog.content }} />
         </div>
 
         {/* Sidebar */}
@@ -212,21 +206,16 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
             </h2>
             <div className="mt-4 space-y-4">
               {mostReadBlogs.map((mostReadBlog) => (
-                <div
-                  key={mostReadBlog._id}
-                  className="flex items-start space-x-4 bg-gray-700 p-4 rounded-lg shadow"
-                >
+                <div key={mostReadBlog._id} className="flex items-start space-x-4 bg-gray-700 p-4 rounded-lg shadow">
                   <Image
-                    src={mostReadBlog.Image}
+                    src={mostReadBlog.Image || "/placeholder.svg"}
                     alt={mostReadBlog.title}
                     width={64}
                     height={64}
                     className="object-cover rounded"
                   />
                   <div>
-                    <h3 className="text-sm font-semibold text-gray-200">
-                      {mostReadBlog.title}
-                    </h3>
+                    <h3 className="text-sm font-semibold text-gray-200">{mostReadBlog.title}</h3>
                   </div>
                 </div>
               ))}
@@ -235,17 +224,12 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
 
           {/* Latest Blogs */}
           <div>
-            <h2 className="text-xl font-bold text-gray-800 border-b-4 border-[#17A4A5] pb-2">
-              Latest Blogs
-            </h2>
+            <h2 className="text-xl font-bold text-gray-800 border-b-4 border-[#17A4A5] pb-2">Latest Blogs</h2>
             <div className="mt-4 mb-8 space-y-4">
               {latestBlogs.map((latestBlog) => (
-                <div
-                  key={latestBlog._id}
-                  className="flex items-start  space-x-4 bg-gray-700 p-4 rounded-lg shadow"
-                >
+                <div key={latestBlog._id} className="flex items-start  space-x-4 bg-gray-700 p-4 rounded-lg shadow">
                   <Image
-                    src={latestBlog.Image}
+                    src={latestBlog.Image || "/placeholder.svg"}
                     alt={latestBlog.title}
                     width={64}
                     height={64}
@@ -258,70 +242,70 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
               ))}
             </div>
             <div className="mt-8 mb-16">
-  <h2 className="text-lg font-bold text-gray-800 mb-4">Share This Blog</h2>
-  <div className="flex space-x-4">
-    {/* Facebook */}
-    <a
-      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
-      title="Share on Facebook"
-    >
-      <FaFacebookF className="w-6 h-6" />
-    </a>
+              <h2 className="text-lg font-bold text-gray-800 mb-4">Share This Blog</h2>
+              <div className="flex space-x-4">
+                {/* Facebook */}
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
+                  title="Share on Facebook"
+                >
+                  <FaFacebookF className="w-6 h-6" />
+                </a>
 
-    {/* Instagram */}
-    <a
-      href={`https://www.instagram.com/?url=${encodeURIComponent(window.location.href)}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white rounded-full hover:opacity-80 transition"
-      title="Share on Instagram"
-    >
-      <FaInstagram className="w-6 h-6" />
-    </a>
+                {/* Instagram */}
+                <a
+                  href={`https://www.instagram.com/?url=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-white rounded-full hover:opacity-80 transition"
+                  title="Share on Instagram"
+                >
+                  <FaInstagram className="w-6 h-6" />
+                </a>
 
-    {/* WhatsApp */}
-    <a
-      href={`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-full hover:bg-green-600 transition"
-      title="Share on WhatsApp"
-    >
-      <FaWhatsapp className="w-6 h-6" />
-    </a>
+                {/* WhatsApp */}
+                <a
+                  href={`https://api.whatsapp.com/send?text=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-green-500 text-white rounded-full hover:bg-green-600 transition"
+                  title="Share on WhatsApp"
+                >
+                  <FaWhatsapp className="w-6 h-6" />
+                </a>
 
-    {/* LinkedIn */}
-    <a
-      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
-      title="Share on LinkedIn"
-    >
-      <FaLinkedinIn className="w-6 h-6" />
-    </a>
+                {/* LinkedIn */}
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition"
+                  title="Share on LinkedIn"
+                >
+                  <FaLinkedinIn className="w-6 h-6" />
+                </a>
 
-    {/* Gmail */}
-    <a
-      href={`mailto:?subject=${encodeURIComponent(blog.title)}&body=${encodeURIComponent(`Check out this blog: ${window.location.href}`)}`}
-      className="mb-8 flex items-center justify-center w-10 h-10 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
-      title="Share via Email"
-    >
-      <FaEnvelope className="w-6 h-6"/>
-    </a>
-  </div>
-</div>
+                {/* Gmail */}
+                <a
+                  href={`mailto:?subject=${encodeURIComponent(blog.title)}&body=${encodeURIComponent(`Check out this blog: ${window.location.href}`)}`}
+                  className="mb-8 flex items-center justify-center w-10 h-10 bg-red-500 text-white rounded-full hover:bg-red-600 transition"
+                  title="Share via Email"
+                >
+                  <FaEnvelope className="w-6 h-6" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-         {/* Share Section */}
-
+      {/* Share Section */}
     </div>
-  );
-};
+  )
+}
 
-export default BlogDetailPage;
+export default BlogDetailPage
+

@@ -21,18 +21,19 @@ export const navLinks = [
     },
     {
         id: 5,
-        url: "/jobs",
-        label: "Jobs"
-    },
-    {
-        id: 6,
         url: "/#review",
         label: "Reviews"
     },
     {
-        id: 7,
+        id: 6,
         url: "/blog",
         label: "Blog"
+    },
+    {
+        id: 7,
+        
+        url: "/jobs",
+        label: "Jobs"
     },
     {
         id: 8,

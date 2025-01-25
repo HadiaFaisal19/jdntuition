@@ -5,7 +5,7 @@ export const coursesData = [
       title: "Primary School",
       button: "k-6Subjects",
       //subjects: "6",
-      category: "Year K-6",
+      category: "Years K-6",
     },
     {
       id: 2,
@@ -14,7 +14,7 @@ export const coursesData = [
       
       button: "7-10Subjects",
       //subjects: "7",
-      category: "Year 7-12",
+      category: "Years 7-12",
     },
     {
       id: 3,
@@ -22,8 +22,8 @@ export const coursesData = [
       title: "HSC Preparation",
       
       button: "11-12Subjects",
-      //subjects: "16",
-      category: "Year 11-12",
+      subjects: "16",
+      category: "Years 11-12",
     },
     {
       id: 4,
@@ -38,7 +38,7 @@ export const coursesData = [
       id: 1,
       name: "Hani Lum",
       image: "/images/hanilum1.jpg",
-      title: "Maths, Economics Teacher",
+      title: "Head of Resource Development",
       about: "As a tutor and also a mentor, my aim is always to help my students feel confident in their ability to tackle any given task. Whether they’re approaching their HSC, or just getting started with tutoring, my goal is to create a supportive environment where they can ask me anything. In a way, it’s a friendship, a collaborative effort supported by the strong ",
     },
     {

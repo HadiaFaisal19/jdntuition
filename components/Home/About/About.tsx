@@ -45,7 +45,7 @@ const About = () => {
             </h1>
             <div className="-mt-10">
               <h1 className="text-xl md-text-2xl text-opacity-70 mb-3 text-black font-bold">
-                Unparallel Expertise
+                Unparalleled Expertise
               </h1>
               <p className="w-[90%] lg-w-[70%] text-base text-black text-opacity-60">
                 At JDN Tuition, we pride ourselves on having Australia&rsquo;s best tutors. Our team consists of highly qualified professionals who excel in their respective subjects. With years of experience and a passion for teaching, our tutors are dedicated to helping students achieve their academic goals. Whether they&rsquo;re preparing for exams or need assistance with coursework, trust JDN Tuition for unparalleled expertise and guidance.

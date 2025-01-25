@@ -29,34 +29,33 @@ const Nav = ({ openNav }: Props) => {
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  // Define routes with white outline
   const routesWithOutline = ["/contactUs", "/reviews", "/jobs"];
   const isCategoriesPage =
     pathname.startsWith("/categories/") && pathname.split("/").length === 3;
 
-  const isCategoriesBlogPage = pathname.startsWith("/categories/") && pathname.split("/").length === 4; // To match the BlogId path
+  const isCategoriesBlogPage = pathname.startsWith("/categories/") && pathname.split("/").length === 4;
 
   const isWhiteOutline = routesWithOutline.includes(pathname) || isCategoriesPage;
-
-  // Check if the current page is the blog page
   const isBlogPage = pathname.startsWith("/categories/") && pathname.split("/").length === 4;
 
   return (
     <div
       className={`fixed ${
         navBg
-          ? "bg-white border-b-2 border-[#17A4A5]"
-          : "bg-transparent border-b-2 border-[#17A4A520]"
-      } w-full transition-all duration-700 h-[12vh] z-[1000]`}
+          ? "bg-white border-b border-[#17A4A5]"
+          : "bg-transparent border-b border-[#17A4A520]"
+      } w-full transition-all duration-700 h-[10vh] z-[1000]`}
     >
       <div className="flex items-center h-full justify-between w-[90%] xl:w-[80%] mx-auto">
-        <Image
-          src={isBlogPage ? "/images/LOGO.png" : navBg ? "/images/LOGO.png" : "/images/LOGOW.png"}
-          alt="logo"
-          width={120}
-          height={120}
-          className="transition-all duration-500"
-        />
+        <Link href="/">
+          <Image
+            src={isBlogPage ? "/images/LOGO.png" : navBg ? "/images/LOGO.png" : "/images/LOGOW.png"}
+            alt="logo"
+            width={120}
+            height={120}
+            className="transition-all duration-500 cursor-pointer"
+          />
+        </Link>
 
         <div className="hidden lg:flex items-center space-x-10">
           {navLinks.map((link) => (
