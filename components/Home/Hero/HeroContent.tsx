@@ -28,7 +28,8 @@ const HeroContent = () => {
           data-aos-delay="300"
           className="button__cls text-[#17A4A5] bg-white hover:bg-gray-200"
         >
-          Why Choose Us
+          
+          <Link href="/#why-choose-us">Why Choose Us</Link>
         </button>
         
       </div>
