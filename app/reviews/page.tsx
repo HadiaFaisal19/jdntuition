@@ -57,14 +57,14 @@ const Reviews = () => {
     <div className="pt-[9rem] py-16 px-4 bg-[#17A4A5]">
       {/* Header Section */}
       <div className="max-w-6xl mx-auto text-center mb-10">
-        <h1 className="text-4xl font-bold text-gray-800">Australia’s Highest Rated Tutoring Platform
+        <h1 className="text-4xl font-bold text-white">Australia’s Highest Rated Tutoring Platform
         </h1>
-        <h1 className="text-4xl font-bold text-gray-800">
+        <h1 className="text-4xl font-bold text-white">
         Thousands of Hours Tutored, Countless Futures Brightened</h1>
         <h4 className="mt-2 text-lg font-semibold text-gray-600">
         
         </h4>
-        <div className="mt-4 text-yellow-500 flex items-center justify-center space-x-2">
+        <div className="mt-4 text-yellow-400 flex items-center justify-center space-x-2">
           <span className="text-2xl font-semibold">5.0 rated</span>
           <span className="text-lg text-white">Platform</span>
         </div>

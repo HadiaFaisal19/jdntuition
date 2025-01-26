@@ -7,6 +7,7 @@ import axios from "axios"
 import { MdKeyboardArrowRight } from "react-icons/md"
 import { FaFacebookF, FaInstagram, FaWhatsapp, FaLinkedinIn, FaEnvelope } from "react-icons/fa"
 import Image from "next/image"
+import Link from "next/link"
 
 type Params = { category: string; BlogId: string }
 
@@ -200,47 +201,54 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
           </div>
 
           {/* Blogs You May Like */}
+
+<div>
+  <h2 className="text-xl font-bold text-white bg-gradient-to-r from-gray-700 to-[#17A4A5] px-4 py-2 rounded">
+    Blogs You May Like
+  </h2>
+  <div className="mt-4 space-y-4">
+    {mostReadBlogs.map((mostReadBlog) => (
+      <Link key={mostReadBlog._id} href={`/categories/${mostReadBlog.category}/${mostReadBlog._id}`} passHref>
+        <div className="flex mb-2  items-start space-x-4 bg-gray-700 p-4 rounded-lg shadow cursor-pointer hover:bg-gray-600 transition-all duration-200">
+          <Image
+            src={mostReadBlog.Image || "/placeholder.svg"}
+            alt={mostReadBlog.title}
+            width={64}
+            height={64}
+            className="object-cover rounded"
+          />
           <div>
-            <h2 className="text-xl font-bold text-white bg-gradient-to-r from-gray-700 to-[#17A4A5] px-4 py-2 rounded">
-              Blogs You May Like
-            </h2>
-            <div className="mt-4 space-y-4">
-              {mostReadBlogs.map((mostReadBlog) => (
-                <div key={mostReadBlog._id} className="flex items-start space-x-4 bg-gray-700 p-4 rounded-lg shadow">
-                  <Image
-                    src={mostReadBlog.Image || "/placeholder.svg"}
-                    alt={mostReadBlog.title}
-                    width={64}
-                    height={64}
-                    className="object-cover rounded"
-                  />
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-200">{mostReadBlog.title}</h3>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <h3 className="text-sm font-semibold text-gray-200">{mostReadBlog.title}</h3>
           </div>
+        </div>
+      </Link>
+    ))}
+  </div>
+</div>
+
 
           {/* Latest Blogs */}
           <div>
-            <h2 className="text-xl font-bold text-gray-800 border-b-4 border-[#17A4A5] pb-2">Latest Blogs</h2>
-            <div className="mt-4 mb-8 space-y-4">
-              {latestBlogs.map((latestBlog) => (
-                <div key={latestBlog._id} className="flex items-start  space-x-4 bg-gray-700 p-4 rounded-lg shadow">
-                  <Image
-                    src={latestBlog.Image || "/placeholder.svg"}
-                    alt={latestBlog.title}
-                    width={64}
-                    height={64}
-                    className="object-cover rounded"
-                  />
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-200">{latestBlog.title}</h3>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <h2 className="text-xl font-bold text-gray-800 border-b-4 border-[#17A4A5] pb-2">Latest Blogs</h2>
+            
+          <div className="mt-4 mb-8 space-y-4">
+  {latestBlogs.map((latestBlog) => (
+    <Link key={latestBlog._id} href={`/categories/${latestBlog.category}/${latestBlog._id}`} passHref>
+      <div className="flex items-start space-x-4 mb-2 bg-gray-700 p-4 rounded-lg shadow cursor-pointer hover:bg-gray-600 transition-all duration-200">
+        <Image
+          src={latestBlog.Image || "/placeholder.svg"}
+          alt={latestBlog.title}
+          width={64}
+          height={64}
+          className="object-cover rounded"
+        />
+        <div>
+          <h3 className="text-sm font-semibold text-gray-200">{latestBlog.title}</h3>
+        </div>
+      </div>
+    </Link>
+  ))}
+</div>
             <div className="mt-8 mb-16">
               <h2 className="text-lg font-bold text-gray-800 mb-4">Share This Blog</h2>
               <div className="flex space-x-4">
