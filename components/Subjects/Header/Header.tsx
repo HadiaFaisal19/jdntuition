@@ -25,8 +25,8 @@ const Header: React.FC<HeaderProps> = ({ backgroundImage, tagline, heading }) =>
       {/* Content */}
       <div className="text-center lg:px-6 md:px-12 sm:px-6 z-10">
         <div className="flex justify-center items-center mb-2">
-          <p className="text-white text-sm md:text-base italic ml-1">{tagline}</p>
-        </div>
+          {/* <p className="text-white text-sm md:text-base italic ml-1">{tagline}</p>*/}
+        </div> 
         {/* Heading */}
         <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl font-bold text-white mb-4 md:mb-6">
           {heading}

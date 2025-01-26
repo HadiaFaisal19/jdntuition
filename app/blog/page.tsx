@@ -7,7 +7,7 @@ import MostRecentArticles from "@/components/Blog/MostRecentArticles/MostRecentA
 
 const Blog = () => {
   return (
-    <div>
+    <div >
       {/* header */}
       <BlogSection selectedCategory="all"/>
       <BlogCarousel/>
