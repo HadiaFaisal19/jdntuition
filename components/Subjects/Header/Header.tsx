@@ -2,9 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 interface HeaderProps {
-  backgroundImage: string; // backgroundImage is a string (URL for the image)
-  //tagline: string;         // tagline is a string
-  heading: string;         // heading is a string
+  backgroundImage: string;
+  heading: string;         
 }
 
 const Header: React.FC<HeaderProps> = ({ backgroundImage, heading }) => {
