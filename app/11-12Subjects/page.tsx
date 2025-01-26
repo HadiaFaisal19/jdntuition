@@ -14,7 +14,6 @@ const SubjectsOffered = () => {
       {/* First Section */}
       <Header
       backgroundImage="/images/11-12.png"
-      tagline="Journey Development Network: Building the Pillars of Success"
       heading="Years 11–12 (HSC) Tutoring: Your Path to Success "
     />
       {/* section 2 */}

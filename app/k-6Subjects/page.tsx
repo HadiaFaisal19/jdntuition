@@ -13,7 +13,6 @@ const SubjectsOffered = () => {
       {/* First Section */}
       <Header
       backgroundImage="/images/k-6.png"
-      tagline="Journey Development Network: Building the Pillars of Success"
       heading="K–6 Tutoring: Building Strong Foundations"
     />
       {/* section 2 */}
