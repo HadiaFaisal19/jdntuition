@@ -138,6 +138,13 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
     )
   }
 
+  const formatCategory = (category: string): string => {
+    return category
+      .split("-") // Split by hyphen
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+      .join(" "); // Join words with spaces
+  };
+
   return (
     <div className="min-h-screen bg-white text-black">
       <div className="max-w-[100%] mx-auto px-4">
@@ -145,14 +152,14 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
         <div className="text-center ">
           <div className="flex items-center justify-center space-x-4  ">
             <span className="mt-36 mb-4 p-2 bg-[#17A4A5]/90 text-sm font-medium text-gray-100 uppercase rounded">
-              {blog.category}
+              {formatCategory(blog.category)}
             </span>
             <span className="mt-36 mb-4 text-sm font-semibold text-gray-700">{new Date(blog.date).toDateString()}</span>
           </div>
           <h1 className="lg:text-5xl xl:text-5xl md:text-4xl sm:text-xl font-extrabold text-black leading-tight mb-8">{blog.title}</h1>
           <p className="text-lg text-gray-800 mb-6">{blog.description}</p>
           <p className="text-gray-600 text-base italic mb-8">
-            Written By: <span className="text-[#17A4A5] font-bold">{blog.author}</span>
+            Written By: <span className="text-[#17A4A5] font-bold">JDN Tuition Team{blog.author}</span>
           </p>
         </div>
 

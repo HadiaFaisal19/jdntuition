@@ -69,7 +69,13 @@ const CategoryPageClient = ({ category }: Props) => {
     );
   };
 
-  if (loading) return <p className="text-center text-white">Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-20 h-20 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    );
+  
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
