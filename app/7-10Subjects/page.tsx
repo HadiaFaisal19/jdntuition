@@ -13,7 +13,7 @@ const SubjectsOffered = () => {
       {/* First Section */}
       <Header
       backgroundImage="/images/7-10.png"
-      tagline="Journey Development Network: Building the Pillars of Success"
+      //tagline="Journey Development Network: Building the Pillars of Success"
       heading="Years 7–10 Tutoring: Thriving Through Transition"
     />
       {/* section 2 */}

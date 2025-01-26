@@ -39,9 +39,11 @@ const LoginPage = () => {
       } else {
         setError(data.error || "Invalid credentials. Please try again.");
       }
-    } catch (err) {
-      setError("Failed to log in. Please try again.");
-    } finally {
+    } 
+    // catch (err) {
+    //   setError("Failed to log in. Please try again.");
+    //}
+     finally {
       setLoading(false);
     }
   };
