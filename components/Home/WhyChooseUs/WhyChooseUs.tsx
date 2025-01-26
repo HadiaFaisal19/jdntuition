@@ -66,8 +66,8 @@ const ReasonsToChooseUs = () => {
   return (
     <section className="relative py-16" style={{ backgroundImage: "url('/images/beyond11-12.png')", backgroundAttachment: 'fixed', backgroundSize: 'cover', backgroundPosition: 'center' }}>
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-white">Why Choose Us</h2>
+        <div className="mt-4 text-center mb-10">
+          <h2 className="mt-4 text-4xl font-bold text-white">Why Choose Us</h2>
           <p className="text-gray-200 mt-2">
             Discover The Benefits Of Choosing Us For Your Tutoring Needs.
           </p>

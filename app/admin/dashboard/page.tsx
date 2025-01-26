@@ -57,7 +57,7 @@ const AdminDashboard = () => {
               onClick={() => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("isAdmin");
-                router.push("admin/login"); 
+                router.push("/"); 
               }}
             >
               Logout

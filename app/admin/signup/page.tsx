@@ -11,6 +11,9 @@ const SignupForm = () => {
   const [showModal, setShowModal] = useState(false); // Modal visibility state
   const router = useRouter(); // Initialize the router
 
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://www.jdntuition.com.au";
+
+
   const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -23,7 +26,7 @@ const SignupForm = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000/api/users/signup", {
+      const response = await fetch(`${API_URL}/http://localhost:3000/api/users/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
