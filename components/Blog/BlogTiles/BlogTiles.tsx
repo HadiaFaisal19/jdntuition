@@ -53,14 +53,14 @@ const BlogSection: React.FC<BlogSectionProps> = ({ selectedCategory }) => {
 
   // Define tiles data
   const tiles = [
-    { src: "/images/2.png", title: "Academic Success" },
-    { src: "/images/online.jpg", title: "Exam Preparation" },
-    { src: "/images/college.jpg", title: "Student Wellbeing" },
+    { src: "/images/academic.jpg", title: "Academic Success" },
+    { src: "/images/2.png", title: "Exam Preparation" },
+    { src: "/images/wellbeing.jpg", title: "Student Wellbeing" },
     { src: "/images/maths.jpg", title: "LATEST POSTS" },
     { src: "/images/blog.png", title: "BLOG" },
-    { src: "/images/yess.jpg", title: "TOP READS" },
-    { src: "/images/kg.jpg", title: "Parent Support" },
-    { src: "/images/maths.jpg", title: "Success Stories" },
+    { src: "/images/topreads.jpg", title: "TOP READS" },
+    { src: "/images/english.jpg", title: "Parent Support" },
+    { src: "/images/yess.jpg", title: "Success Stories" },
     { src: "/images/seniors.png", title: "Learning Resources" },
   ];
 

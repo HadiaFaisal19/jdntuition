@@ -31,7 +31,7 @@ const Home = () => {
       <div id="about">
         <About />
       </div>
-      <div id="courses">
+      <div id="subjects">
         <Courses />
       </div>
       <div id="our-process">
@@ -40,7 +40,7 @@ const Home = () => {
       <div id="pricing">
         <Pricing />
       </div>
-      <div id="review">
+      <div id="reviews">
         <Review />
       </div>
       <div id="why-choose-us">

@@ -1,19 +1,14 @@
 "use client"
-import Image from 'next/image';
-import React from 'react'
+import Image from "next/image"
+import React from "react"
 
 const HeroImage = () => {
   return (
-    <>
-      <div 
-      data-aos="fade-left"
-      data-aos-delay="1000"
-      className='hidden lg:block bottom-0'>
-        <Image src="/images/hero-1.png" width={800} height={600} alt='Hero'/>
-      </div>
-      
-    </>
+    <div data-aos="fade-up" data-aos-delay="1000" className="w-full h-full">
+      <Image src="/images/hero-1.png" width={700} height={500} alt="Hero" className="object-contain" />
+    </div>
   )
 }
 
 export default HeroImage
+

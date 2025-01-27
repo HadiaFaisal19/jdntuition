@@ -13,12 +13,11 @@ const SubjectsOffered = () => {
       {/* First Section */}
       <Header
       backgroundImage="/images/7-10.png"
-      //tagline="Journey Development Network: Building the Pillars of Success"
       heading="Years 7–10 Tutoring: Thriving Through Transition"
     />
       {/* section 2 */}
       <WhyK6
-       contentImage="/images/2.png"
+       contentImage="/images/middleSch.jpg"
        heading="The Middle School Leap"
        description="As students enter their teen years, academic challenges evolve. JDN Tuition bridges the gap between foundational knowledge and the advanced concepts required for senior school success, whilst helping our students to develop essential study habits."
      />
