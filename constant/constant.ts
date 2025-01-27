@@ -11,7 +11,7 @@ export const navLinks = [
     },
     {
         id: 3,
-        url: "/#courses",
+        url: "/#subjects",
         label: "Subjects"
     },
     {
@@ -21,7 +21,7 @@ export const navLinks = [
     },
     {
         id: 5,
-        url: "/#review",
+        url: "/#reviews",
         label: "Reviews"
     },
     {

@@ -49,7 +49,7 @@ const Nav = ({ openNav }: Props) => {
       <div className="flex items-center h-full justify-between w-[90%] xl:w-[80%] mx-auto">
         <Link href="/">
           <Image
-            src={isBlogPage ? "/images/LOGO.png" : navBg ? "/images/LOGO.png" : "/images/LOGOW.png"}
+            src={isBlogPage ? "/images/LOGOC.png" : navBg ? "/images/LOGOC.png" : "/images/LOGOW.png"}
             alt="logo"
             width={120}
             height={120}

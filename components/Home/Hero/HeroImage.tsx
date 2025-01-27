@@ -8,7 +8,7 @@ const HeroImage = () => {
       <div 
       data-aos="fade-left"
       data-aos-delay="1000"
-      className='hidden lg:block'>
+      className='hidden lg:block bottom-0'>
         <Image src="/images/hero-1.png" width={800} height={600} alt='Hero'/>
       </div>
       

@@ -8,7 +8,9 @@ const Hero = () => {
       <div className='flex justify-center flex-col w-4/5 h-full mx-auto'>
         <div className='grid grid-cols-1 lg:grid-cols-2 items-center gap-12'>
           <HeroContent />
+          <div className='self-end'>
           <HeroImage />
+        </div>
         </div>
       </div>
       HERO
