@@ -28,7 +28,9 @@ const Footer = () => {
       {/* Main Footer */}
       <div className="mt-6 w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
         <div>
-          <Image src={"/images/LOGO.png"} alt="logo" height={100} width={100} />
+        <Link href="/" className="flex-shrink-0">
+          <Image src={"/images/LOGOC.png"} alt="logo" height={100} width={100} />
+          </Link>
           <p className="text-black text-opacity-50">
             Journey Development Network: Building the Pillars of Success
           </p>
@@ -39,18 +41,33 @@ const Footer = () => {
               alt="Twitter Logo"
               className="w-8 h-8"
             /> */}
-            <FaLinkedin className="w-6 h-6 text-blue-800" />
-            <FaInstagram className="w-6 h-6 text-pink-600" />
+             
+             <Link href="https://au.linkedin.com/company/jdn-tuition" className="flex-shrink-0">
+  <FaLinkedin className="w-6 h-6 text-blue-800" />
+</Link>
+<FaInstagram className="w-6 h-6 text-pink-600" />
           </div>
         </div>
         <div>
-          <h1 className="footer__heading">Popular Subjects</h1>
-          <p className="footer__link"> Maths</p>
-          <p className="footer__link"> English </p>
-          <p className="footer__link"> Science</p>
-          <p className="footer__link"> NAPLAN Preparation</p>
-          <p className="footer__link"> Commerce</p>
-          <p className="footer__link"> Geography</p>
+          
+        <h1 className="footer__link text-xl font-bold">
+        <Link href="/reviews">All Reviews</Link>
+        </h1>
+          <h1 className="footer__link text-xl font-bold">
+          <Link href="/blog/all-blogs">All Blogs</Link>
+          </h1>
+        <h1 className="footer__heading">Grades</h1>
+          <p className="footer__link"> 
+          <Link href="/k-6Subjects">Years K-6</Link> 
+          </p>
+          <p className="footer__link"> 
+          <Link href="/7-10Subjects">Years 7-10</Link> 
+
+          </p>
+          <p className="footer__link"> 
+          <Link href="/11-12Subjects">Years 11-12</Link> 
+
+          </p>
         </div>
         <div>
       <h1 className="footer__heading">Quick Links</h1>
@@ -59,6 +76,11 @@ const Footer = () => {
           <Link href={link.url}>{link.label}</Link>
         </p>
       ))}
+      
+      <p className="footer__link"> 
+      <Link href="/#why-choose-us">Why Choose Us</Link>
+      </p>
+
     </div>
         <div>
           <h1 className="footer__heading">Subscribe to our Newsletter</h1>

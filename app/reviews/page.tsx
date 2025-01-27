@@ -65,7 +65,7 @@ const Reviews = () => {
         
         </h4>
         <div className="mt-4 text-yellow-400 flex items-center justify-center space-x-2">
-          <span className="text-2xl font-semibold">5.0 rated</span>
+          <span className="text-2xl font-semibold">Leading 5⭐ rated</span>
           <span className="text-lg text-white">Platform</span>
         </div>
       </div>
