@@ -10,6 +10,7 @@ export async function GET() {
     const users = await User.find();
     return NextResponse.json({ users }, { status: 200 });
   } catch (error) {
+    console.error("Error fetching users:", error);
     return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 });
   }
 }
@@ -31,7 +32,9 @@ export async function DELETE(request: NextRequest) {
     }
 
     return NextResponse.json({ message: "User deleted successfully" }, { status: 200 });
-  } catch (error) {
+  } 
+  catch (error) {
+    console.error("Error fetching users:", error);
     return NextResponse.json({ error: "Failed to delete user" }, { status: 500 });
   }
 }
