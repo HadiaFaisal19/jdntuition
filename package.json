@@ -8,13 +8,13 @@
     "start": "next start",
     "lint": "next lint"
   },
-  
   "dependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "aos": "^3.0.0-beta.6",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
     "emailjs-com": "^3.2.0",
     "jdntuition": "file:",
     "jsonwebtoken": "^9.0.2",

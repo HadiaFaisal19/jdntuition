@@ -153,6 +153,29 @@ const Blogs = () => {
       setFilteredBlogs(blogs.filter((blog) => blog.isLatest))
     }
   }
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "blogImage"); 
+    formData.append("cloud_name", "dwzw3r5uc"); 
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dwzw3r5uc/image/upload",
+        formData
+      );
+      setBlogForm((prev) => ({
+        ...prev,
+        Image: response.data.secure_url,
+      }));
+      alert("Image uploaded successfully!");
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    }
+  };
 
   useEffect(() => {
     fetchBlogs()
@@ -212,15 +235,22 @@ const Blogs = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block font-medium">Image URL</label>
+            <label className="block font-medium">Image</label>
             <input
-              type="text"
-              name="Image"
-              value={blogForm.Image}
-              onChange={handleInputChange}
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
               className="w-full p-2 border rounded"
-              required
             />
+            {blogForm.Image && (
+              <Image
+                src={blogForm.Image}
+                alt="Preview"
+                width={100}
+                height={100}
+                className="mt-4 object-cover"
+              />
+            )}
           </div>
           <div className="mb-4">
             <label className="block font-medium">Category</label>
