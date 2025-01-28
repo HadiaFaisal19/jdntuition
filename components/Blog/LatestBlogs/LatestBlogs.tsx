@@ -71,14 +71,14 @@ export default function TopPostsSection() {
   }, []);
 
   return (
-    <section className="py-12 bg-gray-100">
+    <section className="pb-12 pt-4 bg-gray-100">
       <div className="container mx-auto px-4">
         {/* Centered Heading */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-8">
           <h2 className="text-4xl font-bold text-gray-800 mb-2">
             <span className="text-[#17A4A5]">Latest</span> Posts
           </h2>
-          <div className="mx-auto border-b-4 border-[#17A4A5] w-20"></div>
+          <div className="mx-auto border-b-4 border-[#17A4A5] w-20 "></div>
         </div>
 
         {/* Posts Grid */}

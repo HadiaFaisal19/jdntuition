@@ -76,7 +76,7 @@ const BlogCarousel = () => {
 
   if (isLoading) {
     return (
-      <section className="min-h-screen w-screen flex flex-col items-center justify-center bg-gray-100">
+      <section className="min-h-screen w-full flex flex-col items-center justify-center bg-gray-100 overflow-hidden">
         <div className="text-center my-6 mt-8">
           <h2 className="text-4xl font-bold text-gray-800 mb-4">
             <span className="text-[#17A4A5]">Loading</span> Featured Posts
@@ -99,80 +99,82 @@ const BlogCarousel = () => {
 
   return (
     <section
-      className="relative min-h-screen w-screen flex flex-col items-center justify-center bg-fixed bg-center bg-cover bg-no-repeat"
-      style={{
-        backgroundImage: "/images/blog.png",
-      }}
+  className="relative min-h-screen w-full flex flex-col items-center justify-center bg-fixed bg-center bg-cover bg-no-repeat overflow-hidden"
+  
+>
+  <div className="text-center my-6 mt-8 bg-opacity-70 rounded">
+    <h2 className="text-4xl font-bold text-gray-800 mb-4">
+      <span className="text-[#17A4A5]">Featured</span> Posts
+    </h2>
+    <div className="mx-auto border-b-4 border-[#17A4A5] w-32 mb-2"></div>
+  </div>
+
+  <div className="w-full z-10   p-6 rounded overflow-hidden"
+  style={{
+    backgroundImage:
+      "url('https://images.pexels.com/photos/29509451/pexels-photo-29509451/free-photo-of-2025-agenda-planner-with-pen-on-desk.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover", // Adjust to "contain" if needed
+    backgroundPosition: "center", // Ensures the image stays centered
+  }}>
+    <Carousel
+      responsive={responsive}
+      autoPlay={true}
+      autoPlaySpeed={3000}
+      infinite={true}
+      showDots={true}
+      containerClass="carousel-container h-full w-full"
+      itemClass="carousel-item flex items-center justify-center h-full w-full"
     >
-      <div className="text-center my-6 mt-8 bg-white bg-opacity-70 rounded">
-        <h2 className="text-4xl font-bold text-gray-800 mb-4">
-          <span className="text-[#17A4A5]">Featured</span> Posts
-        </h2>
-        <div className="mx-auto border-b-4 border-[#17A4A5] w-32 mb-2"></div>
-      </div>
-
-      <div className="w-screen z-10 bg-white bg-opacity-0 p-6 rounded ">
-        <Carousel
-          responsive={responsive}
-          autoPlay={true}
-          autoPlaySpeed={3000}
-          infinite={true}
-          showDots={true}
-          containerClass="carousel-container h-full w-full"
-          itemClass="carousel-item flex items-center justify-center h-full w-full"
+      {featuredBlogs.map((blog: Blog) => (
+        <div
+          key={blog._id}
+          className="flex flex-col md:flex-row items-center min-h-[80vh] w-full rounded-lg overflow-hidden"
         >
-          {featuredBlogs.map((blog: Blog) => (
-            <div
-              key={blog._id}
-              className="flex flex-col md:flex-row items-center min-h-[80vh] w-full rounded-lg overflow-hidden bg-fixed bg-center bg-cover bg-no-repeat"
-              style={{
-                backgroundImage: `url('https://images.pexels.com/photos/29509451/pexels-photo-29509451/free-photo-of-2025-agenda-planner-with-pen-on-desk.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')`,
-              }}
-            >
-              <div className="w-full md:w-1/2 relative min-h-[50vh] bg-white bg-opacity-70">
-                <Image
-                  src={blog.Image}
-                  alt={blog.title}
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-t-lg md:rounded-l-lg md:rounded-t-none"
-                />
-              </div>
+          <div className="w-full md:w-1/2 relative min-h-[50vh] bg-white bg-opacity-70">
+            <Image
+              src={blog.Image}
+              alt={blog.title}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-t-lg md:rounded-l-lg md:rounded-t-none"
+            />
+          </div>
 
-              <div className="w-full md:w-1/2 px-4 flex flex-col justify-center min-h-[50vh] bg-white bg-opacity-70">
-                <span className="inline bg-[#17A4A5] text-white text-sm font-semibold px-3 py-1 rounded mb-4 max-w-fit">
-                  {blog.category}
+          <div className="w-full md:w-1/2 px-4 flex flex-col justify-center min-h-[50vh] bg-white bg-opacity-70">
+            <span className="inline bg-[#17A4A5] text-white text-sm font-semibold px-3 py-1 rounded mb-4 max-w-fit">
+              {blog.category}
+            </span>
+
+            <h2 className="text-3xl font-bold text-gray-800 mb-4">{blog.title}</h2>
+            <p className="text-gray-700 text-lg leading-relaxed mb-4 bg-[#F9F9F9] p-2 rounded-lg shadow-sm border border-gray-200">
+              {blog.description}
+            </p>
+            <p className="flex items-center text-gray-500 text-sm mb-4">
+              <MdOutlineDateRange className="mr-2 text-lg text-[#17A4A5]" />
+              {new Date(blog.date).toLocaleDateString("en-US", {
+                day: "numeric",
+                month: "long",
+                year: "numeric",
+              })}
+            </p>
+
+            <Link href={`/categories/${blog.category}/${blog._id}`} passHref>
+              <button className="relative inline-block px-6 py-2 text-sm font-semibold text-white bg-[#17A4A5] rounded shadow-lg overflow-hidden group w-fit">
+                <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#145D5E] via-[#17A4A5] to-[#1BB6B7] transition-all duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></span>
+                <span className="absolute inset-0 w-full h-full bg-[#17A4A5] transition-all duration-300 ease-out group-hover:bg-opacity-0"></span>
+                <span className="relative group-hover:translate-x-2 transition-transform duration-300">
+                  Read More
                 </span>
+              </button>
+            </Link>
+          </div>
+        </div>
+      ))}
+    </Carousel>
+  </div>
+</section>
 
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">{blog.title}</h2>
-                <p className="text-gray-700 text-lg leading-relaxed mb-4 bg-[#F9F9F9] p-2 rounded-lg shadow-sm border border-gray-200">
-                  {blog.description}
-                </p>
-                <p className="flex items-center text-gray-500 text-sm mb-4">
-                  <MdOutlineDateRange className="mr-2 text-lg text-[#17A4A5]" />
-                  {new Date(blog.date).toLocaleDateString("en-US", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </p>
-
-                <Link href={`/categories/${blog.category}/${blog._id}`} passHref>
-                  <button className="relative inline-block px-6 py-2 text-sm font-semibold text-white bg-[#17A4A5] rounded shadow-lg overflow-hidden group w-fit">
-                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#145D5E] via-[#17A4A5] to-[#1BB6B7] transition-all duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></span>
-                    <span className="absolute inset-0 w-full h-full bg-[#17A4A5] transition-all duration-300 ease-out group-hover:bg-opacity-0"></span>
-                    <span className="relative group-hover:translate-x-2 transition-transform duration-300">
-                      Read More
-                    </span>
-                  </button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </Carousel>
-      </div>
-    </section>
   );
 };
-
 export default BlogCarousel;

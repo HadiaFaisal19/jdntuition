@@ -63,9 +63,20 @@ export default function WhyChooseUs() {
 
   return (
     <section
-      className="relative bg-gradient-to-r from-[#138F8F] via-[#17A4A5] to-[#19B5B5] text-white py-16"
+      className="relative bg-gradient-to-r from-[#138F8F] via-[#17A4A5] to-[#19B5B5] text-white py-16 overflow-hidden"
     >
-      <div className="container mx-auto flex flex-col md:flex-row items-center px-6 md:px-12 gap-8">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={currentBlog.Image}
+          alt="Background Image"
+          layout="fill"
+          objectFit="cover"
+          className="opacity-20"
+        />
+      </div>
+
+      <div className="container mx-auto flex flex-col md:flex-row items-center px-6 md:px-12 gap-8 relative z-10">
         {/* Left Section */}
         <div
           key={currentBlog._id}

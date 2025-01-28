@@ -90,7 +90,7 @@ export default function MostRecentArticles() {
               latestBlogs.map((post) => (
                 <div
                   key={post._id}
-                  className="relative w-full h-72 md:h-96 shadow-lg group transition-transform duration-300 ease-in-out"
+                  className="relative mt-4 w-full h-72 md:h-96 shadow-lg group transition-transform duration-300 ease-in-out"
                 >
                   <Link href={`/categories/${post.category}/${post._id}`} passHref>
                     <div className="absolute top-0 left-0 w-full h-full">
@@ -140,4 +140,3 @@ export default function MostRecentArticles() {
     </section>
   );
 }
-  
