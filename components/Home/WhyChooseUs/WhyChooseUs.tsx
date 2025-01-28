@@ -30,18 +30,19 @@ const ReasonsToChooseUs = () => {
       title: "No Lock-In Contracts",
       description: "Enjoy freedom with no long-term commitments.",
     },
+    
     {
       id: 4,
+      icon: <FaUserGraduate size={30} />,
+      title: "Personalised Learning",
+      description: "Pathways tailored to individual learning styles.",
+    },
+    {
+      id: 5,
       icon: <FaRegClock size={30} />,
       title: "Free Lesson Cancellations",
       description:
         "Lesson cancellations are completely free as long as you let us know at least 8 hours prior.",
-    },
-    {
-      id: 5,
-      icon: <FaUserGraduate size={30} />,
-      title: "Personalised Learning",
-      description: "Pathways tailored to individual learning styles.",
     },
     {
       id: 6,

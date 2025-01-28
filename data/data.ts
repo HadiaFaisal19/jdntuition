@@ -9,7 +9,7 @@ export const coursesData = [
     },
     {
       id: 2,
-      image: "/images/highSchool.jpg",
+      image: "/images/highSchool.png",
       title: "High School",
       
       button: "7-10Subjects",

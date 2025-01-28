@@ -6,10 +6,10 @@ import { BsQuote } from "react-icons/bs";
 
 const Review = () => {
   return (
-    <div className="pt-[13vh] pb-16 bg-gray-600">
+    <div className="pt-[13vh] pb-[13vh] pb-16 bg-gray-600">
       <div className="w-[80%] mx-auto grid grid-cols-1 xl:grid-cols-3 items-center gap-20">
         {/* Text Content */}
-        <div className="xl:col-span-1 mt-6">
+        <div className="xl:col-span-1 mt-6 ">
           {/* Subheading */}
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-[#17A4A5] rounded-full flex items-center justify-center flex-col">

@@ -9,14 +9,14 @@ const Feature = () => {
         data-aos="zoom-in"
       data-aos-anchor-placement="top-center"
         >
-            <Image src="/images/f.png" alt="image" width={1000} height={"1000"} />
+            <Image src="/images/hero.png" alt="image" width={1000} height={"1000"} />
         </div>
         <div>
         <div className='flex items-center space-x-4'>
             <div className='w-12 h-12 bg-white rounded-full flex items-center justify-center flex-col'>
                 <FaBriefcase className='h6 w-6 text-[#17A4A5]'/>
             </div>
-            <h1 className='text-xl text-black font-semibold'>Premium Tutoring Platform</h1>
+            <h1 className='text-xl text-gray-300 font-semibold'>Premium Tutoring Platform</h1>
         </div>
         <h1 className='text-2xl sm:text-3xl md:text-4xl lg:text-6xl mt-8 font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[3.9rem] text-white'>
             Apply Today and Help make the Difference
