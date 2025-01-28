@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import LayoutWrapper from "@/components/LayoutWrapper";
 
@@ -77,6 +78,7 @@ export default function RootLayout({
           ></iframe>
         </noscript>
         <LayoutWrapper>{children}</LayoutWrapper>
+        <Analytics /> 
       </body>
     </html>
   );
