@@ -50,12 +50,7 @@ const Footer = () => {
         </div>
         <div>
           
-        <h1 className="footer__link text-xl font-bold">
-        <Link href="/reviews">All Reviews</Link>
-        </h1>
-          <h1 className="footer__link text-xl font-bold">
-          <Link href="/blog/all-blogs">All Blogs</Link>
-          </h1>
+        
         <h1 className="footer__heading">Grades</h1>
           <p className="footer__link"> 
           <Link href="/k-6Subjects">Years K-6</Link> 
@@ -68,6 +63,12 @@ const Footer = () => {
           <Link href="/11-12Subjects">Years 11-12</Link> 
 
           </p>
+          <h1 className="footer__link text-xl font-bold">
+        <Link href="/reviews">All Reviews</Link>
+        </h1>
+          <h1 className="footer__link text-xl font-bold">
+          <Link href="/blog/all-blogs">All Blogs</Link>
+          </h1>
         </div>
         <div>
       <h1 className="footer__heading">Quick Links</h1>

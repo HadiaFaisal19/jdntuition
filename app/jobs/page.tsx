@@ -1,6 +1,7 @@
 import React from 'react'
 import Image from "next/image";
 import { FaBriefcase } from 'react-icons/fa';
+import Link from 'next/link';
 
 const Feature = () => {
   return <div className='pt-20 pb-20 bg-[#17A4A5]'>
@@ -42,7 +43,8 @@ const Feature = () => {
   <button
           className="button__cls mt-10 font-bold text-[#17A4A5] bg-white hover:bg-gray-200"
         >
-          Apply Now
+          
+          <Link href="/job-application">Apply Now</Link>
         </button>
 </div>
 </div>

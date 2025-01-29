@@ -208,10 +208,10 @@ export default function BookNow() {
 
     emailjs
       .send(
-        "service_xc34br8", // Replace with your EmailJS service ID
-        "template_ya9huar", // Replace with your EmailJS template ID
+        "service_6pj6ybr", // Replace with your EmailJS service ID
+        "template_hftsrbq", // Replace with your EmailJS template ID
         emailContent,
-        "4L19u9FwDl0mVJcZz", // Replace with your EmailJS user ID
+        "hPrPmxgEOiACbO7h2", // Replace with your EmailJS user ID
       )
 
       .then(
