@@ -44,7 +44,7 @@ const Feature = () => {
           className="button__cls mt-10 font-bold text-[#17A4A5] bg-white hover:bg-gray-200"
         >
           
-          <Link href="/job-application">Apply Now</Link>
+          <Link href="/jobs/job-application">Apply Now</Link>
         </button>
 </div>
 </div>

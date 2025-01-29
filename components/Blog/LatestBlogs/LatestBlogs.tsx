@@ -49,21 +49,26 @@ export default function TopPostsSection() {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); // Join words with spaces
   };
-
+  
   // Fetch latest blogs
   useEffect(() => {
     const fetchLatestBlogs = async () => {
       try {
-        setIsLoading(true); // Start loading
-        const response = await axios.get("/api/blog"); // Replace with your API endpoint
+        setIsLoading(true);
+        const response = await axios.get("/api/blog");
         const blogs: BlogPost[] = response.data.blogs;
-        // Filter blogs that have isLatest set to true
-        const filteredBlogs = blogs.filter((blog) => blog.isLatest);
-        setLatestBlogs(filteredBlogs);
-        setIsLoading(false); // End loading
+        
+        // Sort blogs by date (newest first) and take first 6
+        const sortedBlogs = blogs.sort((a, b) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        const recentBlogs = sortedBlogs.slice(0, 6);
+        
+        setLatestBlogs(recentBlogs);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching latest blogs:", error);
-        setIsLoading(false); // End loading even on error
+        setIsLoading(false);
       }
     };
 
