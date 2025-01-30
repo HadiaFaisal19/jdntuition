@@ -3,7 +3,6 @@ import Image from "next/image"
 import type React from "react"
 import { useState } from "react"
 import { FaBook, FaHandshake, FaRocket, FaComments } from "react-icons/fa"
-import emailjs from "emailjs-com"
 
 export default function BookNow() {
   const [isFormVisible, setIsFormVisible] = useState(false)

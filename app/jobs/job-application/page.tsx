@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 
 export default function JobApplication() {
   return (
@@ -8,10 +10,12 @@ export default function JobApplication() {
       <div className="hidden md:flex w-1/2 bg-[#17A4A5] p-12 flex-col items-center justify-center text-white relative">
         <div className="max-w-md">
           <div className="mb-8">
-            <img
-              src="/images/appform.png"
-              alt="Hiring Illustration"
-              className="w-92 h-92 mx-auto"
+            <Image
+                src="/images/appform.png"
+                alt="Hiring Illustration"
+                width={368} // Adjust width as needed (92 * 4 = 368px)
+                height={368} // Adjust height as needed (92 * 4 = 368px)
+                className="mx-auto"
             />
           </div>
           <h1 className="text-4xl font-bold mb-4 text-center">We are Hiring At JDN Tuition</h1>
