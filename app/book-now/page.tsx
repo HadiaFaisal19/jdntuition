@@ -178,87 +178,61 @@ export default function BookNow() {
     })
   }
 
-  const handleSubmit = () => {
-    // Perform submission logic (e.g., save data, API call)
-    console.log("Form submitted successfully!", formData)
 
-    // Prepare the email content using the formData
-    const emailContent = {
-      userType: formData.userType,
-      grade: formData.grade,
-      selectedSubjects: formData.selectedSubjects.join(", "),
-      firstName: formData.studentInfo.firstName,
-      lastName: formData.studentInfo.lastName,
-      reason: formData.studentInfo.reason,
-      performance: formData.studentInfo.performance,
-      learningNeeds: formData.studentInfo.learningNeeds,
-      lessonType: formData.lessonDetails.type,
-      lessonDuration: formData.lessonDetails.duration,
-      lessonFrequency: formData.lessonDetails.frequency,
-      availability: JSON.stringify(formData.lessonDetails.availability),
-      parentFirstName: formData.parentDetails.fname,
-      parentLastName: formData.parentDetails.lname,
-      parentEmail: formData.parentDetails.email,
-      parentPhone: formData.parentDetails.phone,
-      parentSuburb: formData.parentDetails.suburb,
-      parentAddDetails: formData.parentDetails.addDetails,
-    }
-
-    // Send the form data via EmailJS
-
-    emailjs
-      .send(
-        "service_6pj6ybr", // Replace with your EmailJS service ID
-        "template_hftsrbq", // Replace with your EmailJS template ID
-        emailContent,
-        "hPrPmxgEOiACbO7h2", // Replace with your EmailJS user ID
-      )
-
-      .then(
-        (response) => {
-          console.log("Email sent successfully!", response)
-          setFormData({
-            userType: "",
-            grade: "",
-            selectedSubjects: [],
-            studentInfo: {
-              firstName: "",
-              lastName: "",
-              reason: "",
-              performance: "",
-              learningNeeds: "",
+  const handleSubmit = async () => {
+    try {
+        const response = await fetch('/api/sendEmail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            lessonDetails: {
-              type: "",
-              duration: "",
-              frequency: "",
-              availability: {
-                Monday: [],
-                Tuesday: [],
-                Wednesday: [],
-                Thursday: [],
-                Friday: [],
-                Saturday: [],
-                Sunday: [],
+            body: JSON.stringify({ formData }),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            console.log("Email sent successfully!", result);
+            setFormData({
+              userType: "",
+              grade: "",
+              selectedSubjects: [],
+              studentInfo: {
+                firstName: "",
+                lastName: "",
+                reason: "",
+                performance: "",
+                learningNeeds: "",
               },
-            },
-            parentDetails: {
-              fname: "",
-              lname: "",
-              email: "",
-              phone: "",
-              suburb: "",
-              addDetails: "",
-            },
-          })
-          // Set the step to 6 to display the thank-you message
-          setStep(6)
-        },
-        (error) => {
-          console.error("Error sending email:", error)
-        },
-      )
-  }
+              lessonDetails: {
+                type: "",
+                duration: "",
+                frequency: "",
+                availability: {
+                  Monday: [],
+                  Tuesday: [],
+                  Wednesday: [],
+                  Thursday: [],
+                  Friday: [],
+                  Saturday: [],
+                  Sunday: [],
+                },
+              },
+              parentDetails: {
+                fname: "",
+                lname: "",
+                email: "",
+                phone: "",
+                suburb: "",
+                addDetails: "",
+              },
+            })
+        } else {
+            console.error("Error sending email:", result.error);
+        }
+    } catch (error) {
+        console.error("Error during form submission:", error);
+    }
+};
 
   const handleClosePopup = () => {
     // Close the popup and reset the form visibility

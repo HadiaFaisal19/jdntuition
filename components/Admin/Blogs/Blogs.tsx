@@ -156,26 +156,41 @@ const Blogs = () => {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "blogImage"); 
-    formData.append("cloud_name", "dwzw3r5uc"); 
-
-    try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dwzw3r5uc/image/upload",
-        formData
-      );
-      setBlogForm((prev) => ({
-        ...prev,
-        Image: response.data.secure_url,
-      }));
-      alert("Image uploaded successfully!");
-    } catch (error) {
-      console.error("Error uploading image:", error);
+  
+    // Validate file type and size
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file');
+      return;
     }
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      alert('File size too large (max 5MB)');
+      return;
+    }
+  
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    
+    reader.onloadend = async () => {
+      try {
+        const base64String = reader.result?.toString() || '';
+        const response = await axios.post("/api/upload", { 
+          file: base64String 
+        });
+  
+        if (response.data.url) {
+          setBlogForm((prev) => ({
+            ...prev,
+            Image: response.data.url,
+          }));
+          alert("Image uploaded successfully!");
+        }
+      } catch (error) {
+        console.error("Error uploading image:", error);
+        alert("Image upload failed. Please try again.");
+      }
+    };
   };
+  
 
   useEffect(() => {
     fetchBlogs()
@@ -268,19 +283,20 @@ const Blogs = () => {
             </select>
           </div>
           <div className="mb-4 flex gap-4">
-            {["isLatest", "isMostRead", "isFeatured"].map((field) => (
-              <label key={field} className="flex items-center">
-                <input
-                  type="checkbox"
-                  name={field}
-                  checked={Boolean(blogForm[field as keyof BlogForm])}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                {field.replace("is", "")}
-              </label>
-            ))}
-          </div>
+  {["isLatest", "isMostRead", "isFeatured"].map((field) => (
+    <label key={field} className="flex items-center">
+      <input
+        type="checkbox"
+        name={field}
+        checked={Boolean(blogForm[field as keyof BlogForm])}
+        onChange={handleInputChange}
+        className="mr-2"
+      />
+      {field === "isLatest" ? "You May Like" : field.replace("is", "")}
+    </label>
+  ))}
+</div>
+
           <div className="mb-4">
             <label className="block font-medium">Content</label>
             <ReactQuill value={blogForm.content} onChange={handleContentChange} className="h-64" />
