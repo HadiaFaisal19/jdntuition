@@ -180,58 +180,59 @@ export default function BookNow() {
 
   const handleSubmit = async () => {
     try {
-        const response = await fetch('/api/sendEmail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+      const response = await fetch('/api/sendEmail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ formData }),
+      });
+  
+      const result = await response.json();
+      if (response.ok) {
+        console.log("Email sent successfully!", result);
+        setFormData({
+          userType: "",
+          grade: "",
+          selectedSubjects: [],
+          studentInfo: {
+            firstName: "",
+            lastName: "",
+            reason: "",
+            performance: "",
+            learningNeeds: "",
+          },
+          lessonDetails: {
+            type: "",
+            duration: "",
+            frequency: "",
+            availability: {
+              Monday: [],
+              Tuesday: [],
+              Wednesday: [],
+              Thursday: [],
+              Friday: [],
+              Saturday: [],
+              Sunday: [],
             },
-            body: JSON.stringify({ formData }),
+          },
+          parentDetails: {
+            fname: "",
+            lname: "",
+            email: "",
+            phone: "",
+            suburb: "",
+            addDetails: "",
+          },
         });
-
-        const result = await response.json();
-        if (response.ok) {
-            console.log("Email sent successfully!", result);
-            setFormData({
-              userType: "",
-              grade: "",
-              selectedSubjects: [],
-              studentInfo: {
-                firstName: "",
-                lastName: "",
-                reason: "",
-                performance: "",
-                learningNeeds: "",
-              },
-              lessonDetails: {
-                type: "",
-                duration: "",
-                frequency: "",
-                availability: {
-                  Monday: [],
-                  Tuesday: [],
-                  Wednesday: [],
-                  Thursday: [],
-                  Friday: [],
-                  Saturday: [],
-                  Sunday: [],
-                },
-              },
-              parentDetails: {
-                fname: "",
-                lname: "",
-                email: "",
-                phone: "",
-                suburb: "",
-                addDetails: "",
-              },
-            })
-        } else {
-            console.error("Error sending email:", result.error);
-        }
+        setStep(6); 
+      } else {
+        console.error("Error sending email:", result.error);
+      }
     } catch (error) {
-        console.error("Error during form submission:", error);
+      console.error("Error during form submission:", error);
     }
-};
+  };
 
   const handleClosePopup = () => {
     // Close the popup and reset the form visibility

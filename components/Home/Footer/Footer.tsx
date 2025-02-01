@@ -1,13 +1,39 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { navLinks } from "@/constant/constant";
 import { FaFacebookF, FaInstagram, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const scriptUrl = form.action.replace("/post?", "/post-json?");
+    
+    // Add type assertion for TypeScript
+    (window as any).handleMailchimpCallback = (response: any) => {
+      if (response.result === "success") {
+        setIsSubscribed(true);
+        setEmail("");
+        setTimeout(() => setIsSubscribed(false), 5000);
+      }
+    };
+  
+    const emailValue = form.EMAIL.value;
+    const url = `${scriptUrl}&EMAIL=${encodeURIComponent(emailValue)}&c=handleMailchimpCallback`;
+    
+    // Create JSONP request
+    const script = document.createElement("script");
+    script.src = url;
+    document.body.appendChild(script);
+    document.body.removeChild(script);
+  };
   return (
     <div className=" relative pt-24 pb-12 bg-gray-200">
-      {/* Subscribe Now Section */}
+      {/* avail Now Section */}
       {/* <div className=" absolute -top-24 w-[50%] h-[40%] left-1/2 transform -translate-x-1/2 bg-[#17A4A5] rounded-lg shadow-lg py-12 px-8 flex flex-col sm:flex-row items-center justify-between text-white space-y-6 sm:space-y-0 sm:space-x-4">
         <div>
           <h2 className="text-2xl font-bold text-center sm:text-left">
@@ -49,8 +75,6 @@ const Footer = () => {
           </div>
         </div>
         <div>
-          
-        
         <h1 className="footer__heading">Grades</h1>
           <p className="footer__link"> 
           <Link href="/k-6Subjects">Years K-6</Link> 
@@ -83,17 +107,63 @@ const Footer = () => {
       </p>
 
     </div>
-        <div>
-          <h1 className="footer__heading">Subscribe to our Newsletter</h1>
-          <input
-            type="text"
-            placeholder="Enter your Email"
-            className="px-6 py-2 rounded-lg outline-none bg-gray-700 w-full text-white rounded-md"
-          />
-          <button className="mt-5 px-4 py-2 sm:px-6 sm:py-3 bg-yellow-500 text-white font-semibold w-full rounded-md transform transition-transform duration-300 hover:scale-105 hover:bg-yellow-600">
-            Subscribe
-          </button>
+    <div>
+        <h1 className="footer__heading">Subscribe to our Newsletter</h1>
+        <div id="mc_embed_signup">
+          <form
+            onSubmit={handleSubmit}
+            action="https://gmail.us20.list-manage.com/subscribe/post?u=d4c977bb39116ac14c2db4a0b&amp;id=51f36f72a5&amp;f_id=0073a2e0f0"
+            method="post"
+            id="mc-embedded-subscribe-form"
+            name="mc-embedded-subscribe-form"
+            className="validate"
+            noValidate
+          >
+            <div id="mc_embed_signup_scroll">
+              <div className="mc-field-group">
+                <label htmlFor="mce-EMAIL" className="sr-only">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="EMAIL"
+                  className="required email px-6 py-2 rounded-lg outline-none bg-gray-700 w-full text-white"
+                  id="mce-EMAIL"
+                  placeholder="Enter your Email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              {isSubscribed && (
+                <div className="mt-2 text-[#17A4A5] text-sm">
+                  Newsletter Subscribed successfully!
+                </div>
+              )}
+              <div
+                style={{ position: "absolute", left: "-5000px" }}
+                aria-hidden="true"
+              >
+                <input
+                  type="text"
+                  name="b_d4c977bb39116ac14c2db4a0b_51f36f72a5"
+                  tabIndex={-1}
+                  defaultValue=""
+                />
+              </div>
+              <div className="clear foot">
+                <input
+                  type="submit"
+                  name="subscribe"
+                  id="mc-embedded-subscribe"
+                  className="mt-5 px-4 py-2 sm:px-6 sm:py-3 bg-yellow-500 text-white font-semibold w-full rounded-md transform transition-transform duration-300 hover:scale-105 hover:bg-yellow-600 cursor-pointer"
+                  value="Subscribe"
+                />
+              </div>
+            </div>
+          </form>
         </div>
+      </div>
       </div>
       <p className="text-center mt-4 text-base text-black opacity-70">
         JDN Tuition © Copyright 2024

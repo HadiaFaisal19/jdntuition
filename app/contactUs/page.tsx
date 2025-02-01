@@ -168,7 +168,7 @@ const ContactUsPage = () => {
               <div className="flex justify-center">
                 <button
                   onClick={handleClosePopup}
-                  className="bg-[#17A4A5] hover:bg-[#139093] text-black font-bold py-2 px-6 rounded"
+                  className="bg-[#17A4A5] hover:bg-[#139093] text-white font-bold py-2 px-6 rounded"
                 >
                   Close
                 </button>
