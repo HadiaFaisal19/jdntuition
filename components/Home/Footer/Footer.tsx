@@ -4,6 +4,17 @@ import Link from "next/link";
 import { navLinks } from "@/constant/constant";
 import { FaFacebookF, FaInstagram, FaLinkedin } from "react-icons/fa";
 
+declare global {
+  interface Window {
+    handleMailchimpCallback: (response: MailchimpResponse) => void;
+  }
+}
+
+interface MailchimpResponse {
+  result: "success" | "error";
+  msg?: string;
+}
+
 const Footer = () => {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [email, setEmail] = useState("");
@@ -13,15 +24,15 @@ const Footer = () => {
     const form = e.target as HTMLFormElement;
     const scriptUrl = form.action.replace("/post?", "/post-json?");
     
-    // Add type assertion for TypeScript
-    (window as any).handleMailchimpCallback = (response: any) => {
+    // Add properly typed callback
+    window.handleMailchimpCallback = (response: MailchimpResponse) => {
       if (response.result === "success") {
         setIsSubscribed(true);
         setEmail("");
         setTimeout(() => setIsSubscribed(false), 5000);
       }
     };
-  
+
     const emailValue = form.EMAIL.value;
     const url = `${scriptUrl}&EMAIL=${encodeURIComponent(emailValue)}&c=handleMailchimpCallback`;
     
@@ -31,6 +42,7 @@ const Footer = () => {
     document.body.appendChild(script);
     document.body.removeChild(script);
   };
+  
   return (
     <div className=" relative pt-24 pb-12 bg-gray-200">
       {/* avail Now Section */}
