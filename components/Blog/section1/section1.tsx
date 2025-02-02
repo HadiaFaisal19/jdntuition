@@ -84,7 +84,6 @@ const BlogCarousel = () => {
           <div className="mx-auto border-b-4 border-[#17A4A5] w-32 mb-2"></div>
         </div>
         <SkeletonLoader />
-        <SkeletonLoader />
       </section>
     );
   }
@@ -96,6 +95,14 @@ const BlogCarousel = () => {
       </p>
     );
   }
+
+  const handleBlogClick = async (id: string) => {
+    try {
+      await axios.patch("/api/blog", { id });
+    } catch (error) {
+      console.error("Error updating blog clicks:", error);
+    }
+  };
 
   return (
     <section
@@ -159,8 +166,10 @@ const BlogCarousel = () => {
               })}
             </p>
 
-            <Link href={`/categories/${blog.category}/${blog._id}`} passHref>
+            <Link href={`/categories/${blog.category}/${blog._id}`} passHref
+            onClick={() => handleBlogClick(blog._id)}>
               <button className="relative inline-block px-6 py-2 text-sm font-semibold text-white bg-[#17A4A5] rounded shadow-lg overflow-hidden group w-fit">
+                
                 <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-[#145D5E] via-[#17A4A5] to-[#1BB6B7] transition-all duration-300 ease-out transform translate-x-full group-hover:translate-x-0"></span>
                 <span className="absolute inset-0 w-full h-full bg-[#17A4A5] transition-all duration-300 ease-out group-hover:bg-opacity-0"></span>
                 <span className="relative group-hover:translate-x-2 transition-transform duration-300">

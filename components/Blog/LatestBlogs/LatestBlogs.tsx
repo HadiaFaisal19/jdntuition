@@ -49,7 +49,7 @@ export default function TopPostsSection() {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" "); // Join words with spaces
   };
-  
+
   // Fetch latest blogs
   useEffect(() => {
     const fetchLatestBlogs = async () => {
@@ -74,6 +74,14 @@ export default function TopPostsSection() {
 
     fetchLatestBlogs();
   }, []);
+
+  const handleBlogClick = async (id: string) => {
+    try {
+      await axios.patch("/api/blog", { id });
+    } catch (error) {
+      console.error("Error updating blog clicks:", error);
+    }
+  };
 
   return (
     <section className="pb-12 pt-4 bg-gray-100">
@@ -106,7 +114,7 @@ export default function TopPostsSection() {
                   key={post._id}
                   href={`/categories/${post.category}/${post._id}`} // Dynamic URL for each blog
                   passHref
-                >
+                  onClick={() => handleBlogClick(post._id)}>
                   <div
                     className="relative w-full h-72 md:h-96 overflow-hidden shadow-lg group cursor-pointer"
                   >

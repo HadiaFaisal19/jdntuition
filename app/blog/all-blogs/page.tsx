@@ -15,7 +15,7 @@ interface Blog {
   date: string
   Image: string
   isLatest?: boolean
-  isMostRead?: boolean
+  isMostRead?: number
 }
 
 const Blogs = () => {
@@ -97,6 +97,14 @@ const Blogs = () => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
       .join(" ") // Join words with spaces
   }
+
+  const handleBlogClick = async (id: string) => {
+    try {
+      await axios.patch("/api/blog", { id });
+    } catch (error) {
+      console.error("Error updating blog clicks:", error);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-[#17A4A5] via-[#106F70] to-gray-600 text-white">
@@ -188,7 +196,10 @@ const Blogs = () => {
             </button>
             <button
               onClick={() => {
-                setFilteredBlogs([...filteredBlogs].filter((blog) => blog.isMostRead))
+                const sorted = [...filteredBlogs].sort((a, b) => 
+                  (b.isMostRead || 0) - (a.isMostRead || 0)
+                );
+                setFilteredBlogs(sorted);
               }}
               className="px-4 py-2 bg-[#17A4A5] text-white font-bold rounded w-full sm:w-auto"
             >
@@ -249,9 +260,13 @@ const Blogs = () => {
                   } group-hover:opacity-100 group-hover:translate-x-0 group-hover:translate-y-0`}
                 >
                   <button className="px-3 py-1 sm:px-4 sm:py-2 bg-[#17A4A5] text-white text-sm sm:text-base font-semibold rounded">
-                    <Link href={`/categories/${blog.category}/${blog._id}`} passHref>
-                      Read More
-                    </Link>
+                  <Link 
+                    href={`/categories/${blog.category}/${blog._id}`} 
+                    passHref
+                    onClick={() => handleBlogClick(blog._id)}>
+                  
+                    Read More
+                  </Link>
                   </button>
                 </div>
               </div>

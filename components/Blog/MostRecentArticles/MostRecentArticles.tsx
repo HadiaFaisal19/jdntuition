@@ -1,7 +1,7 @@
-import Image from "next/image"; 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { FaTag } from "react-icons/fa";
+import { FaTag, FaEye } from "react-icons/fa";
 import Link from "next/link";
 
 interface Blog {
@@ -10,57 +10,60 @@ interface Blog {
   category: string;
   date: string;
   Image: string;
-  isMostRead: boolean;
+  isMostRead: number;
 }
 
 export default function MostRecentArticles() {
-  const [latestBlogs, setLatestBlogs] = useState<Blog[]>([]);
+  const [mostReadBlogs, setMostReadBlogs] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMostReadBlogs = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get("/api/blog");
+        const blogs: Blog[] = response.data.blogs;
+
+        // Sort blogs by `isMostRead` count in descending order
+        const sortedBlogs = blogs.sort((a, b) => b.isMostRead - a.isMostRead);
+        setMostReadBlogs(sortedBlogs.slice(0, 3)); // Display top 3 most-read blogs
+      } catch (error) {
+        console.error("Error fetching most read blogs:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchMostReadBlogs();
+  }, []);
 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.toLocaleString("default", { month: "long" });
     const year = date.getFullYear();
-    const getOrdinalSuffix = (day: number): string => {
-      if (day > 3 && day < 21) return "th";
-      switch (day % 10) {
-        case 1:
-          return "st";
-        case 2:
-          return "nd";
-        case 3:
-          return "rd";
-        default:
-          return "th";
-      }
-    };
-    const ordinalSuffix = getOrdinalSuffix(day);
-    return `${day}${ordinalSuffix} ${month} ${year}`;
+    return `${day}${getOrdinalSuffix(day)} ${month} ${year}`;
   };
 
-  useEffect(() => {
-    const fetchLatestBlogs = async () => {
-      try {
-        setIsLoading(true); // Start loading
-        const response = await axios.get("/api/blog");
-        const blogs: Blog[] = response.data.blogs;
-        const filteredBlogs = blogs.filter((blog) => blog.isMostRead);
-        setLatestBlogs(filteredBlogs);
-        setIsLoading(false); // End loading
-      } catch (error) {
-        console.error("Error fetching latest blogs:", error);
-        setIsLoading(false); // End loading even on error
-      }
-    };
-    fetchLatestBlogs();
-  }, []);
+  const getOrdinalSuffix = (day: number): string => {
+    if (day > 3 && day < 21) return "th";
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
 
-  const formatCategory = (category: string): string => {
-    return category
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
-      .join(" "); 
+  const handleBlogClick = async (id: string) => {
+    try {
+      await axios.patch("/api/blog", { id });
+    } catch (error) {
+      console.error("Error updating blog clicks:", error);
+    }
   };
 
   return (
@@ -75,24 +78,19 @@ export default function MostRecentArticles() {
 
         <div className="grid md:grid-cols-3 gap-6">
           {isLoading
-            ? // Render skeletons if loading
-              Array.from({ length: 3 }).map((_, index) => (
+            ? Array.from({ length: 3 }).map((_, index) => (
                 <div
                   key={index}
                   className="relative w-full h-72 md:h-96 bg-gray-200 animate-pulse shadow-lg"
-                >
-                  <div className="absolute top-0 left-0 w-full h-full bg-gray-300"></div>
-                  <div className="absolute top-2 left-2 w-1/3 h-8 bg-gray-400 rounded"></div>
-                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-[90%] h-20 bg-gray-400 rounded-lg shadow-md"></div>
-                </div>
+                ></div>
               ))
-            : // Render blogs if not loading
-              latestBlogs.map((post) => (
+            : mostReadBlogs.map((post) => (
                 <div
                   key={post._id}
                   className="relative mt-4 w-full h-72 md:h-96 shadow-lg group transition-transform duration-300 ease-in-out"
                 >
-                  <Link href={`/categories/${post.category}/${post._id}`} passHref>
+                  <Link href={`/categories/${post.category}/${post._id}`} passHref
+                  onClick={() => handleBlogClick(post._id)}>
                     <div className="absolute top-0 left-0 w-full h-full">
                       <Image
                         src={post.Image}
@@ -110,12 +108,14 @@ export default function MostRecentArticles() {
                       className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-[90%] bg-white px-6 py-4 shadow-lg border-t-4 border-[#17A4A5] 
                       z-20 transition-all duration-300 ease-in-out group-hover:translate-y-[-20px] group-hover:border-l-4 group-hover:border-r-4 group-hover:border-b-4"
                     >
-                      <h3 className="text-lg font-bold text-gray-800 mt-2 mb-2">
-                        {post.title}
-                      </h3>
+                      <h3 className="text-lg font-bold text-gray-800 mt-2 mb-2">{post.title}</h3>
                       <div className="flex items-center text-sm text-gray-500 font-medium mb-4">
-                        <FaTag className="fas fa-tag text-[#17A4A5] mr-2" />
-                        {formatCategory(post.category)}
+                        <FaTag className="text-[#17A4A5] mr-2" />
+                        {post.category}
+                      </div>
+                      <div className="flex items-center text-sm text-gray-500 font-medium">
+                        <FaEye className="text-[#17A4A5] mr-2" />
+                        {post.isMostRead} Views
                       </div>
                     </div>
                   </Link>

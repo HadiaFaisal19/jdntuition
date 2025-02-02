@@ -4,8 +4,6 @@ import { connectDB } from "@/dbConfig/dbConfig";
 
 connectDB();
 
-// Handle POST (Add Blog)
-// Handle POST (Add Blog)
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -21,7 +19,7 @@ export async function POST(request: NextRequest) {
       category,
       description,
       isLatest,
-      isMostRead,
+      isMostRead: isMostRead ||0,
       isFeatured,
       date: date || new Date(),
       content,
@@ -93,5 +91,31 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     const err = error as Error;
     return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: NextRequest) {
+  try {
+    const reqBody = await request.json();
+    const { id } = reqBody;
+
+    if (!id) {
+      return NextResponse.json({ error: "Blog ID is required" }, { status: 400 });
+    }
+
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      id,
+      { $inc: { isMostRead: 1 } }, // Increment isMostRead by 1
+      { new: true }
+    );
+
+    if (!updatedBlog) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, blog: updatedBlog });
+  } catch (error) {
+    console.log(error)
+    
   }
 }

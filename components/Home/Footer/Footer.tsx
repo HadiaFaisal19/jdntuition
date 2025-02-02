@@ -42,7 +42,7 @@ const Footer = () => {
     document.body.appendChild(script);
     document.body.removeChild(script);
   };
-  
+
   return (
     <div className=" relative pt-24 pb-12 bg-gray-200">
       {/* avail Now Section */}
@@ -124,7 +124,7 @@ const Footer = () => {
         <div id="mc_embed_signup">
           <form
             onSubmit={handleSubmit}
-            action="https://gmail.us20.list-manage.com/subscribe/post?u=d4c977bb39116ac14c2db4a0b&amp;id=51f36f72a5&amp;f_id=0073a2e0f0"
+            action="https://jdntuition.us7.list-manage.com/subscribe/post?u=9fb88b92873aaab24234bbf07&amp;id=bd53c68292&amp;f_id=00ed7be1f0"
             method="post"
             id="mc-embedded-subscribe-form"
             name="mc-embedded-subscribe-form"

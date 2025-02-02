@@ -20,7 +20,8 @@ const blogSchema = new mongoose.Schema({
       type: Boolean,
     },
     isMostRead: {
-      type: Boolean,
+      type: Number,
+      default: 0 
     },
     isFeatured: {
       type: Boolean,
