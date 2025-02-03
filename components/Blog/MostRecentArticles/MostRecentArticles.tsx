@@ -113,10 +113,10 @@ export default function MostRecentArticles() {
                         <FaTag className="text-[#17A4A5] mr-2" />
                         {post.category}
                       </div>
-                      <div className="flex items-center text-sm text-gray-500 font-medium">
+                      {/* <div className="flex items-center text-sm text-gray-500 font-medium">
                         <FaEye className="text-[#17A4A5] mr-2" />
                         {post.isMostRead} Views
-                      </div>
+                      </div> */}
                     </div>
                   </Link>
                 </div>
