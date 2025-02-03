@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { CgChevronDoubleLeft } from "react-icons/cg";
 
 const SignupForm = ({ onSuccess, onCancel }: { onSuccess: () => void; onCancel: () => void }) => {
   const [username, setUsername] = useState("");
