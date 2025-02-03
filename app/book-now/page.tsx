@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState } from "react"
 import { FaBook, FaHandshake, FaRocket, FaComments } from "react-icons/fa"
@@ -177,6 +178,7 @@ export default function BookNow() {
     })
   }
 
+  const router = useRouter();
 
   const handleSubmit = async () => {
     try {
@@ -225,7 +227,7 @@ export default function BookNow() {
             addDetails: "",
           },
         });
-        setStep(6); 
+        router.push("/book-now/success"); 
       } else {
         console.error("Error sending email:", result.error);
       }
@@ -743,27 +745,27 @@ export default function BookNow() {
           </div>
         )
 
-      case 6:
-        return (
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
-              <h2 className="text-2xl font-semibold text-center mb-6">Thank You!</h2>
-              <p className="text-lg text-center mb-6">
-                Thank you for choosing <span className="font-semibold text-[#17A4A5]">JDN Tuition</span>; we&apos;re
-                excited to help you achieve your goals and support you every step of the way!{" "}
-                <b>We will contact you shortly.</b>
-              </p>
-              <div className="flex justify-center">
-                <button
-                  onClick={handleClosePopup}
-                  className="bg-[#17A4A5] hover:bg-[#139093] text-white font-bold py-2 px-6 rounded"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )
+      // case 6:
+      //   return (
+      //     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+      //       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
+      //         <h2 className="text-2xl font-semibold text-center mb-6">Thank You!</h2>
+      //         <p className="text-lg text-center mb-6">
+      //           Thank you for choosing <span className="font-semibold text-[#17A4A5]">JDN Tuition</span>; we&apos;re
+      //           excited to help you achieve your goals and support you every step of the way!{" "}
+      //           <b>We will contact you shortly.</b>
+      //         </p>
+      //         <div className="flex justify-center">
+      //           <button
+      //             onClick={handleClosePopup}
+      //             className="bg-[#17A4A5] hover:bg-[#139093] text-white font-bold py-2 px-6 rounded"
+      //           >
+      //             Close
+      //           </button>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   )
 
       default:
         return null
