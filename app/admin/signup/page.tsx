@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { CgChevronDoubleLeft } from "react-icons/cg";
 
 const SignupForm = ({ onSuccess, onCancel }: { onSuccess: () => void; onCancel: () => void }) => {
   const [username, setUsername] = useState("");
@@ -32,8 +32,9 @@ const SignupForm = ({ onSuccess, onCancel }: { onSuccess: () => void; onCancel: 
         setSuccessMessage("User created successfully!");
         setTimeout(onSuccess, 1000);
       }
-    } catch (error: any) {
-      setError(error.response?.data?.error || "Failed to create user. Please try again.");
+    } catch (error) {
+      console.log(error)
+      setError("Failed to create user. Please try again.");
     } finally {
       setLoading(false);
     }
