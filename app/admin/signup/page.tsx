@@ -47,6 +47,7 @@ const SignupForm = () => {
         setError(data.error || "An error occurred. Please try again.");
       }
     } catch (error: unknown) {
+      console.log(error)
       setError("Failed to sign up. Please try again.");
     } finally {
       setLoading(false);
