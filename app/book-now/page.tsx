@@ -227,7 +227,7 @@ export default function BookNow() {
             addDetails: "",
           },
         });
-        router.push("/book-now/success"); 
+        router.push("/book-now/thank-you"); 
       } else {
         console.error("Error sending email:", result.error);
       }
@@ -236,11 +236,11 @@ export default function BookNow() {
     }
   };
 
-  const handleClosePopup = () => {
-    // Close the popup and reset the form visibility
-    setIsFormVisible(false)
-    setStep(1) // Optional: Reset to the first step
-  }
+  // const handleClosePopup = () => {
+  //   // Close the popup and reset the form visibility
+  //   setIsFormVisible(false)
+  //   setStep(1) // Optional: Reset to the first step
+  // }
 
   const renderFormStep = () => {
     switch (step) {
