@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaUserPlus, FaTrash } from "react-icons/fa";
-import SignupForm from "../signup/page";
+import SignupForm from "@/components/SignupForm";
 
 interface User {
   _id: string;
@@ -14,6 +14,8 @@ interface User {
 const RegisterUser = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [showSignup, setShowSignup] = useState(false);
+
+  
 
   const fetchUsers = async () => {
     try {
@@ -49,7 +51,10 @@ const RegisterUser = () => {
   return (
     <div className="p-4 min-h-screen">
       {showSignup ? (
-        <SignupForm onSuccess={handleSuccess} onCancel={() => setShowSignup(false)} />
+        <SignupForm
+          onSuccess={handleSuccess} 
+          onCancel={() => setShowSignup(false)}
+        />
       ) : (
         <>
           <button 
