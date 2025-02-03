@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { FaTag, FaEye } from "react-icons/fa";
+import { FaTag } from "react-icons/fa";
 import Link from "next/link";
 
 interface Blog {

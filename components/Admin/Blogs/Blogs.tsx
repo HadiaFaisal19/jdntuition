@@ -284,7 +284,6 @@ const Blogs = () => {
               ))}
             </select>
           </div>
-          
           <div className="mb-4 flex gap-4">
   {[ "isFeatured"].map((field) => (
     <label key={field} className="flex items-center">
