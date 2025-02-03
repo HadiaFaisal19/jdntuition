@@ -26,7 +26,7 @@ export default function MostRecentArticles() {
 
         // Sort blogs by `isMostRead` count in descending order
         const sortedBlogs = blogs.sort((a, b) => b.isMostRead - a.isMostRead);
-        setMostReadBlogs(sortedBlogs.slice(0, 3)); // Display top 3 most-read blogs
+        setMostReadBlogs(sortedBlogs.slice(0, 6)); // Display top 6 most-read blogs
       } catch (error) {
         console.error("Error fetching most read blogs:", error);
       } finally {

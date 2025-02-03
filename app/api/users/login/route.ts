@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     const token = jwt.sign({ userId: user._id }, jwtSecretKey, { expiresIn: "1h" })
 
     // Include admin status in the response
-    return NextResponse.json({ message: "Login successful", token, isAdmin: user.isAdmin || false }, { status: 200 })
+    return NextResponse.json({ message: "Login successful", token, email, isAdmin: user.isAdmin || false }, { status: 200 })
   } catch (error) {
     console.error("Login error:", error)
     if (error instanceof Error) {

@@ -25,7 +25,7 @@ const About = () => {
           <p className="mt-4 text-gray-600">
             At JDN Tuition, we&rsquo;re not just about tutoring; we&rsquo;re about fostering growth, building confidence, and nurturing potential. With a personalised approach to education, we prioritise each student&rsquo;s journey and development above all else. Our hand-selected tutors are not only experts in their fields but are also passionate about guiding students towards success. From our free meet-and-greet consultations to our mentorship program for tutors, we&rsquo;re committed to building a supportive network where students feel empowered to excel. Choose JDN Tuition and experience the difference firsthand as we embark on this educational journey together.
           </p>
-          <button className="flex items-center space-x-2 px-8 py-3 mt-8 hover:bg-gray-700 transition-all duration-200 rounded-3xl bg-black text-white">
+          <button className="flex items-center space-x-2 px-8 py-3 mt-8 hover:bg-gray-700 transition-all duration-200 rounded-3xl bg-[#17A4A5] text-white">
             <Link href="/#why-choose-us">
               <span>Learn More</span>
             </Link>

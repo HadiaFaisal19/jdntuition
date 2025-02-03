@@ -13,6 +13,7 @@ type Props = {
 
 const Nav = ({ openNav }: Props) => {
   const [navBg, setNavBg] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // For button loading state
   const pathname = usePathname();
 
   useEffect(() => {
@@ -25,7 +26,6 @@ const Nav = ({ openNav }: Props) => {
     };
 
     window.addEventListener("scroll", handler);
-
     return () => window.removeEventListener("scroll", handler);
   }, []);
 
@@ -37,6 +37,18 @@ const Nav = ({ openNav }: Props) => {
   const isWhiteOutline = routesWithOutline.includes(pathname) || isCategoriesPage;
   const isBlogPage =
     pathname.startsWith("/categories/") && pathname.split("/").length === 4;
+
+  // Function to handle button click and loading state
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // Simulate an action before redirecting
+    setTimeout(() => {
+      setIsLoading(false);
+      window.location.href = "/book-now"; // Redirect after loading
+    }, 2000);
+  };
 
   return (
     <div
@@ -75,11 +87,38 @@ const Nav = ({ openNav }: Props) => {
         {/* Button and Mobile Menu */}
         <div className="flex items-center gap-6">
           <button
-            className={`px-8 py-2 text-white font-semibold text-base bg-[#17A4A5] hover:bg-[#138F8F] transition-all duration-200 rounded-lg ${
+            onClick={handleClick}
+            disabled={isLoading} // Button disabled while loading
+            className={`px-8 py-2 text-white font-semibold text-base bg-[#17A4A5] hover:bg-[#138F8F] transition-all duration-200 rounded-lg flex items-center justify-center ${
               isWhiteOutline ? "outline outline-2 outline-white" : ""
-            }`}
+            } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            <Link href="/book-now">Book Now</Link>
+            {isLoading ? (
+              <span className="flex items-center">
+                <svg
+                  className="animate-spin h-5 w-5 mr-2 text-white"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 108 8h-4l3 3 3-3h-4a8 8 0 01-8 8z"
+                  ></path>
+                </svg>
+              </span>
+            ) : (
+              "Book Now"
+            )}
           </button>
 
           {/* Mobile Menu Icon */}

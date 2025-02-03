@@ -26,6 +26,9 @@ const blogSchema = new mongoose.Schema({
     isFeatured: {
       type: Boolean,
     },
+    writtenBy:{
+      type: String,
+    },
     date: {
       type: Date,
       default: Date.now,

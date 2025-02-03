@@ -42,7 +42,7 @@ const AdminDashboard = () => {
               }`}
               onClick={() => setActiveMenu("Register Users")}
             >
-              Register Users
+              Register User
             </li>
             <li
               className={`cursor-pointer font-bold ${
@@ -53,11 +53,19 @@ const AdminDashboard = () => {
               Manage Blogs
             </li>
             <li
+              className="cursor-pointer font-bold text-white"
+              onClick={() => {
+                router.push("/"); 
+              }}
+            >
+             View Website
+            </li>
+            <li
               className="cursor-pointer font-bold text-yellow-500"
               onClick={() => {
                 localStorage.removeItem("token");
                 localStorage.removeItem("isAdmin");
-                router.push("/"); 
+                router.push("/admin/login"); 
               }}
             >
               Logout

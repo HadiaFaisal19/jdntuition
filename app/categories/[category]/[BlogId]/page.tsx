@@ -18,7 +18,7 @@ interface Blog {
   date: string
   title: string
   description: string
-  author: string
+  writtenBy: string
   Image: string
   content: string
   isLatest?: boolean
@@ -93,22 +93,23 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
   useEffect(() => {
     const fetchLatestBlogs = async () => {
       try {
-        const response = await axios.get("/api/blog")
-        const blogs: Blog[] = response.data.blogs // Explicit type for blogs array
-
-        const filteredBlogs = blogs
-          .filter((blog) => blog.isLatest)
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 5)
-
-        setLatestBlogs(filteredBlogs)
+        const response = await axios.get("/api/blog");
+        const blogs: Blog[] = response.data.blogs;
+        
+        // Sort blogs by date (newest first) and take first 6
+        const sortedBlogs = blogs.sort((a, b) => 
+          new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+        const recentBlogs = sortedBlogs.slice(0, 6);
+        
+        setLatestBlogs(recentBlogs);
       } catch (error) {
-        console.error("Error fetching latest blogs:", error)
+        console.error("Error fetching latest blogs:", error);
       }
-    }
+    };
 
-    fetchLatestBlogs()
-  }, [])
+    fetchLatestBlogs();
+  }, []);
 
   useEffect(() => {
     const fetchMostReadBlogs = async () => {
@@ -159,7 +160,7 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
           <h1 className="lg:text-5xl xl:text-5xl md:text-4xl sm:text-xl font-extrabold text-black leading-tight mb-8">{blog.title}</h1>
           <p className="text-lg text-gray-800 mb-6">{blog.description}</p>
           <p className="text-gray-600 text-base italic mb-8">
-            Written By: <span className="text-[#17A4A5] font-bold">JDN Tuition Team{blog.author}</span>
+            Written By: <span className="text-[#17A4A5] font-bold">JDN Tuition Team{blog.writtenBy}</span>
           </p>
         </div>
 
@@ -208,30 +209,29 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
           </div>
 
           {/* Blogs You May Like */}
-
-<div>
-  <h2 className="text-xl font-bold text-white bg-gradient-to-r from-gray-700 to-[#17A4A5] px-4 py-2 rounded">
-    Blogs You May Like
-  </h2>
-  <div className="mt-4 space-y-4">
-    {mostReadBlogs.map((mostReadBlog) => (
-      <Link key={mostReadBlog._id} href={`/categories/${mostReadBlog.category}/${mostReadBlog._id}`} passHref>
-        <div className="flex mb-2  items-start space-x-4 bg-gray-700 p-4 rounded-lg shadow cursor-pointer hover:bg-gray-600 transition-all duration-200">
-          <Image
-            src={mostReadBlog.Image || "/placeholder.svg"}
-            alt={mostReadBlog.title}
-            width={64}
-            height={64}
-            className="object-cover rounded"
-          />
           <div>
-            <h3 className="text-sm font-semibold text-gray-200">{mostReadBlog.title}</h3>
+            <h2 className="text-xl font-bold text-white bg-gradient-to-r from-gray-700 to-[#17A4A5] px-4 py-2 rounded">
+              Blogs You May Like
+            </h2>
+            <div className="mt-4 space-y-4">
+              {mostReadBlogs.map((mostReadBlog) => (
+                <Link key={mostReadBlog._id} href={`/categories/${mostReadBlog.category}/${mostReadBlog._id}`} passHref>
+                  <div className="flex mb-2  items-start space-x-4 bg-gray-600 p-4 rounded-lg shadow cursor-pointer hover:bg-gray-500 transition-all duration-200">
+                    <Image
+                      src={mostReadBlog.Image || "/placeholder.svg"}
+                      alt={mostReadBlog.title}
+                      width={64}
+                      height={64}
+                      className="object-cover rounded"
+                    />
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-200">{mostReadBlog.title}</h3>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
-      </Link>
-    ))}
-  </div>
-</div>
 
 
           {/* Latest Blogs */}
@@ -239,23 +239,24 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
           <h2 className="text-xl font-bold text-gray-800 border-b-4 border-[#17A4A5] pb-2">Latest Blogs</h2>
             
           <div className="mt-4 mb-8 space-y-4">
-  {latestBlogs.map((latestBlog) => (
-    <Link key={latestBlog._id} href={`/categories/${latestBlog.category}/${latestBlog._id}`} passHref>
-      <div className="flex items-start space-x-4 mb-2 bg-gray-700 p-4 rounded-lg shadow cursor-pointer hover:bg-gray-600 transition-all duration-200">
-        <Image
-          src={latestBlog.Image || "/placeholder.svg"}
-          alt={latestBlog.title}
-          width={64}
-          height={64}
-          className="object-cover rounded"
-        />
-        <div>
-          <h3 className="text-sm font-semibold text-gray-200">{latestBlog.title}</h3>
-        </div>
-      </div>
-    </Link>
-  ))}
-</div>
+            {latestBlogs.map((latestBlog) => (
+              <Link key={latestBlog._id} href={`/categories/${latestBlog.category}/${latestBlog._id}`} passHref>
+                <div className="flex items-start space-x-4 mb-2 bg-gray-600 p-4 rounded-lg shadow cursor-pointer hover:bg-gray-500 transition-all duration-200">
+                  <Image
+                    src={latestBlog.Image || "/placeholder.svg"}
+                    alt={latestBlog.title}
+                    width={64}
+                    height={64}
+                    className="object-cover rounded"
+                  />
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-200">{latestBlog.title}</h3>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          {/* Share Section */}
             <div className="mt-8 mb-16">
               <h2 className="text-lg font-bold text-gray-800 mb-4">Share This Blog</h2>
               <div className="flex space-x-4">
@@ -316,8 +317,6 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
           </div>
         </div>
       </div>
-
-      {/* Share Section */}
     </div>
   )
 }

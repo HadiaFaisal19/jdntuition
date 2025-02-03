@@ -34,8 +34,10 @@ const LoginPage = () => {
 
       if (response.ok) {
         localStorage.setItem("isAdmin", data.isAdmin ? "true" : "false");
+        localStorage.setItem("email", data.email);
         localStorage.setItem("token", data.token);
         router.push("/admin/dashboard");
+        console.log("Login API Response:", data);
       } else {
         setError(data.error || "Invalid credentials. Please try again.");
       }

@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
 
-        const { username, email, password } = reqBody;
+        const { username, email, password, isAdmin } = reqBody;
         console.log(reqBody);
 
         if (!username || !email || !password) {
@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
             username,
             email,
             password: hashedPassword,
+            isAdmin
         });
         const savedUser = await newUser.save();
         console.log(savedUser);

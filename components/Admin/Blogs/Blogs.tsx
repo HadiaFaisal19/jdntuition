@@ -30,6 +30,7 @@ interface Blog {
   isLatest: boolean
   isMostRead: boolean
   isFeatured: boolean
+  writtenBy: string
   content: string
 }
 
@@ -42,6 +43,7 @@ interface BlogForm {
   isLatest: boolean
   isMostRead: boolean
   isFeatured: boolean
+  writtenBy: string
   content: string
 }
 
@@ -59,6 +61,7 @@ const Blogs = () => {
     isLatest: false,
     isMostRead: false,
     isFeatured: false,
+    writtenBy: "",
     content: "",
   })
 
@@ -72,7 +75,7 @@ const Blogs = () => {
     }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target
 
     if (type === "checkbox") {
@@ -136,6 +139,7 @@ const Blogs = () => {
       isLatest: false,
       isMostRead: false,
       isFeatured: false,
+      writtenBy: "",
       content: "",
     })
     setEditingBlogId(null)
@@ -190,8 +194,6 @@ const Blogs = () => {
       }
     };
   };
-  
-
   useEffect(() => {
     fetchBlogs()
   }, [])
@@ -282,8 +284,9 @@ const Blogs = () => {
               ))}
             </select>
           </div>
+          
           <div className="mb-4 flex gap-4">
-  {["isLatest", "isMostRead", "isFeatured"].map((field) => (
+  {[ "isFeatured"].map((field) => (
     <label key={field} className="flex items-center">
       <input
         type="checkbox"
@@ -296,7 +299,31 @@ const Blogs = () => {
     </label>
   ))}
 </div>
+            <div>
+              <label htmlFor="Description" className="block text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <textarea
+                name="Description"
+                rows={2}
+                value={blogForm.description}
+                onChange={handleInputChange}
+                className="w-full border border-gray-300 px-4 py-2 rounded-md"
+                
+              />
+            </div>
 
+          <div className="mb-4">
+            <label className="block font-medium">Written By:</label>
+            <input
+              type="textbox"
+              name="writtenBy"
+              value={blogForm.writtenBy}
+              onChange={handleInputChange}
+              className="w-full p-2 border rounded"
+              required
+            />
+          </div>
           <div className="mb-4">
             <label className="block font-medium">Content</label>
             <ReactQuill value={blogForm.content} onChange={handleContentChange} className="h-64" />

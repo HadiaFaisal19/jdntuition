@@ -69,6 +69,14 @@ const CategoryPageClient = ({ category }: Props) => {
     );
   };
 
+  const handleBlogClick = async (id: string) => {
+    try {
+      await axios.patch("/api/blog", { id });
+    } catch (error) {
+      console.error("Error updating blog clicks:", error);
+    }
+  };
+
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -92,7 +100,7 @@ const CategoryPageClient = ({ category }: Props) => {
             <div className="mb-6 grid grid-cols-1 md:grid-cols-3 gap-6">
               {blogs.length > 0 ? (
                 blogs.map((blog) => (
-                  <div key={blog._id} className="bg-white border rounded-lg shadow-lg w-96">
+                  <div key={blog._id} className="bg-white border  shadow-lg w-96">
                     <div className="relative">
                       <Image
                         src={blog.Image}
@@ -110,6 +118,7 @@ const CategoryPageClient = ({ category }: Props) => {
                       <div className="mt-4">
                         <Link
                           href={`/categories/${category}/${blog._id}`}
+                          onClick={() => handleBlogClick(blog._id)}
                           className="text-[#17A4A5] text-sm font-semibold hover:underline"
                         >
                           CONTINUE READING
