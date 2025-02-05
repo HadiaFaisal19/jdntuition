@@ -1,9 +1,12 @@
 "use client"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import type React from "react"
 import { useState } from "react"
 import { FaBook, FaHandshake, FaRocket, FaComments } from "react-icons/fa"
+import emailjs from "emailjs-com"
+import { useRouter } from "next/navigation"
+
+
 
 export default function BookNow() {
   const [isFormVisible, setIsFormVisible] = useState(false)
@@ -177,70 +180,95 @@ export default function BookNow() {
       }
     })
   }
-
   const router = useRouter();
 
-  const handleSubmit = async () => {
-    try {
-      const response = await fetch('/api/sendEmail', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ formData }),
-      });
-  
-      const result = await response.json();
-      if (response.ok) {
-        console.log("Email sent successfully!", result);
-        setFormData({
-          userType: "",
-          grade: "",
-          selectedSubjects: [],
-          studentInfo: {
-            firstName: "",
-            lastName: "",
-            reason: "",
-            performance: "",
-            learningNeeds: "",
-          },
-          lessonDetails: {
-            type: "",
-            duration: "",
-            frequency: "",
-            availability: {
-              Monday: [],
-              Tuesday: [],
-              Wednesday: [],
-              Thursday: [],
-              Friday: [],
-              Saturday: [],
-              Sunday: [],
-            },
-          },
-          parentDetails: {
-            fname: "",
-            lname: "",
-            email: "",
-            phone: "",
-            suburb: "",
-            addDetails: "",
-          },
-        });
-        router.push("/book-now/thank-you"); 
-      } else {
-        console.error("Error sending email:", result.error);
-      }
-    } catch (error) {
-      console.error("Error during form submission:", error);
-    }
-  };
+  const handleSubmit = () => {
+    // Perform submission logic (e.g., save data, API call)
+    console.log("Form submitted successfully!", formData)
 
-  // const handleClosePopup = () => {
-  //   // Close the popup and reset the form visibility
-  //   setIsFormVisible(false)
-  //   setStep(1) // Optional: Reset to the first step
-  // }
+    // Prepare the email content using the formData
+    const emailContent = {
+      userType: formData.userType,
+      grade: formData.grade,
+      selectedSubjects: formData.selectedSubjects.join(", "),
+      firstName: formData.studentInfo.firstName,
+      lastName: formData.studentInfo.lastName,
+      reason: formData.studentInfo.reason,
+      performance: formData.studentInfo.performance,
+      learningNeeds: formData.studentInfo.learningNeeds,
+      lessonType: formData.lessonDetails.type,
+      lessonDuration: formData.lessonDetails.duration,
+      lessonFrequency: formData.lessonDetails.frequency,
+      availability: JSON.stringify(formData.lessonDetails.availability),
+      parentFirstName: formData.parentDetails.fname,
+      parentLastName: formData.parentDetails.lname,
+      parentEmail: formData.parentDetails.email,
+      parentPhone: formData.parentDetails.phone,
+      parentSuburb: formData.parentDetails.suburb,
+      parentAddDetails: formData.parentDetails.addDetails,
+    }
+
+    // Send the form data via EmailJS
+    emailjs
+      .send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,  // Service ID
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, // Replace with your EmailJS template ID
+        emailContent,
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID!, // Replace with your EmailJS user ID
+      )
+
+      .then(
+        (response) => {
+          console.log("Email sent successfully!", response)
+          setFormData({
+            userType: "",
+            grade: "",
+            selectedSubjects: [],
+            studentInfo: {
+              firstName: "",
+              lastName: "",
+              reason: "",
+              performance: "",
+              learningNeeds: "",
+            },
+            lessonDetails: {
+              type: "",
+              duration: "",
+              frequency: "",
+              availability: {
+                Monday: [],
+                Tuesday: [],
+                Wednesday: [],
+                Thursday: [],
+                Friday: [],
+                Saturday: [],
+                Sunday: [],
+              },
+            },
+            parentDetails: {
+              fname: "",
+              lname: "",
+              email: "",
+              phone: "",
+              suburb: "",
+              addDetails: "",
+            },
+          })
+          // Set the step to 6 to display the thank-you message
+          //setStep(6)
+          router.push("/book-now/thank-you"); 
+        },
+        (error) => {
+          console.error("Error sending email:", error)
+        },
+      )
+  }
+
+  const handleClosePopup = () => {
+    // Close the popup and reset the form visibility
+    setIsFormVisible(false)
+    setStep(1) // Optional: Reset to the first step
+  }
 
   const renderFormStep = () => {
     switch (step) {
@@ -745,27 +773,27 @@ export default function BookNow() {
           </div>
         )
 
-      // case 6:
-      //   return (
-      //     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
-      //       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
-      //         <h2 className="text-2xl font-semibold text-center mb-6">Thank You!</h2>
-      //         <p className="text-lg text-center mb-6">
-      //           Thank you for choosing <span className="font-semibold text-[#17A4A5]">JDN Tuition</span>; we&apos;re
-      //           excited to help you achieve your goals and support you every step of the way!{" "}
-      //           <b>We will contact you shortly.</b>
-      //         </p>
-      //         <div className="flex justify-center">
-      //           <button
-      //             onClick={handleClosePopup}
-      //             className="bg-[#17A4A5] hover:bg-[#139093] text-white font-bold py-2 px-6 rounded"
-      //           >
-      //             Close
-      //           </button>
-      //         </div>
-      //       </div>
-      //     </div>
-      //   )
+      case 6:
+        return (
+          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl sm:w-[700px] md:w-[800px] lg:w-[900px] overflow-auto max-h-[90vh]">
+              <h2 className="text-2xl font-semibold text-center mb-6">Thank You!</h2>
+              <p className="text-lg text-center mb-6">
+                Thank you for choosing <span className="font-semibold text-[#17A4A5]">JDN Tuition</span>; we&apos;re
+                excited to help you achieve your goals and support you every step of the way!{" "}
+                <b>We will contact you shortly.</b>
+              </p>
+              <div className="flex justify-center">
+                <button
+                  onClick={handleClosePopup}
+                  className="bg-[#17A4A5] hover:bg-[#139093] text-white font-bold py-2 px-6 rounded"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )
 
       default:
         return null
