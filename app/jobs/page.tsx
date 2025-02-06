@@ -33,10 +33,10 @@ const Feature = () => {
         Help students unlock their full potential and guide them toward achieving both academic and personal success.
         </p>
         <div className="text-lg md:text-2xl text-white text-opacity-90 font-semibold">
-        Teach the Skills You've Mastered
+        Teach the Skills You&apos;ve Mastered
         </div>
         <p className="text-sm md:text-base text-white text-opacity-90 mb-4">
-        Share your expertise in subjects you're passionate about, inspiring and educating the next generation.onate about, inspiring and educating the next generation.
+        Share your expertise in subjects you&apos;re passionate about, inspiring and educating the next generation.onate about, inspiring and educating the next generation.
         </p>
         <div className="text-lg md:text-2xl text-white text-opacity-90 font-semibold">
         Supportive Environment
@@ -45,7 +45,7 @@ const Feature = () => {
         Join a team that values collaboration, continuous learning, and personal growth.
         </p>
         <p className="text-sm md:text-base text-white text-opacity-90 mb-2">
-        By becoming a tutor with JDN Tuition, you'll not only impact students' lives but also continue to grow and excel in your own professional journey.
+        By becoming a tutor with JDN Tuition, you&apos;ll not only impact students&apos; lives but also continue to grow and excel in your own professional journey.
         </p>
         </div>
   <button

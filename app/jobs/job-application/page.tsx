@@ -22,7 +22,7 @@ export default function JobApplication() {
           {/* Responsibilities */}
           <h2 className="text-xl md:text-2xl font-semibold mt-4">Responsibilities:</h2>
           <ul className="text-sm md:text-base text-white list-disc list-inside">
-            <li>Provide engaging, one-on-one tutoring tailored to each student's needs.</li>
+            <li>Provide engaging, one-on-one tutoring tailored to each student&apos;s needs.</li>
             <li>Support students with assignments, exams, and key concepts.</li>
             <li>Foster a positive learning environment and track student progress.</li>
           </ul>
@@ -36,7 +36,7 @@ export default function JobApplication() {
             <li>High ATAR or relevant degree.</li>
           </ul>
 
-          <h5 className="mt-4 text-lg">If you're passionate about education and eager to make an impact, apply now!</h5>
+          <h5 className="mt-4 text-lg">If you&apos;re passionate about education and eager to make an impact, apply now!</h5>
         </div>
       </div>
 
