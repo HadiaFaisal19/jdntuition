@@ -1,5 +1,15 @@
 import { NextResponse } from "next/server";
 
+type Customer = {
+  id?: number; // Optional because it might not exist in all responses
+  first_name?: string;
+  last_name?: string;
+  email: string; // Required because we're filtering by email
+  mobile_phone?: string;
+  additional_notes?: string;
+  status?: string;
+};
+
 export async function POST(req: Request) {
   try {
     const formData = await req.json();
@@ -38,10 +48,10 @@ export async function POST(req: Request) {
       Array.isArray(searchData?.customers) ? searchData.customers :
       Array.isArray(searchData) ? searchData :
       []
-    ).filter((c: any) => c?.email); // Ensure we have valid customer objects
+    ).filter((c: Customer) => c?.email); // Ensure we have valid customer objects
 
     // Find case-insensitive email match
-    const existingCustomer = customers.find((c: any) => 
+    const existingCustomer = customers.find((c: Customer) => 
       c.email.toLowerCase().trim() === parentEmail.toLowerCase().trim()
     );
 

@@ -239,60 +239,60 @@ export default function BookNow() {
         const studentData = await studentResponse.json();
         console.log("Student created successfully:", studentData);
     
-    // Send the form data via EmailJS
-    // emailjs
-    //   .send(
-    //     process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,  // Service ID
-    //   process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, // Replace with your EmailJS template ID
-    //     emailContent,
-    //     process.env.NEXT_PUBLIC_EMAILJS_USER_ID!, // Replace with your EmailJS user ID
-    //   )
+    //Send the form data via EmailJS
+    emailjs
+      .send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,  // Service ID
+      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, // Replace with your EmailJS template ID
+        emailContent,
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID!, // Replace with your EmailJS user ID
+      )
 
-    //   .then(
-    //     (response) => {
-    //       console.log("Email sent successfully!", response)
-    //       setFormData({
-    //         userType: "",
-    //         grade: "",
-    //         selectedSubjects: [],
-    //         studentInfo: {
-    //           firstName: "",
-    //           lastName: "",
-    //           reason: "",
-    //           performance: "",
-    //           learningNeeds: "",
-    //         },
-    //         lessonDetails: {
-    //           type: "",
-    //           duration: "",
-    //           frequency: "",
-    //           availability: {
-    //             Monday: [],
-    //             Tuesday: [],
-    //             Wednesday: [],
-    //             Thursday: [],
-    //             Friday: [],
-    //             Saturday: [],
-    //             Sunday: [],
-    //           },
-    //         },
-    //         parentDetails: {
-    //           fname: "",
-    //           lname: "",
-    //           email: "",
-    //           phone: "",
-    //           suburb: "",
-    //           addDetails: "",
-    //         },
-    //       })
-    //       // Set the step to 6 to display the thank-you message
-    //       //setStep(6)
-    //       router.push("/book-now/thank-you"); 
-    //     },
-    //     (error) => {
-    //       console.error("Error sending email:", error)
-    //     },
-    //   )
+      .then(
+        (response) => {
+          console.log("Email sent successfully!", response)
+          setFormData({
+            userType: "",
+            grade: "",
+            selectedSubjects: [],
+            studentInfo: {
+              firstName: "",
+              lastName: "",
+              reason: "",
+              performance: "",
+              learningNeeds: "",
+            },
+            lessonDetails: {
+              type: "",
+              duration: "",
+              frequency: "",
+              availability: {
+                Monday: [],
+                Tuesday: [],
+                Wednesday: [],
+                Thursday: [],
+                Friday: [],
+                Saturday: [],
+                Sunday: [],
+              },
+            },
+            parentDetails: {
+              fname: "",
+              lname: "",
+              email: "",
+              phone: "",
+              suburb: "",
+              addDetails: "",
+            },
+          })
+          // Set the step to 6 to display the thank-you message
+          //setStep(6)
+          router.push("/book-now/thank-you"); 
+        },
+        (error) => {
+          console.error("Error sending email:", error)
+        },
+      )
   }catch (error) {
     console.error("Error in submission:", error)
   }
