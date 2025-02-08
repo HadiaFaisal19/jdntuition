@@ -36,7 +36,7 @@ const Feature = () => {
         Teach the Skills You&apos;ve Mastered
         </div>
         <p className="text-sm md:text-base text-white text-opacity-90 mb-4">
-        Share your expertise in subjects you&apos;re passionate about, inspiring and educating the next generation.onate about, inspiring and educating the next generation.
+        Share your expertise in subjects you&apos;re passionate about, inspiring and educating the next generation.
         </p>
         <div className="text-lg md:text-2xl text-white text-opacity-90 font-semibold">
         Supportive Environment

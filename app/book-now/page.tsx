@@ -182,10 +182,7 @@ export default function BookNow() {
   }
   const router = useRouter();
 
-  const handleSubmit = () => {
-    // Perform submission logic (e.g., save data, API call)
-    console.log("Form submitted successfully!", formData)
-
+  const handleSubmit = async() => {
     // Prepare the email content using the formData
     const emailContent = {
       userType: formData.userType,
@@ -207,62 +204,99 @@ export default function BookNow() {
       parentSuburb: formData.parentDetails.suburb,
       parentAddDetails: formData.parentDetails.addDetails,
     }
-
+      try {
+        // Step 1: Create the family using parent details.
+        const familyResponse = await fetch("/api/addFamily", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        });
+    
+        if (!familyResponse.ok) {
+          const errorData = await familyResponse.json();
+          console.error("Error creating family:", errorData.error);
+          return;
+        }
+        const familyData = await familyResponse.json();
+        console.log("Family created successfully:", familyData);
+    
+        // Step 2: Create the student using the customer_id from family creation.
+        const studentResponse = await fetch("/api/addStudent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            customer_id: familyData.customer_id, // Pass the family customer ID
+            studentInfo: formData.studentInfo, // Pass student details
+            grade: formData.grade,
+          }),
+        });
+    
+        if (!studentResponse.ok) {
+          const errorData = await studentResponse.json();
+          console.error("Error creating student:", errorData.error);
+          return;
+        }
+        const studentData = await studentResponse.json();
+        console.log("Student created successfully:", studentData);
+    
     // Send the form data via EmailJS
-    emailjs
-      .send(
-        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,  // Service ID
-      process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, // Replace with your EmailJS template ID
-        emailContent,
-        process.env.NEXT_PUBLIC_EMAILJS_USER_ID!, // Replace with your EmailJS user ID
-      )
+    // emailjs
+    //   .send(
+    //     process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,  // Service ID
+    //   process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!, // Replace with your EmailJS template ID
+    //     emailContent,
+    //     process.env.NEXT_PUBLIC_EMAILJS_USER_ID!, // Replace with your EmailJS user ID
+    //   )
 
-      .then(
-        (response) => {
-          console.log("Email sent successfully!", response)
-          setFormData({
-            userType: "",
-            grade: "",
-            selectedSubjects: [],
-            studentInfo: {
-              firstName: "",
-              lastName: "",
-              reason: "",
-              performance: "",
-              learningNeeds: "",
-            },
-            lessonDetails: {
-              type: "",
-              duration: "",
-              frequency: "",
-              availability: {
-                Monday: [],
-                Tuesday: [],
-                Wednesday: [],
-                Thursday: [],
-                Friday: [],
-                Saturday: [],
-                Sunday: [],
-              },
-            },
-            parentDetails: {
-              fname: "",
-              lname: "",
-              email: "",
-              phone: "",
-              suburb: "",
-              addDetails: "",
-            },
-          })
-          // Set the step to 6 to display the thank-you message
-          //setStep(6)
-          router.push("/book-now/thank-you"); 
-        },
-        (error) => {
-          console.error("Error sending email:", error)
-        },
-      )
+    //   .then(
+    //     (response) => {
+    //       console.log("Email sent successfully!", response)
+    //       setFormData({
+    //         userType: "",
+    //         grade: "",
+    //         selectedSubjects: [],
+    //         studentInfo: {
+    //           firstName: "",
+    //           lastName: "",
+    //           reason: "",
+    //           performance: "",
+    //           learningNeeds: "",
+    //         },
+    //         lessonDetails: {
+    //           type: "",
+    //           duration: "",
+    //           frequency: "",
+    //           availability: {
+    //             Monday: [],
+    //             Tuesday: [],
+    //             Wednesday: [],
+    //             Thursday: [],
+    //             Friday: [],
+    //             Saturday: [],
+    //             Sunday: [],
+    //           },
+    //         },
+    //         parentDetails: {
+    //           fname: "",
+    //           lname: "",
+    //           email: "",
+    //           phone: "",
+    //           suburb: "",
+    //           addDetails: "",
+    //         },
+    //       })
+    //       // Set the step to 6 to display the thank-you message
+    //       //setStep(6)
+    //       router.push("/book-now/thank-you"); 
+    //     },
+    //     (error) => {
+    //       console.error("Error sending email:", error)
+    //     },
+    //   )
+  }catch (error) {
+    console.error("Error in submission:", error)
   }
+}
 
   const handleClosePopup = () => {
     // Close the popup and reset the form visibility
@@ -432,7 +466,7 @@ export default function BookNow() {
               <label className="font-semibold block">
                 {formData.userType === "Student"
                   ? "Please provide us with an overview of your learning needs to help you match with the perfect tutor"
-                  : "Please provide us with an overview of your child&apos;s learning needs to help us match them with the perfect tutor."}
+                  : "Please provide us with an overview of your child's learning needs to help us match them with the perfect tutor."}
               </label>
               <textarea
                 name="learningNeeds"
