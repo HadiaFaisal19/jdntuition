@@ -226,8 +226,10 @@ export default function BookNow() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             customer_id: familyData.customer_id, // Pass the family customer ID
-            studentInfo: formData.studentInfo, // Pass student details
+            studentInfo: formData.studentInfo,
+            lessonDetails: formData.lessonDetails,
             grade: formData.grade,
+            selectedSubjects: formData.selectedSubjects
           }),
         });
     
