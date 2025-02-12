@@ -1,21 +1,37 @@
-// app/api/tutors/route.ts
 import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const response = await fetch('https://api.teachworks.com/v1/employees', {
-      headers: {
-        'Authorization': `Token token=${process.env.TEACHWORKS_API_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    });
+    let page = 1;
+    const perPage = 100; // Adjust as needed
+    let allTutors: any[] = [];
+    let hasMore = true;
 
-    if (!response.ok) {
-      throw new Error(`TeachWorks API error: ${response.statusText}`);
+    while (hasMore) {
+      const response = await fetch(`https://api.teachworks.com/v1/employees?page=${page}&per_page=${perPage}`, {
+        headers: {
+          'Authorization': `Token token=${process.env.TEACHWORKS_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`TeachWorks API error: ${response.statusText}`);
+      }
+
+      // Assuming the API returns an array of tutors
+      const data = await response.json();
+
+      // If the returned data array is empty, we've reached the end.
+      if (data.length === 0) {
+        hasMore = false;
+      } else {
+        allTutors = allTutors.concat(data);
+        page++;
+      }
     }
 
-    const data = await response.json();
-    return NextResponse.json(data);
+    return NextResponse.json(allTutors);
     
   } catch (error) {
     console.error('Error fetching tutors:', error);
