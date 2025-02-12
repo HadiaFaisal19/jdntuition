@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Blogs from "@/components/Admin/Blogs/Blogs";
 import RegisterUser from "../registerUser/page";
+import ManageTutors from "../manageTutors/page";
 
 const AdminDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("Manage Blogs");
@@ -33,6 +34,8 @@ const AdminDashboard = () => {
           return <div className="text-center mt-8 text-red-500 font-bold">Only admin can access this page.</div>;
         }
         return <RegisterUser />;
+      case "Manage Tutors":
+        return <ManageTutors />;
       
       default:
         return <div>Select an option from the sidebar.</div>;
@@ -63,6 +66,13 @@ const AdminDashboard = () => {
               onClick={() => setActiveMenu("Manage Blogs")}
             >
               Manage Blogs
+            </li>
+            <li
+               className={`cursor-pointer font-bold ${
+                activeMenu === "Manage Tutors" ? "text-black" : ""
+              }`}
+              onClick={() => setActiveMenu("Manage Tutors")}>
+              Manage Tutors
             </li>
             <li
               className="cursor-pointer font-bold text-white"

@@ -67,7 +67,7 @@ const ContactUsPage = () => {
                 <FaPhoneAlt />
               </span>
               <p className="text-gray-200">
-                <span className="font-semibold">Phone:</span> (04) 2540 9738
+                <span className="font-semibold">Phone:</span> (02) 7257 0299
               </p>
             </div>
             <div className="flex items-center gap-4">
