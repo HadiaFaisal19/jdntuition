@@ -1,10 +1,27 @@
 import { NextResponse } from 'next/server';
 
+interface Tutor {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  subjects: string;
+  bio: string;
+  status: string;
+  custom_fields: { name: string; value: string | null }[];
+}
+
 export async function GET() {
   try {
     let page = 1;
-    const perPage = 100; // Adjust as needed
-    let allTutors: any[] = [];
+    const perPage = 100; 
+    let allTutors: Tutor[] = [];
     let hasMore = true;
 
     while (hasMore) {
