@@ -260,6 +260,7 @@ const ManageTutors = () => {
       className="w-full p-3 text-center border border-gray-300 rounded-md bg-white hover:bg-gray-50 flex items-center justify-between"
     >
       <span className="w-full text-center">Select Subjects</span>
+      
       <svg 
         className={`w-5 h-5 transform transition-transform ${isSubjectsOpen ? 'rotate-180' : ''}`}
         fill="none" 
@@ -268,7 +269,12 @@ const ManageTutors = () => {
       >
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
       </svg>
+      <button
+      onClick={() => setSelectedSubjects([])}
+      className=" ml-2 px-2 text-center border border-gray-300 rounded-md bg-white hover:bg-gray-50 flex items-center justify-between"
+    >X</button>
     </button>
+    
     
     {isSubjectsOpen && (
       <div className="absolute z-10 left-1/2 transform -translate-x-1/2 w-full mt-1 p-2 bg-white border border-gray-200 rounded-lg shadow-lg grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
