@@ -4,50 +4,68 @@ import React, { useEffect, useState } from "react";
 interface Availability {
   id: number;
   employee_id: number;
-  day: string;
-  start_time: string;
-  end_time: string;
+  day: string; // Could be numeric string (e.g., "1") or a day name (e.g., "Monday")
+  start_time: string; // Format: "HH:MM:SS"
+  end_time: string;   // Format: "HH:MM:SS"
 }
 
 interface Tutor {
   id: number;
-  first_name: string;
-  last_name: string;
+  first_name: string | null;
+  last_name: string | null;
   email: string;
   mobile_phone: string;
   address: string;
-  city: string;
+  city: string | null;
   state: string;
   zip: string;
   country: string;
-  subjects: string;
+  subjects: string | null;
   bio: string;
   status: string; // Used for filtering active tutors
   custom_fields: Array<{ name: string; value: string | null }>;
-  availabilities: Availability[];
+  availabilities: Availability[] | null; // May be null or an array
+}
+
+// New interface for Subject objects
+interface Subject {
+  id: number;
+  name: string;
+  description: string;
+  created_at: string;
+  updated_at: string;
 }
 
 const ManageTutors = () => {
+  // Tutors state
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [openedTutorId, setOpenedTutorId] = useState<number | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [isSubjectsOpen, setIsSubjectsOpen] = useState(false);
+  // Filter states
+  const [searchTerm, setSearchTerm] = useState<string>(""); // Name search
+  const [selectedDay, setSelectedDay] = useState<string>(""); // e.g. "Monday"
+  const [selectedTime, setSelectedTime] = useState<string>(""); // e.g. "16:00"
+  const [locationFilter, setLocationFilter] = useState<string>(""); // e.g. City search
 
+  // Subjects filtering:
+  const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
+  // We'll store selected subject names for filtering purposes.
+  const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+
+  // Fetch tutors on mount
   useEffect(() => {
     const fetchTutorsWithAvailabilities = async () => {
       try {
-        // Fetch tutors from the API
         const tutorsResponse = await fetch("/api/tutors");
         if (!tutorsResponse.ok) throw new Error("Failed to fetch tutors");
         const tutorsData = await tutorsResponse.json();
 
-        // Filter tutors to include only those with an active status
         const activeTutors = tutorsData.filter(
           (tutor: Tutor) => tutor.status === "Active"
         );
 
-        // For each active tutor, fetch their availabilities
         const tutorsWithAvailabilities = await Promise.all(
           activeTutors.map(async (tutor: Tutor) => {
             const availabilitiesResponse = await fetch(
@@ -56,7 +74,9 @@ const ManageTutors = () => {
             const availabilitiesData = await availabilitiesResponse.json();
             return {
               ...tutor,
-              availabilities: availabilitiesData,
+              availabilities: Array.isArray(availabilitiesData)
+                ? availabilitiesData
+                : [],
             };
           })
         );
@@ -72,12 +92,39 @@ const ManageTutors = () => {
     fetchTutorsWithAvailabilities();
   }, []);
 
+  // Fetch subjects from our own API route on mount
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await fetch("/api/subjects");
+        if (!response.ok) throw new Error("Failed to fetch subjects");
+        const data = await response.json();
+        console.log("Subjects data:", data);
+        // If the API returns an object like { subjects: [...] } adjust accordingly:
+        const subjectsArray: Subject[] = Array.isArray(data)
+          ? data
+          : data.subjects;
+        setAllSubjects(subjectsArray);
+      } catch (err: any) {
+        console.error("Error fetching subjects:", err);
+      }
+    };
+
+    fetchSubjects();
+  }, []);
+
+  // Helper: Get a custom field value from the tutor object
   const getCustomField = (tutor: Tutor, fieldName: string) => {
     const field = tutor.custom_fields.find((f) => f.name === fieldName);
-    return field?.value || "N/A";
+    return field?.value || "";
   };
 
-  const formatDay = (dayNumber: string) => {
+  // Normalize day value to a day name.
+  const formatDay = (dayValue: string) => {
+    const parsed = parseInt(dayValue);
+    if (isNaN(parsed)) {
+      return dayValue.trim();
+    }
     const days = [
       "Sunday",
       "Monday",
@@ -87,21 +134,100 @@ const ManageTutors = () => {
       "Friday",
       "Saturday",
     ];
-    return days[parseInt(dayNumber)] || "Unknown";
+    return days[parsed] || "Unknown";
   };
 
-  const formatTime = (time: string) => {
-    return time.slice(0, 5); // Converts "17:00:00" to "17:00"
-  };
+  // Format time to HH:MM
+  const formatTime = (time: string) => time.slice(0, 5);
 
   const toggleDetails = (tutorId: number) => {
     setOpenedTutorId(openedTutorId === tutorId ? null : tutorId);
   };
 
-  // Filter tutors based on the search term (checks both first and last names)
+  // Toggle subject selection
+  const toggleSubject = (subjectName: string) => {
+    if (selectedSubjects.includes(subjectName)) {
+      setSelectedSubjects(selectedSubjects.filter((s) => s !== subjectName));
+    } else {
+      setSelectedSubjects([...selectedSubjects, subjectName]);
+    }
+  };
+
+  // Filtering logic:
   const filteredTutors = tutors.filter((tutor) => {
-    const fullName = `${tutor.first_name} ${tutor.last_name}`.toLowerCase();
-    return fullName.includes(searchTerm.toLowerCase());
+    // Name filter
+    const fullName = `${tutor.first_name || ""} ${tutor.last_name || ""}`;
+    const nameMatch = fullName.toLowerCase().includes(searchTerm.toLowerCase());
+
+    // Subject filter: Check if any selected subject is in tutor.subjects or Top 3 Subjects.
+    const tutorSubjects = (tutor.subjects || "").split(',').map(s => s.trim().toLowerCase());
+    const topSubjects = getCustomField(tutor, "Top 3 Subjects").split(',').map(s => s.trim().toLowerCase());
+
+    // Check if ALL selected subjects are present
+    const subjectMatch = selectedSubjects.length > 0
+      ? selectedSubjects.every(subj => 
+          tutorSubjects.includes(subj.toLowerCase()) ||
+          topSubjects.includes(subj.toLowerCase())
+        )
+      : true;
+
+    // Availability filter
+    const availabilityMatch =
+      selectedDay && selectedTime
+        ? (Array.isArray(tutor.availabilities) ? tutor.availabilities : []).some(
+            (avail) => {
+              const availDay = formatDay(avail.day).toLowerCase();
+              if (availDay !== selectedDay.toLowerCase()) return false;
+              const start = formatTime(avail.start_time);
+              const end = formatTime(avail.end_time);
+              return selectedTime >= start && selectedTime <= end;
+            }
+          )
+        : true;
+
+    // Location filter
+    const locationMatch = locationFilter
+      ? (tutor.city || "").toLowerCase().includes(locationFilter.toLowerCase())
+      : true;
+
+    return nameMatch && subjectMatch && availabilityMatch && locationMatch;
+  });
+
+  // Sorting logic remains as before
+  const sortedTutors = filteredTutors.sort((a, b) => {
+    if (selectedDay && selectedTime) {
+      const availA = Array.isArray(a.availabilities) ? a.availabilities : [];
+      const availB = Array.isArray(b.availabilities) ? b.availabilities : [];
+      const matchA = availA.find((avail) => {
+        const availDay = formatDay(avail.day).toLowerCase();
+        if (availDay !== selectedDay.toLowerCase()) return false;
+        const start = formatTime(avail.start_time);
+        const end = formatTime(avail.end_time);
+        return selectedTime >= start && selectedTime <= end;
+      });
+      const matchB = availB.find((avail) => {
+        const availDay = formatDay(avail.day).toLowerCase();
+        if (availDay !== selectedDay.toLowerCase()) return false;
+        const start = formatTime(avail.start_time);
+        const end = formatTime(avail.end_time);
+        return selectedTime >= start && selectedTime <= end;
+      });
+      if (matchA && matchB) {
+        const startA = formatTime(matchA.start_time);
+        const startB = formatTime(matchB.start_time);
+        if (startA < startB) return -1;
+        if (startA > startB) return 1;
+      } else if (matchA) {
+        return -1;
+      } else if (matchB) {
+        return 1;
+      }
+    }
+    const nameA = `${a.first_name || ""} ${a.last_name || ""}`.toLowerCase();
+    const nameB = `${b.first_name || ""} ${b.last_name || ""}`.toLowerCase();
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
+    return 0;
   });
 
   if (loading) return <div>Loading tutors...</div>;
@@ -111,19 +237,106 @@ const ManageTutors = () => {
     <div className="p-4 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">JDN Tuition Tutors</h1>
 
-      {/* Search Bar */}
-      <div className="mb-6">
+      
+      <div className="w-full flex flex-col items-center mb-6 px-4">
+  {/* Selected Subjects */}
+  <div className="flex flex-wrap gap-2 mb-2 justify-center">
+    {selectedSubjects.map(subject => (
+      <button
+        key={subject}
+        onClick={() => toggleSubject(subject)}
+        className="px-3 py-1 rounded-full bg-[#17A4A5] text-white flex items-center text-sm"
+      >
+        {subject}
+        <span className="ml-2 text-xs">×</span>
+      </button>
+    ))}
+  </div>
+  
+  {/* Subject Selector */}
+  <div className="relative w-full max-w-2xl">
+    <button
+      onClick={() => setIsSubjectsOpen(!isSubjectsOpen)}
+      className="w-full p-3 text-center border border-gray-300 rounded-md bg-white hover:bg-gray-50 flex items-center justify-between"
+    >
+      <span className="w-full text-center">Select Subjects</span>
+      <svg 
+        className={`w-5 h-5 transform transition-transform ${isSubjectsOpen ? 'rotate-180' : ''}`}
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+      </svg>
+    </button>
+    
+    {isSubjectsOpen && (
+      <div className="absolute z-10 left-1/2 transform -translate-x-1/2 w-full mt-1 p-2 bg-white border border-gray-200 rounded-lg shadow-lg grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+        {allSubjects.map((subject) => (
+          <button
+            key={subject.id}
+            onClick={() => {
+              toggleSubject(subject.name);
+              setIsSubjectsOpen(false);
+            }}
+            className={`p-2 rounded-full text-base ${
+              selectedSubjects.includes(subject.name)
+                ? "bg-[#17A4A5] text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            } transition-colors`}
+          >
+            {subject.name}
+          </button>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+      {/* Other Filters Below Subjects */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        {/* Name Search */}
         <input
           type="text"
-          placeholder="Search tutor by name..."
-          className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+          placeholder="Search by name..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+
+        {/* Day Filter */}
+        <select
+          value={selectedDay}
+          onChange={(e) => setSelectedDay(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        >
+          <option value="">All Days</option>
+          {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(day => (
+            <option key={day} value={day}>{day}</option>
+          ))}
+        </select>
+
+        {/* Time Filter */}
+        <input
+          type="time"
+          value={selectedTime}
+          onChange={(e) => setSelectedTime(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
+        />
+
+        {/* Location Filter */}
+        <input
+          type="text"
+          placeholder="Location..."
+          value={locationFilter}
+          onChange={(e) => setLocationFilter(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
         />
       </div>
 
+      {/* Tutors List */}
       <div className="space-y-4">
-        {filteredTutors.map((tutor) => (
+        {sortedTutors.map((tutor) => (
           <div
             key={tutor.id}
             className="bg-white rounded-lg shadow-sm border p-4 cursor-pointer transition-colors hover:bg-gray-50"
@@ -133,7 +346,7 @@ const ManageTutors = () => {
               {/* Basic Info */}
               <div>
                 <p className="font-semibold">
-                  {tutor.first_name} {tutor.last_name}
+                  {tutor.first_name || ""} {tutor.last_name || ""}
                 </p>
                 <p className="text-sm text-gray-600">{tutor.email}</p>
               </div>
@@ -143,7 +356,7 @@ const ManageTutors = () => {
                 <p className="font-medium">Contact</p>
                 <p>{tutor.mobile_phone}</p>
                 <p className="mt-1 text-sm">
-                  <strong>Address:</strong> {tutor.address}, {tutor.city}
+                  <strong>Address:</strong> {tutor.address}, {tutor.city || ""}
                   <br />
                   {tutor.state} {tutor.zip}, {tutor.country}
                 </p>
@@ -158,12 +371,11 @@ const ManageTutors = () => {
               {/* Availabilities */}
               <div>
                 <p className="font-medium">Availabilities</p>
-                {tutor.availabilities?.length > 0 ? (
+                {Array.isArray(tutor.availabilities) && tutor.availabilities.length > 0 ? (
                   <ul className="list-disc pl-4 mt-2">
                     {tutor.availabilities.map((availability) => (
                       <li key={availability.id} className="text-sm">
-                        {formatDay(availability.day)}:{" "}
-                        {formatTime(availability.start_time)} -{" "}
+                        {formatDay(availability.day)}: {formatTime(availability.start_time)} -{" "}
                         {formatTime(availability.end_time)}
                       </li>
                     ))}
@@ -174,11 +386,11 @@ const ManageTutors = () => {
               </div>
             </div>
 
-            {/* Collapsible Tutor Details */}
+            {/* Collapsible Details */}
             {openedTutorId === tutor.id && (
               <div className="mt-4 pt-4 border-t">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {/* Bio Section */}
+                  {/* Bio */}
                   <div>
                     <p className="font-medium mb-2">Bio</p>
                     <p className="text-sm whitespace-pre-line">
@@ -190,16 +402,14 @@ const ManageTutors = () => {
                   <div className="space-y-2">
                     <div>
                       <p className="font-medium">All Subjects</p>
-                      <p className="text-sm">{tutor.subjects}</p>
+                      <p className="text-sm">{tutor.subjects || ""}</p>
                     </div>
-
                     <div>
                       <p className="font-medium">Teaching Experience</p>
                       <p className="text-sm">
                         {getCustomField(tutor, "Teaching Experience (Years)")} years
                       </p>
                     </div>
-
                     <div>
                       <p className="font-medium">Travel Distance</p>
                       <p className="text-sm">
@@ -213,8 +423,10 @@ const ManageTutors = () => {
           </div>
         ))}
 
-        {filteredTutors.length === 0 && (
-          <div className="text-gray-500">No tutors found matching your search.</div>
+        {sortedTutors.length === 0 && (
+          <div className="text-gray-500">
+            No tutors found matching your criteria.
+          </div>
         )}
       </div>
     </div>
