@@ -22,7 +22,7 @@ interface Tutor {
   country: string;
   subjects: string | null;
   bio: string;
-  status: string; // Used for filtering active tutors
+  status: string; //for filtering active tutors
   custom_fields: Array<{ name: string; value: string | null }>;
   availabilities: Availability[] | null; // May be null or an array
 }
@@ -105,8 +105,8 @@ const ManageTutors = () => {
           ? data
           : data.subjects;
         setAllSubjects(subjectsArray);
-      } catch (err: any) {
-        console.error("Error fetching subjects:", err);
+      } catch {
+        console.error("Error fetching subjects:");
       }
     };
 
