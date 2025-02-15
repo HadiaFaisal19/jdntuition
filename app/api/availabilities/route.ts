@@ -16,7 +16,9 @@ export async function GET(request: Request) {
     );
 
     if (!response.ok) {
-      throw new Error(`TeachWorks API error: ${response.statusText}`);
+      const errorBody = await response.text();
+  console.error(`TeachWorks API Error: ${response.status} - ${errorBody}`);
+  throw new Error(`TeachWorks API error: ${response.statusText}`);
     }
 
     const data = await response.json();

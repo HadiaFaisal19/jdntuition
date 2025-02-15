@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     apple: "/images/LOGO.png",
   },
   title: "JDN Tuition",
-  description: "Australia's Best Tutoring Website",
+  description: "Tutoring that really matters. Fostering a love for learning through personalised lessons. Journey Development Network: Building the Pillars of Success.",
 };
 
 export default function RootLayout({

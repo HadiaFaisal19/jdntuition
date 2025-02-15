@@ -68,16 +68,23 @@ const ManageTutors = () => {
 
         const tutorsWithAvailabilities = await Promise.all(
           activeTutors.map(async (tutor: Tutor) => {
-            const availabilitiesResponse = await fetch(
-              `/api/availabilities?employee_id=${tutor.id}`
-            );
-            const availabilitiesData = await availabilitiesResponse.json();
-            return {
-              ...tutor,
-              availabilities: Array.isArray(availabilitiesData)
-                ? availabilitiesData
-                : [],
-            };
+            try {
+              const availabilitiesResponse = await fetch(
+                `/api/availabilities?employee_id=${tutor.id}`
+              );
+              if (!availabilitiesResponse.ok) {
+                console.error(`Failed to fetch availabilities for tutor ${tutor.id}`);
+                return { ...tutor, availabilities: [] };
+              }
+              const availabilitiesData = await availabilitiesResponse.json();
+              return {
+                ...tutor,
+                availabilities: Array.isArray(availabilitiesData) ? availabilitiesData : [],
+              };
+            } catch (err) {
+              console.error(`Error fetching availabilities for tutor ${tutor.id}:`, err);
+              return { ...tutor, availabilities: [] };
+            }
           })
         );
 
@@ -231,11 +238,12 @@ const ManageTutors = () => {
   });
 
   if (loading) return <div>Loading tutors...</div>;
-  if (error) return <div>Error: {error}</div>;
+  //if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="p-4 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">JDN Tuition Tutors</h1>
+      <h5 className="text-xl font-bold mb-6">Tutors Count: {tutors.length}</h5>
 
       
       <div className="w-full flex flex-col items-center mb-6 px-4">
