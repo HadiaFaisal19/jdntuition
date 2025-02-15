@@ -88,8 +88,8 @@ const ManageTutors = () => {
         );
 
         setTutors(tutorsWithAvailabilities);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to fetch data");
+      } catch {
+        ("Failed to fetch data");
       } finally {
         setLoading(false);
       }
