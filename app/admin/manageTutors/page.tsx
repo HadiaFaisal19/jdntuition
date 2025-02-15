@@ -89,7 +89,7 @@ const ManageTutors = () => {
 
         setTutors(tutorsWithAvailabilities);
       } catch {
-        ("Failed to fetch data");
+        console.log("Failed to fetch data");
       } finally {
         setLoading(false);
       }
