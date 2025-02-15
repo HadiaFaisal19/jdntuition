@@ -40,7 +40,6 @@ const ManageTutors = () => {
   // Tutors state
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [openedTutorId, setOpenedTutorId] = useState<number | null>(null);
   const [isSubjectsOpen, setIsSubjectsOpen] = useState(false);
   // Filter states
