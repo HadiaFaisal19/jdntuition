@@ -1,4 +1,5 @@
 "use client";
+import TutorMap from "@/components/GoogleMap/TutorMap/TutorMap";
 import React, { useEffect, useState } from "react";
 
 interface Availability {
@@ -53,10 +54,52 @@ const ManageTutors = () => {
   // We'll store selected subject names for filtering purposes.
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
 
+  const [refreshingAvailabilities, setRefreshingAvailabilities] = useState<number[]>([]);
+
+  const [autoCheckedTutors, setAutoCheckedTutors] = useState<number[]>([]);
+
+//function to handle availability refresh
+  const refreshAvailabilities = async (tutorId: number) => {
+    try {
+      setRefreshingAvailabilities(prev => [...prev, tutorId]);
+      
+      const response = await fetch(`/api/availabilities?employee_id=${tutorId}`);
+      if (!response.ok) throw new Error("Failed to fetch availabilities");
+      
+      const data = await response.json();
+      const newAvailabilities = Array.isArray(data) ? data : [];
+
+      setTutors(prevTutors => prevTutors.map(tutor => 
+        tutor.id === tutorId ? { ...tutor, availabilities: newAvailabilities } : tutor
+      ));
+    } catch (error) {
+      console.error(`Error refreshing availabilities for tutor ${tutorId}:`, error);
+    } finally {
+      setRefreshingAvailabilities(prev => prev.filter(id => id !== tutorId));
+    }
+  };
+
+  useEffect(() => {
+    // Check tutors with empty availabilities that haven't been auto-checked yet
+    tutors.forEach(tutor => {
+      if (
+        (tutor.availabilities === null || tutor.availabilities.length === 0) &&
+        !autoCheckedTutors.includes(tutor.id)
+      ) {
+        refreshAvailabilities(tutor.id);
+        setAutoCheckedTutors(prev => [...prev, tutor.id]);
+      }
+    });
+  }, [tutors]);
+
+
   // Fetch tutors on mount
   useEffect(() => {
     const fetchTutorsWithAvailabilities = async () => {
       try {
+
+        setAutoCheckedTutors([]);
+
         const tutorsResponse = await fetch("/api/tutors");
         if (!tutorsResponse.ok) throw new Error("Failed to fetch tutors");
         const tutorsData = await tutorsResponse.json();
@@ -239,6 +282,44 @@ const ManageTutors = () => {
   if (loading) return <div>Loading tutors...</div>;
   //if (error) return <div>Error: {error}</div>;
 
+
+  const fetchTutorsWithLocations = async () => {
+    try {
+      const tutorsResponse = await fetch("/api/tutors");
+      if (!tutorsResponse.ok) throw new Error("Failed to fetch tutors");
+      const tutorsData: Tutor[] = await tutorsResponse.json();
+  
+      const activeTutors = tutorsData.filter(tutor => tutor.status === "Active");
+  
+      // If latitude and longitude are not provided, use Google Geocoding API
+      const tutorsWithLocations = await Promise.all(
+        activeTutors.map(async tutor => {
+          if (tutor.address && tutor.city && tutor.zip && tutor.country) {
+            // Construct the full address
+            const fullAddress = `${tutor.address}, ${tutor.city}, ${tutor.state} ${tutor.zip}, ${tutor.country}`;
+  
+            // Fetch geolocation using Google Maps API
+            const response = await fetch(
+              `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=AIzaSyBBeBpH4QYmOQJ11Ew1rzt5Q1dE6u9ui5Y"`
+            );
+  
+            const data = await response.json();
+            if (data.status === "OK") {
+              const { lat, lng } = data.results[0].geometry.location;
+              return { ...tutor, lat, lng };
+            }
+          }
+          return { ...tutor, lat: null, lng: null };
+        })
+      );
+  
+      setTutors(tutorsWithLocations);
+    } catch (error) {
+      console.error("Error fetching tutors:", error);
+    }
+  };
+  
+
   return (
     <div className="p-4 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">JDN Tuition Tutors</h1>
@@ -347,6 +428,12 @@ const ManageTutors = () => {
         />
       </div>
 
+      {/* Map Section */}
+    {/* <div className="mb-6">
+      <h2 className="text-lg font-semibold">Tutor Locations</h2>
+      <TutorMap tutors={tutors} />
+    </div> */}
+
       {/* Tutors List */}
       <div className="space-y-4">
         {sortedTutors.map((tutor) => (
@@ -383,20 +470,34 @@ const ManageTutors = () => {
 
               {/* Availabilities */}
               <div>
-                <p className="font-medium">Availabilities</p>
-                {Array.isArray(tutor.availabilities) && tutor.availabilities.length > 0 ? (
-                  <ul className="list-disc pl-4 mt-2">
-                    {tutor.availabilities.map((availability) => (
-                      <li key={availability.id} className="text-sm">
-                        {formatDay(availability.day)}: {formatTime(availability.start_time)} -{" "}
-                        {formatTime(availability.end_time)}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-sm text-gray-500 mt-2">No availability set</p>
-                )}
-              </div>
+    <p className="font-medium">Availabilities</p>
+    {Array.isArray(tutor.availabilities) && tutor.availabilities.length > 0 ? (
+      <ul className="list-disc pl-4 mt-2">
+        {tutor.availabilities.map((availability) => (
+          <li key={availability.id} className="text-sm">
+            {formatDay(availability.day)}: {formatTime(availability.start_time)} -{" "}
+            {formatTime(availability.end_time)}
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <div className="mt-2">
+        <p className="text-sm text-gray-500 mb-2">No availability set</p>
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent card toggle
+            refreshAvailabilities(tutor.id);
+          }}
+          disabled={refreshingAvailabilities.includes(tutor.id)}
+          className="text-sm text-[#17A4A5] hover:text-[#128587] disabled:text-gray-400 disabled:cursor-not-allowed"
+        >
+          {refreshingAvailabilities.includes(tutor.id) ? 
+            'Checking Availability...' : 
+            'Check Availability'}
+        </button>
+      </div>
+    )}
+  </div>
             </div>
 
             {/* Collapsible Details */}
