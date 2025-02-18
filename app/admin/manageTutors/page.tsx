@@ -1,5 +1,4 @@
 "use client";
-import TutorMap from "@/components/GoogleMap/TutorMap/TutorMap";
 import React, { useEffect, useState } from "react";
 
 interface Availability {
@@ -281,44 +280,6 @@ const ManageTutors = () => {
 
   if (loading) return <div>Loading tutors...</div>;
   //if (error) return <div>Error: {error}</div>;
-
-
-  const fetchTutorsWithLocations = async () => {
-    try {
-      const tutorsResponse = await fetch("/api/tutors");
-      if (!tutorsResponse.ok) throw new Error("Failed to fetch tutors");
-      const tutorsData: Tutor[] = await tutorsResponse.json();
-  
-      const activeTutors = tutorsData.filter(tutor => tutor.status === "Active");
-  
-      // If latitude and longitude are not provided, use Google Geocoding API
-      const tutorsWithLocations = await Promise.all(
-        activeTutors.map(async tutor => {
-          if (tutor.address && tutor.city && tutor.zip && tutor.country) {
-            // Construct the full address
-            const fullAddress = `${tutor.address}, ${tutor.city}, ${tutor.state} ${tutor.zip}, ${tutor.country}`;
-  
-            // Fetch geolocation using Google Maps API
-            const response = await fetch(
-              `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fullAddress)}&key=AIzaSyBBeBpH4QYmOQJ11Ew1rzt5Q1dE6u9ui5Y"`
-            );
-  
-            const data = await response.json();
-            if (data.status === "OK") {
-              const { lat, lng } = data.results[0].geometry.location;
-              return { ...tutor, lat, lng };
-            }
-          }
-          return { ...tutor, lat: null, lng: null };
-        })
-      );
-  
-      setTutors(tutorsWithLocations);
-    } catch (error) {
-      console.error("Error fetching tutors:", error);
-    }
-  };
-  
 
   return (
     <div className="p-4 min-h-screen">
