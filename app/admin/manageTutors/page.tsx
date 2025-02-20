@@ -7,7 +7,8 @@ interface Availability {
   employee_id: number;
   day: string; // Could be numeric string (e.g., "1") or a day name (e.g., "Monday")
   start_time: string; // Format: "HH:MM:SS"
-  end_time: string;   // Format: "HH:MM:SS"
+  end_time: string;
+  map:string;   // Format: "HH:MM:SS"
 }
 
 interface Tutor {
