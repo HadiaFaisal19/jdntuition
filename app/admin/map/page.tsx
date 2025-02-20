@@ -20,7 +20,7 @@ const MapPage = () => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
-    libraries: ['places'],
+     libraries: ['places', 'maps'],
   });
 
   const handleOriginPlaceChanged = () => {
