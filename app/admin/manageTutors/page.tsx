@@ -494,7 +494,7 @@ const filteredTutors = tutors.filter((tutor) => {
       mapContainerStyle={mapContainerStyle}
       zoom={10}
       center={defaultCenter}
-      onLoad={(mapInstance) => setGoogleMap(mapInstance)}
+      onLoad={(googleMap) => setGoogleMap(googleMap)}
     >
       {sortedTutors  // Changed from tutors to sortedTutors
         .filter(tutor => coordinates[tutor.id])
