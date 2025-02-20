@@ -8,7 +8,6 @@ interface Availability {
   day: string; // Could be numeric string (e.g., "1") or a day name (e.g., "Monday")
   start_time: string; // Format: "HH:MM:SS"
   end_time: string;
-  map:string;   // Format: "HH:MM:SS"
 }
 
 interface Tutor {
@@ -72,7 +71,7 @@ const ManageTutors = () => {
   const [coordinates, setCoordinates] = useState<{ [key: number]: google.maps.LatLngLiteral }>({});
   const [geocodedTutors, setGeocodedTutors] = useState<Set<number>>(new Set());
 
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+   const [setMap] = useState<google.maps.Map | null>(null);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -174,7 +173,7 @@ const ManageTutors = () => {
         setAutoCheckedTutors(prev => [...prev, tutor.id]);
       }
     });
-  }, [tutors]);
+  }, [tutors, autoCheckedTutors]);
 
 
   // Fetch tutors on mount
