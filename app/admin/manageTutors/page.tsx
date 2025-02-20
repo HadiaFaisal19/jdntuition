@@ -71,9 +71,7 @@ const ManageTutors = () => {
   const [coordinates, setCoordinates] = useState<{ [key: number]: google.maps.LatLngLiteral }>({});
   const [geocodedTutors, setGeocodedTutors] = useState<Set<number>>(new Set());
 
-   const [_googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
-
-
+  const [_, setGoogleMap] = useState<google.maps.Map | null>(null);
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -494,7 +492,7 @@ const filteredTutors = tutors.filter((tutor) => {
       mapContainerStyle={mapContainerStyle}
       zoom={10}
       center={defaultCenter}
-      onLoad={(googleMap) => setGoogleMap(googleMap)}
+      onLoad={(map) => setGoogleMap(map)}
     >
       {sortedTutors  // Changed from tutors to sortedTutors
         .filter(tutor => coordinates[tutor.id])
