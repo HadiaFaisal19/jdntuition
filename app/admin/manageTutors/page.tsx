@@ -71,7 +71,7 @@ const ManageTutors = () => {
   const [coordinates, setCoordinates] = useState<{ [key: number]: google.maps.LatLngLiteral }>({});
   const [geocodedTutors, setGeocodedTutors] = useState<Set<number>>(new Set());
 
-   const [googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
+   const [_googleMap, setGoogleMap] = useState<google.maps.Map | null>(null);
 
 
 
