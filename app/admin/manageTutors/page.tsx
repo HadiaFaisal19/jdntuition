@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 
 interface Availability {
   id: number;
@@ -36,6 +37,16 @@ interface Subject {
   updated_at: string;
 }
 
+const mapContainerStyle = {
+  width: '100%',
+  height: '400px',
+};
+
+const defaultCenter = {
+  lat: -33.8688,
+  lng: 151.2093
+};
+
 const ManageTutors = () => {
   // Tutors state
   const [tutors, setTutors] = useState<Tutor[]>([]);
@@ -56,6 +67,79 @@ const ManageTutors = () => {
   const [refreshingAvailabilities, setRefreshingAvailabilities] = useState<number[]>([]);
 
   const [autoCheckedTutors, setAutoCheckedTutors] = useState<number[]>([]);
+
+  const [coordinates, setCoordinates] = useState<{ [key: number]: google.maps.LatLngLiteral }>({});
+  const [geocodedTutors, setGeocodedTutors] = useState<Set<number>>(new Set());
+
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+  });
+
+  useEffect(() => {
+    if (isLoaded && tutors.length > 0) {
+      const geocoder = new window.google.maps.Geocoder();
+      
+      tutors.forEach((tutor) => {
+        if (geocodedTutors.has(tutor.id)) return;
+  
+        // Build address components with validation
+        const addressComponents = [
+          tutor.address,
+          tutor.city,
+          tutor.state,
+          tutor.zip,
+          tutor.country
+        ].filter(component => 
+          component !== null && component.trim() !== ''
+        );
+  
+        // Skip tutors with no address information
+        if (addressComponents.length === 0) {
+          console.warn(`Skipping tutor ${tutor.id} - No address information`);
+          setGeocodedTutors(prev => new Set([...prev, tutor.id]));
+          return;
+        }
+  
+        const fullAddress = addressComponents.join(', ');
+  
+        // Validate address format before geocoding
+        if (!fullAddress || fullAddress.trim().length < 5) {
+          console.warn(`Invalid address for tutor ${tutor.id}: ${fullAddress}`);
+          setGeocodedTutors(prev => new Set([...prev, tutor.id]));
+          return;
+        }
+  
+        geocoder.geocode({ address: fullAddress }, (results, status) => {
+          if (status === 'OK' && results?.[0]?.geometry?.location) {
+            const lat = results[0].geometry.location.lat();
+            const lng = results[0].geometry.location.lng();
+            setCoordinates(prev => ({ 
+              ...prev, 
+              [tutor.id]: { lat, lng } 
+            }));
+            setGeocodedTutors(prev => new Set([...prev, tutor.id]));
+          } else {
+            console.error(`Geocode failed for tutor ${tutor.id}:`, {
+              status,
+              fullAddress,
+              components: {
+                address: tutor.address,
+                city: tutor.city,
+                state: tutor.state,
+                zip: tutor.zip,
+                country: tutor.country
+              }
+            });
+            // Mark as geocoded to prevent retries
+            setGeocodedTutors(prev => new Set([...prev, tutor.id]));
+          }
+        });
+      });
+    }
+  }, [tutors, isLoaded, geocodedTutors]);
 
 //function to handle availability refresh
   const refreshAvailabilities = async (tutorId: number) => {
@@ -201,45 +285,57 @@ const ManageTutors = () => {
     }
   };
 
-  // Filtering logic:
-  const filteredTutors = tutors.filter((tutor) => {
-    // Name filter
-    const fullName = `${tutor.first_name || ""} ${tutor.last_name || ""}`;
-    const nameMatch = fullName.toLowerCase().includes(searchTerm.toLowerCase());
+// Filtering logic:
+const filteredTutors = tutors.filter((tutor) => {
+  // Name filter
+  const fullName = `${tutor.first_name || ""} ${tutor.last_name || ""}`;
+  const nameMatch = fullName.toLowerCase().includes(searchTerm.toLowerCase());
 
-    // Subject filter: Check if any selected subject is in tutor.subjects or Top 3 Subjects.
-    const tutorSubjects = (tutor.subjects || "").split(',').map(s => s.trim().toLowerCase());
-    const topSubjects = getCustomField(tutor, "Top 3 Subjects").split(',').map(s => s.trim().toLowerCase());
+  // Subject filter: Check if any selected subject is in tutor.subjects or Top 3 Subjects.
+  const tutorSubjects = (tutor.subjects || "").split(',').map(s => s.trim().toLowerCase());
+  const topSubjects = getCustomField(tutor, "Top 3 Subjects").split(',').map(s => s.trim().toLowerCase());
 
-    // Check if ALL selected subjects are present
-    const subjectMatch = selectedSubjects.length > 0
-      ? selectedSubjects.every(subj => 
-          tutorSubjects.includes(subj.toLowerCase()) ||
-          topSubjects.includes(subj.toLowerCase())
+  // Check if ALL selected subjects are present
+  const subjectMatch = selectedSubjects.length > 0
+    ? selectedSubjects.every(subj => 
+        tutorSubjects.includes(subj.toLowerCase()) ||
+        topSubjects.includes(subj.toLowerCase())
+      )
+    : true;
+
+  // Availability filter
+  const availabilityMatch =
+    selectedDay && selectedTime
+      ? (Array.isArray(tutor.availabilities) ? tutor.availabilities : []).some(
+          (avail) => {
+            const availDay = formatDay(avail.day).toLowerCase();
+            if (availDay !== selectedDay.toLowerCase()) return false;
+            const start = formatTime(avail.start_time);
+            const end = formatTime(avail.end_time);
+            return selectedTime >= start && selectedTime <= end;
+          }
         )
       : true;
 
-    // Availability filter
-    const availabilityMatch =
-      selectedDay && selectedTime
-        ? (Array.isArray(tutor.availabilities) ? tutor.availabilities : []).some(
-            (avail) => {
-              const availDay = formatDay(avail.day).toLowerCase();
-              if (availDay !== selectedDay.toLowerCase()) return false;
-              const start = formatTime(avail.start_time);
-              const end = formatTime(avail.end_time);
-              return selectedTime >= start && selectedTime <= end;
-            }
-          )
-        : true;
+  // Location filter (Updated to match full address)
+  const fullAddress = [
+    tutor.address, 
+    tutor.city, 
+    tutor.state, 
+    tutor.zip, 
+    tutor.country
+  ]
+  .filter(component => component) // Remove empty values
+  .join(', ') 
+  .toLowerCase(); 
 
-    // Location filter
-    const locationMatch = locationFilter
-      ? (tutor.city || "").toLowerCase().includes(locationFilter.toLowerCase())
-      : true;
+  const locationMatch = locationFilter
+    ? fullAddress.includes(locationFilter.toLowerCase())
+    : true;
 
-    return nameMatch && subjectMatch && availabilityMatch && locationMatch;
-  });
+  return nameMatch && subjectMatch && availabilityMatch && locationMatch;
+});
+
 
   // Sorting logic remains as before
   const sortedTutors = filteredTutors.sort((a, b) => {
@@ -389,11 +485,34 @@ const ManageTutors = () => {
         />
       </div>
 
-      {/* Map Section */}
-    {/* <div className="mb-6">
-      <h2 className="text-lg font-semibold">Tutor Locations</h2>
-      <TutorMap tutors={tutors} />
-    </div> */}
+{/* Google Map Section */}
+<div className="mb-6">
+  {isLoaded ? (
+    <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      zoom={10}
+      center={defaultCenter}
+      onLoad={map => setMap(map)}
+    >
+      {sortedTutors  // Changed from tutors to sortedTutors
+        .filter(tutor => coordinates[tutor.id])
+        .map((tutor) => (
+          <Marker
+            key={tutor.id}
+            position={coordinates[tutor.id]}
+            title={`${tutor.first_name || ''} ${tutor.last_name || ''}`.trim()}
+          />
+        ))}
+    </GoogleMap>
+  ) : (
+    <div>Loading map...</div>
+  )}
+  <div className="mt-2 text-sm text-gray-500">
+    Showing {
+      sortedTutors.filter(tutor => coordinates[tutor.id]).length  // Changed to use sortedTutors
+    } tutors with valid locations matching filters
+  </div>
+</div>
 
       {/* Tutors List */}
       <div className="space-y-4">
