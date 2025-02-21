@@ -1,5 +1,5 @@
 "use client";
-import { useJsApiLoader, GoogleMap, Marker, Polyline, Autocomplete } from '@react-google-maps/api';
+import { GoogleMap, Marker, Polyline, Autocomplete } from '@react-google-maps/api';
 import { useState, useRef } from 'react';
 
 interface Location {
@@ -17,11 +17,11 @@ const MapPage = () => {
   const originAutocomplete = useRef<google.maps.places.Autocomplete>();
   const destAutocomplete = useRef<google.maps.places.Autocomplete>();
 
-  const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
-     libraries: ['places', 'maps']
-  });
+//   const { isLoaded } = useJsApiLoader({
+//     id: 'google-map-script',
+//     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+//      libraries: ['places', 'maps']
+//   });
 
   const handleOriginPlaceChanged = () => {
     if (originAutocomplete.current) {
