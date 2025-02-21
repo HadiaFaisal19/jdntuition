@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Blogs from "@/components/Admin/Blogs/Blogs";
 import RegisterUser from "../registerUser/page";
 import ManageTutors from "../manageTutors/page";
-import MapPage from "../map/page";
 
 const AdminDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("Manage Blogs");
@@ -37,8 +36,8 @@ const AdminDashboard = () => {
         return <RegisterUser />;
       case "Manage Tutors":
         return <ManageTutors />;
-      case "Manage Maps":
-        return <MapPage />;
+      // case "Manage Maps":
+      //   return <MapPage />;
       
       default:
         return <div>Select an option from the sidebar.</div>;
@@ -77,14 +76,14 @@ const AdminDashboard = () => {
               onClick={() => setActiveMenu("Manage Tutors")}>
               Manage Tutors
             </li>
-            <li
+            {/* <li
                className={`cursor-pointer font-bold ${
                 activeMenu === "Manage Maps" ? "text-black" : ""
               }`}
               onClick={() => setActiveMenu("Manage Maps")}>
               Manage Maps
 
-            </li>
+            </li> */}
             <li
               className="cursor-pointer font-bold text-white"
               onClick={() => {

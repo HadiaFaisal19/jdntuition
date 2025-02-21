@@ -1,12 +1,12 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import React, { useEffect, useState, useRef } from "react";
+import { GoogleMap, Marker, useJsApiLoader, Autocomplete } from '@react-google-maps/api';
 
 interface Availability {
   id: number;
   employee_id: number;
-  day: string; // Could be numeric string (e.g., "1") or a day name (e.g., "Monday")
-  start_time: string; // Format: "HH:MM:SS"
+  day: string;
+  start_time: string;
   end_time: string;
 }
 
@@ -23,12 +23,11 @@ interface Tutor {
   country: string;
   subjects: string | null;
   bio: string;
-  status: string; //for filtering active tutors
+  status: string;
   custom_fields: Array<{ name: string; value: string | null }>;
-  availabilities: Availability[] | null; // May be null or an array
+  availabilities: Availability[] | null;
 }
 
-// New interface for Subject objects
 interface Subject {
   id: number;
   name: string;
@@ -48,35 +47,27 @@ const defaultCenter = {
 };
 
 const ManageTutors = () => {
-  // Tutors state
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState(true);
   const [openedTutorId, setOpenedTutorId] = useState<number | null>(null);
   const [isSubjectsOpen, setIsSubjectsOpen] = useState(false);
-  // Filter states
-  const [searchTerm, setSearchTerm] = useState<string>(""); // Name search
-  const [selectedDay, setSelectedDay] = useState<string>(""); // e.g. "Monday"
-  const [selectedTime, setSelectedTime] = useState<string>(""); // e.g. "16:00"
-  const [locationFilter, setLocationFilter] = useState<string>(""); // e.g. City search
-
-  // Subjects filtering:
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [selectedDay, setSelectedDay] = useState<string>("");
+  const [selectedTime, setSelectedTime] = useState<string>("");
   const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
-  // We'll store selected subject names for filtering purposes.
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
-
   const [refreshingAvailabilities, setRefreshingAvailabilities] = useState<number[]>([]);
-
   const [autoCheckedTutors, setAutoCheckedTutors] = useState<number[]>([]);
-
   const [coordinates, setCoordinates] = useState<{ [key: number]: google.maps.LatLngLiteral }>({});
   const [geocodedTutors, setGeocodedTutors] = useState<Set<number>>(new Set());
-
-  const [,setGoogleMap] = useState<google.maps.Map | null>(null);
+  const [searchLocation, setSearchLocation] = useState<google.maps.LatLngLiteral | null>(null);
+  const [distances, setDistances] = useState<{ [key: number]: number }>({});
+  const searchAutocomplete = useRef<google.maps.places.Autocomplete>();
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
-    libraries: ['places', 'maps']
+    libraries: ['places', 'maps','geometry']
   });
 
   useEffect(() => {
@@ -85,56 +76,33 @@ const ManageTutors = () => {
       
       tutors.forEach((tutor) => {
         if (geocodedTutors.has(tutor.id)) return;
-  
-        // Build address components with validation
+
         const addressComponents = [
           tutor.address,
           tutor.city,
           tutor.state,
           tutor.zip,
           tutor.country
-        ].filter(component => 
-          component !== null && component.trim() !== ''
-        );
-  
-        // Skip tutors with no address information
+        ].filter(component => component !== null && component.trim() !== '');
+
         if (addressComponents.length === 0) {
-          console.warn(`Skipping tutor ${tutor.id} - No address information`);
           setGeocodedTutors(prev => new Set([...prev, tutor.id]));
           return;
         }
-  
+
         const fullAddress = addressComponents.join(', ');
-  
-        // Validate address format before geocoding
         if (!fullAddress || fullAddress.trim().length < 5) {
-          console.warn(`Invalid address for tutor ${tutor.id}: ${fullAddress}`);
           setGeocodedTutors(prev => new Set([...prev, tutor.id]));
           return;
         }
-  
+
         geocoder.geocode({ address: fullAddress }, (results, status) => {
           if (status === 'OK' && results?.[0]?.geometry?.location) {
             const lat = results[0].geometry.location.lat();
             const lng = results[0].geometry.location.lng();
-            setCoordinates(prev => ({ 
-              ...prev, 
-              [tutor.id]: { lat, lng } 
-            }));
+            setCoordinates(prev => ({ ...prev, [tutor.id]: { lat, lng } }));
             setGeocodedTutors(prev => new Set([...prev, tutor.id]));
           } else {
-            console.error(`Geocode failed for tutor ${tutor.id}:`, {
-              status,
-              fullAddress,
-              components: {
-                address: tutor.address,
-                city: tutor.city,
-                state: tutor.state,
-                zip: tutor.zip,
-                country: tutor.country
-              }
-            });
-            // Mark as geocoded to prevent retries
             setGeocodedTutors(prev => new Set([...prev, tutor.id]));
           }
         });
@@ -142,17 +110,43 @@ const ManageTutors = () => {
     }
   }, [tutors, isLoaded, geocodedTutors]);
 
-//function to handle availability refresh
+  const handleSearchLocationChanged = () => {
+    if (searchAutocomplete.current) {
+      const place = searchAutocomplete.current.getPlace();
+      if (place.geometry?.location) {
+        setSearchLocation({
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        });
+      }else {
+        setSearchLocation(null);
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!searchLocation || !isLoaded) return;
+
+    const newDistances: { [key: number]: number } = {};
+    tutors.forEach(tutor => {
+      const tutorCoord = coordinates[tutor.id];
+      if (tutorCoord) {
+        newDistances[tutor.id] = window.google.maps.geometry.spherical.computeDistanceBetween(
+          new window.google.maps.LatLng(tutorCoord.lat, tutorCoord.lng),
+          new window.google.maps.LatLng(searchLocation.lat, searchLocation.lng)
+        );
+      }
+    });
+    setDistances(newDistances);
+  }, [searchLocation, coordinates, tutors, isLoaded]);
+
   const refreshAvailabilities = async (tutorId: number) => {
     try {
       setRefreshingAvailabilities(prev => [...prev, tutorId]);
-      
       const response = await fetch(`/api/availabilities?employee_id=${tutorId}`);
       if (!response.ok) throw new Error("Failed to fetch availabilities");
-      
       const data = await response.json();
       const newAvailabilities = Array.isArray(data) ? data : [];
-
       setTutors(prevTutors => prevTutors.map(tutor => 
         tutor.id === tutorId ? { ...tutor, availabilities: newAvailabilities } : tutor
       ));
@@ -164,384 +158,247 @@ const ManageTutors = () => {
   };
 
   useEffect(() => {
-    // Check tutors with empty availabilities that haven't been auto-checked yet
     tutors.forEach(tutor => {
-      if (
-        (tutor.availabilities === null || tutor.availabilities.length === 0) &&
-        !autoCheckedTutors.includes(tutor.id)
-      ) {
+      if ((tutor.availabilities === null || tutor.availabilities.length === 0) &&
+        !autoCheckedTutors.includes(tutor.id)) {
         refreshAvailabilities(tutor.id);
         setAutoCheckedTutors(prev => [...prev, tutor.id]);
       }
     });
   }, [tutors, autoCheckedTutors]);
 
-
-  // Fetch tutors on mount
   useEffect(() => {
     const fetchTutorsWithAvailabilities = async () => {
       try {
-
         setAutoCheckedTutors([]);
-
         const tutorsResponse = await fetch("/api/tutors");
         if (!tutorsResponse.ok) throw new Error("Failed to fetch tutors");
         const tutorsData = await tutorsResponse.json();
-
-        const activeTutors = tutorsData.filter(
-          (tutor: Tutor) => tutor.status === "Active"
-        );
-
+        const activeTutors = tutorsData.filter((tutor: Tutor) => tutor.status === "Active");
         const tutorsWithAvailabilities = await Promise.all(
           activeTutors.map(async (tutor: Tutor) => {
             try {
-              const availabilitiesResponse = await fetch(
-                `/api/availabilities?employee_id=${tutor.id}`
-              );
-              if (!availabilitiesResponse.ok) {
-                console.error(`Failed to fetch availabilities for tutor ${tutor.id}`);
-                return { ...tutor, availabilities: [] };
-              }
-              const availabilitiesData = await availabilitiesResponse.json();
-              return {
-                ...tutor,
-                availabilities: Array.isArray(availabilitiesData) ? availabilitiesData : [],
-              };
+              const availabilitiesResponse = await fetch(`/api/availabilities?employee_id=${tutor.id}`);
+              const availabilitiesData = availabilitiesResponse.ok ? await availabilitiesResponse.json() : [];
+              return { ...tutor, availabilities: Array.isArray(availabilitiesData) ? availabilitiesData : [] };
             } catch (err) {
-              console.error(`Error fetching availabilities for tutor ${tutor.id}:`, err);
               return { ...tutor, availabilities: [] };
             }
           })
         );
-
         setTutors(tutorsWithAvailabilities);
-      } catch {
-        console.log("Failed to fetch data");
       } finally {
         setLoading(false);
       }
     };
-
     fetchTutorsWithAvailabilities();
   }, []);
 
-  // Fetch subjects from our own API route on mount
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
         const response = await fetch("/api/subjects");
         if (!response.ok) throw new Error("Failed to fetch subjects");
         const data = await response.json();
-        console.log("Subjects data:", data);
-        // If the API returns an object like { subjects: [...] } adjust accordingly:
-        const subjectsArray: Subject[] = Array.isArray(data)
-          ? data
-          : data.subjects;
+        const subjectsArray: Subject[] = Array.isArray(data) ? data : data.subjects;
         setAllSubjects(subjectsArray);
       } catch {
         console.error("Error fetching subjects:");
       }
     };
-
     fetchSubjects();
   }, []);
 
-  // Helper: Get a custom field value from the tutor object
   const getCustomField = (tutor: Tutor, fieldName: string) => {
-    const field = tutor.custom_fields.find((f) => f.name === fieldName);
-    return field?.value || "";
+    return tutor.custom_fields.find((f) => f.name === fieldName)?.value || "";
   };
 
-  // Normalize day value to a day name.
   const formatDay = (dayValue: string) => {
     const parsed = parseInt(dayValue);
-    if (isNaN(parsed)) {
-      return dayValue.trim();
-    }
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
-    return days[parsed] || "Unknown";
+    const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+    return isNaN(parsed) ? dayValue.trim() : days[parsed] || "Unknown";
   };
 
-  // Format time to HH:MM
   const formatTime = (time: string) => time.slice(0, 5);
 
   const toggleDetails = (tutorId: number) => {
     setOpenedTutorId(openedTutorId === tutorId ? null : tutorId);
   };
 
-  // Toggle subject selection
   const toggleSubject = (subjectName: string) => {
-    if (selectedSubjects.includes(subjectName)) {
-      setSelectedSubjects(selectedSubjects.filter((s) => s !== subjectName));
-    } else {
-      setSelectedSubjects([...selectedSubjects, subjectName]);
-    }
+    setSelectedSubjects(prev => 
+      prev.includes(subjectName) 
+        ? prev.filter(s => s !== subjectName) 
+        : [...prev, subjectName]
+    );
   };
 
-// Filtering logic:
-const filteredTutors = tutors.filter((tutor) => {
-  // Name filter
-  const fullName = `${tutor.first_name || ""} ${tutor.last_name || ""}`;
-  const nameMatch = fullName.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredTutors = tutors.filter((tutor) => {
+    const fullName = `${tutor.first_name || ""} ${tutor.last_name || ""}`.toLowerCase();
+    const nameMatch = fullName.includes(searchTerm.toLowerCase());
+    const tutorSubjects = (tutor.subjects || "").split(',').map(s => s.trim().toLowerCase());
+    const topSubjects = getCustomField(tutor, "Top 3 Subjects").split(',').map(s => s.trim().toLowerCase());
+    const subjectMatch = selectedSubjects.length === 0 || selectedSubjects.every(subj => 
+      tutorSubjects.includes(subj.toLowerCase()) || topSubjects.includes(subj.toLowerCase())
+    );
+    const availabilityMatch = !(selectedDay && selectedTime) || 
+      (tutor.availabilities || []).some(avail => {
+        const availDay = formatDay(avail.day).toLowerCase();
+        const start = formatTime(avail.start_time);
+        const end = formatTime(avail.end_time);
+        return availDay === selectedDay.toLowerCase() && selectedTime >= start && selectedTime <= end;
+      });
+    return nameMatch && subjectMatch && availabilityMatch;
+  });
 
-  // Subject filter: Check if any selected subject is in tutor.subjects or Top 3 Subjects.
-  const tutorSubjects = (tutor.subjects || "").split(',').map(s => s.trim().toLowerCase());
-  const topSubjects = getCustomField(tutor, "Top 3 Subjects").split(',').map(s => s.trim().toLowerCase());
-
-  // Check if ALL selected subjects are present
-  const subjectMatch = selectedSubjects.length > 0
-    ? selectedSubjects.every(subj => 
-        tutorSubjects.includes(subj.toLowerCase()) ||
-        topSubjects.includes(subj.toLowerCase())
-      )
-    : true;
-
-  // Availability filter
-  const availabilityMatch =
-    selectedDay && selectedTime
-      ? (Array.isArray(tutor.availabilities) ? tutor.availabilities : []).some(
-          (avail) => {
-            const availDay = formatDay(avail.day).toLowerCase();
-            if (availDay !== selectedDay.toLowerCase()) return false;
-            const start = formatTime(avail.start_time);
-            const end = formatTime(avail.end_time);
-            return selectedTime >= start && selectedTime <= end;
-          }
-        )
-      : true;
-
-  // Location filter (Updated to match full address)
-  const fullAddress = [
-    tutor.address, 
-    tutor.city, 
-    tutor.state, 
-    tutor.zip, 
-    tutor.country
-  ]
-  .filter(component => component) // Remove empty values
-  .join(', ') 
-  .toLowerCase(); 
-
-  const locationMatch = locationFilter
-    ? fullAddress.includes(locationFilter.toLowerCase())
-    : true;
-
-  return nameMatch && subjectMatch && availabilityMatch && locationMatch;
-});
-
-
-  // Sorting logic remains as before
   const sortedTutors = filteredTutors.sort((a, b) => {
+    if (searchLocation) {
+      const distanceA = distances[a.id] || Infinity;
+      const distanceB = distances[b.id] || Infinity;
+      if (distanceA < distanceB) return -1;
+      if (distanceA > distanceB) return 1;
+    }
     if (selectedDay && selectedTime) {
-      const availA = Array.isArray(a.availabilities) ? a.availabilities : [];
-      const availB = Array.isArray(b.availabilities) ? b.availabilities : [];
-      const matchA = availA.find((avail) => {
-        const availDay = formatDay(avail.day).toLowerCase();
-        if (availDay !== selectedDay.toLowerCase()) return false;
-        const start = formatTime(avail.start_time);
-        const end = formatTime(avail.end_time);
-        return selectedTime >= start && selectedTime <= end;
-      });
-      const matchB = availB.find((avail) => {
-        const availDay = formatDay(avail.day).toLowerCase();
-        if (availDay !== selectedDay.toLowerCase()) return false;
-        const start = formatTime(avail.start_time);
-        const end = formatTime(avail.end_time);
-        return selectedTime >= start && selectedTime <= end;
-      });
-      if (matchA && matchB) {
-        const startA = formatTime(matchA.start_time);
-        const startB = formatTime(matchB.start_time);
-        if (startA < startB) return -1;
-        if (startA > startB) return 1;
-      } else if (matchA) {
-        return -1;
-      } else if (matchB) {
-        return 1;
-      }
+      const [availA, availB] = [a, b].map(t => t.availabilities || []);
+      const [matchA, matchB] = [availA, availB].map(avails => avails.find(avail => 
+        formatDay(avail.day).toLowerCase() === selectedDay.toLowerCase() &&
+        selectedTime >= formatTime(avail.start_time) &&
+        selectedTime <= formatTime(avail.end_time)
+      ));
+      if (matchA && !matchB) return -1;
+      if (matchB && !matchA) return 1;
     }
     const nameA = `${a.first_name || ""} ${a.last_name || ""}`.toLowerCase();
     const nameB = `${b.first_name || ""} ${b.last_name || ""}`.toLowerCase();
-    if (nameA < nameB) return -1;
-    if (nameA > nameB) return 1;
-    return 0;
+    return nameA.localeCompare(nameB);
   });
 
   if (loading) return <div>Loading tutors...</div>;
-  //if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="p-4 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">JDN Tuition Tutors</h1>
       <h5 className="text-xl font-bold mb-6">Tutors Count: {tutors.length}</h5>
 
-      
       <div className="w-full flex flex-col items-center mb-6 px-4">
-  {/* Selected Subjects */}
-  <div className="flex flex-wrap gap-2 mb-2 justify-center">
-    {selectedSubjects.map(subject => (
-      <button
-        key={subject}
-        onClick={() => toggleSubject(subject)}
-        className="px-3 py-1 rounded-full bg-[#17A4A5] text-white flex items-center text-sm"
-      >
-        {subject}
-        <span className="ml-2 text-xs">×</span>
-      </button>
-    ))}
-  </div>
-  
-  {/* Subject Selector */}
-  <div className="relative w-full max-w-2xl">
-    <button
-      onClick={() => setIsSubjectsOpen(!isSubjectsOpen)}
-      className="w-full p-3 text-center border border-gray-300 rounded-md bg-white hover:bg-gray-50 flex items-center justify-between"
-    >
-      <span className="w-full text-center">Select Subjects</span>
-      
-      <svg 
-        className={`w-5 h-5 transform transition-transform ${isSubjectsOpen ? 'rotate-180' : ''}`}
-        fill="none" 
-        stroke="currentColor" 
-        viewBox="0 0 24 24"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-      </svg>
-      <button
-      onClick={() => setSelectedSubjects([])}
-      className=" ml-2 px-2 text-center border border-gray-300 rounded-md bg-white hover:bg-gray-50 flex items-center justify-between"
-    >X</button>
-    </button>
-    
-    
-    {isSubjectsOpen && (
-      <div className="absolute z-10 left-1/2 transform -translate-x-1/2 w-full mt-1 p-2 bg-white border border-gray-200 rounded-lg shadow-lg grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
-        {allSubjects.map((subject) => (
-          <button
-            key={subject.id}
-            onClick={() => {
-              toggleSubject(subject.name);
-              setIsSubjectsOpen(false);
-            }}
-            className={`p-2 rounded-full text-base ${
-              selectedSubjects.includes(subject.name)
-                ? "bg-[#17A4A5] text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            } transition-colors`}
-          >
-            {subject.name}
-          </button>
-        ))}
-      </div>
-    )}
-  </div>
-</div>
-
-      {/* Other Filters Below Subjects */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        {/* Name Search */}
-        <input
-          type="text"
-          placeholder="Search by name..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-        />
-
-        {/* Day Filter */}
-        <select
-          value={selectedDay}
-          onChange={(e) => setSelectedDay(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-        >
-          <option value="">All Days</option>
-          {["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].map(day => (
-            <option key={day} value={day}>{day}</option>
+        <div className="flex flex-wrap gap-2 mb-2 justify-center">
+          {selectedSubjects.map(subject => (
+            <button key={subject} onClick={() => toggleSubject(subject)}
+              className="px-3 py-1 rounded-full bg-[#17A4A5] text-white flex items-center text-sm">
+              {subject}<span className="ml-2 text-xs">×</span>
+            </button>
           ))}
+        </div>
+        
+        <div className="relative w-full max-w-2xl">
+          <button onClick={() => setIsSubjectsOpen(!isSubjectsOpen)}
+            className="w-full p-3 text-center border border-gray-300 rounded-md bg-white hover:bg-gray-50 flex items-center justify-between">
+            <span className="w-full text-center">Select Subjects</span>
+            <svg className={`w-5 h-5 transform transition-transform ${isSubjectsOpen ? 'rotate-180' : ''}`}
+              fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+            <button onClick={() => setSelectedSubjects([])}
+              className="ml-2 px-2 text-center border border-gray-300 rounded-md bg-white hover:bg-gray-50 flex items-center justify-between">
+              X
+            </button>
+          </button>
+          
+          {isSubjectsOpen && (
+            <div className="absolute z-10 left-1/2 transform -translate-x-1/2 w-full mt-1 p-2 bg-white border border-gray-200 rounded-lg shadow-lg grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+              {allSubjects.map((subject) => (
+                <button key={subject.id} onClick={() => { toggleSubject(subject.name); setIsSubjectsOpen(false); }}
+                  className={`p-2 rounded-full text-base ${
+                    selectedSubjects.includes(subject.name)
+                      ? "bg-[#17A4A5] text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  } transition-colors`}>
+                  {subject.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <input type="text" placeholder="Search by name..." value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" />
+
+        <select value={selectedDay} onChange={(e) => setSelectedDay(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300">
+          <option value="">All Days</option>
+          {["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"].map(day => 
+            <option key={day} value={day}>{day}</option>
+          )}
         </select>
 
-        {/* Time Filter */}
-        <input
-          type="time"
-          value={selectedTime}
-          onChange={(e) => setSelectedTime(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-        />
+        <input type="time" value={selectedTime} onChange={(e) => setSelectedTime(e.target.value)}
+          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300" />
+        <div className="relative space-y-2">
+  <Autocomplete onLoad={(autocomplete) => (searchAutocomplete.current = autocomplete)}
+    onPlaceChanged={handleSearchLocationChanged}>
+    <input placeholder="Search location..." 
+      className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+  </Autocomplete>
 
-        {/* Location Filter */}
-        <input
-          type="text"
-          placeholder="Location..."
-          value={locationFilter}
-          onChange={(e) => setLocationFilter(e.target.value)}
-          className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-300"
-        />
-      </div>
-
-{/* Google Map Section */}
-<div className="mb-6">
-  {isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={mapContainerStyle}
-      zoom={10}
-      center={defaultCenter}
-      onLoad={(map) => setGoogleMap(map)}
-    >
-      {sortedTutors  // Changed from tutors to sortedTutors
-        .filter(tutor => coordinates[tutor.id])
-        .map((tutor) => (
-          <Marker
-            key={tutor.id}
-            position={coordinates[tutor.id]}
-            title={`${tutor.first_name || ''} ${tutor.last_name || ''}`.trim()}
-          />
-        ))}
-    </GoogleMap>
-  ) : (
-    <div>Loading map...</div>
-  )}
-  <div className="mt-2 text-sm text-gray-500">
-    Showing {
-      sortedTutors.filter(tutor => coordinates[tutor.id]).length  // Changed to use sortedTutors
-    } tutors with valid locations matching filters
-  </div>
+  <button 
+    onClick={() => setSearchLocation(null)}
+    className="absolute right-2 top-1/3 transform -translate-y-1/2 bg-gray-200 p-1 rounded-md text-sm">
+    X
+  </button>
 </div>
 
-      {/* Tutors List */}
-      <div className="space-y-4">
-        {sortedTutors.map((tutor) => (
-          <div
-            key={tutor.id}
-            className="bg-white rounded-lg shadow-sm border p-4 cursor-pointer transition-colors hover:bg-gray-50"
-            onClick={() => toggleDetails(tutor.id)}
-          >
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {/* Basic Info */}
-              <div>
-                <p className="font-semibold">
-                  {tutor.first_name || ""} {tutor.last_name || ""}
-                </p>
-                <p className="text-sm text-gray-600">{tutor.email}</p>
-              </div>
+      </div>
 
-              {/* Contact & Address */}
-              <div>
-                <p className="font-medium">Contact</p>
-                <p>{tutor.mobile_phone}</p>
-                <p className="mt-1 text-sm">
-                  <strong>Address:</strong> {tutor.address}, {tutor.city || ""}
-                  <br />
-                  {tutor.state} {tutor.zip}, {tutor.country}
-                </p>
-              </div>
+      <div className="mb-6">
+        {isLoaded ? (
+          <GoogleMap mapContainerStyle={mapContainerStyle} zoom={searchLocation ? 12 : 10}
+            center={searchLocation || defaultCenter}>
+            {searchLocation && (
+              <Marker position={searchLocation} title="Search Location"
+                icon={{ url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                  scaledSize: new window.google.maps.Size(40, 40) }} />
+            )}
+            {sortedTutors.filter(tutor => coordinates[tutor.id]).map((tutor) => (
+              <Marker key={tutor.id} position={coordinates[tutor.id]}
+                title={`${tutor.first_name || ''} ${tutor.last_name || ''}`.trim()} />
+            ))}
+          </GoogleMap>
+        ) : <div>Loading map...</div>}
+        <div className="mt-2 text-sm text-gray-500">
+          Showing {sortedTutors.filter(tutor => coordinates[tutor.id]).length} tutors matching filters
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        {sortedTutors.map((tutor) => {
+          const distance = searchLocation ? distances[tutor.id] : null;
+          return (
+            <div key={tutor.id} className="bg-white rounded-lg shadow-sm border p-4 cursor-pointer hover:bg-gray-50"
+              onClick={() => toggleDetails(tutor.id)}>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                  <p className="font-semibold">
+                    {tutor.first_name || ""} {tutor.last_name || ""}
+                    {distance !== null && (
+                      <span className="block text-sm text-gray-500 mt-1">
+                        {Math.round(distance / 100) / 10} km away
+                      </span>
+                    )}
+                  </p>
+                  <p className="text-sm text-gray-600">{tutor.email}</p>
+                </div>
+
+                <div>
+                  <p className="font-medium">Contact</p>
+                  <p>{tutor.mobile_phone}</p>
+                  <p className="mt-1 text-sm">
+                    <strong>Address:</strong> {tutor.address}, {tutor.city || ""}<br />
+                    {tutor.state} {tutor.zip}, {tutor.country}
+                  </p>
+                </div>
 
               {/* Top Subjects */}
               <div>
@@ -577,6 +434,7 @@ const filteredTutors = tutors.filter((tutor) => {
             'Check Availability'}
         </button>
       </div>
+    
     )}
   </div>
             </div>
@@ -610,13 +468,19 @@ const filteredTutors = tutors.filter((tutor) => {
                       <p className="text-sm">
                         {getCustomField(tutor, "Travel Distance (km)")} km
                       </p>
+                      {searchLocation && distance !== null && (
+  <span className="block text-sm text-gray-500 mt-1">
+    {Math.round(distance / 100) / 10} km away
+  </span>
+)}
                     </div>
                   </div>
                 </div>
               </div>
             )}
           </div>
-        ))}
+          );
+})}
 
         {sortedTutors.length === 0 && (
           <div className="text-gray-500">
