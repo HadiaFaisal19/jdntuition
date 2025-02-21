@@ -181,7 +181,7 @@ const ManageTutors = () => {
               const availabilitiesResponse = await fetch(`/api/availabilities?employee_id=${tutor.id}`);
               const availabilitiesData = availabilitiesResponse.ok ? await availabilitiesResponse.json() : [];
               return { ...tutor, availabilities: Array.isArray(availabilitiesData) ? availabilitiesData : [] };
-            } catch (err) {
+            } catch {
               return { ...tutor, availabilities: [] };
             }
           })
