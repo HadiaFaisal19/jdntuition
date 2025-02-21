@@ -273,7 +273,7 @@ const ManageTutors = () => {
     return nameA.localeCompare(nameB);
   });
 
-  if (loading) return <div>Loading tutors...</div>;
+  if (loading) return <div className="p-4 min-h-screen">Loading tutors...</div>;
 
   return (
     <div className="p-4 min-h-screen">
@@ -353,6 +353,9 @@ const ManageTutors = () => {
       </div>
 
       <div className="mb-6">
+      <div className="mb-2 text-sm text-gray-500">
+      Showing {sortedTutors.filter(tutor => coordinates[tutor.id]).length} tutors on map
+        </div>
         {isLoaded ? (
           <GoogleMap mapContainerStyle={mapContainerStyle} zoom={searchLocation ? 12 : 10}
             center={searchLocation || defaultCenter}>
@@ -368,7 +371,8 @@ const ManageTutors = () => {
           </GoogleMap>
         ) : <div>Loading map...</div>}
         <div className="mt-2 text-sm text-gray-500">
-          Showing {sortedTutors.filter(tutor => coordinates[tutor.id]).length} tutors matching filters
+          {/* Showing {sortedTutors.filter(tutor => coordinates[tutor.id]).length} tutors matching filters */}
+         
         </div>
       </div>
 
