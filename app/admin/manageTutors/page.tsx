@@ -236,10 +236,13 @@ const ManageTutors = () => {
   const filteredTutors = tutors.filter((tutor) => {
     const fullName = `${tutor.first_name || ""} ${tutor.last_name || ""}`.toLowerCase();
     const nameMatch = fullName.includes(searchTerm.toLowerCase());
-    const tutorSubjects = (tutor.subjects || "").split(',').map(s => s.trim().toLowerCase());
-    const topSubjects = getCustomField(tutor, "Top 3 Subjects").split(',').map(s => s.trim().toLowerCase());
-    const subjectMatch = selectedSubjects.length === 0 || selectedSubjects.every(subj => 
-      tutorSubjects.includes(subj.toLowerCase()) || topSubjects.includes(subj.toLowerCase())
+    const tutorSubjectsLower = (tutor.subjects || "").toLowerCase();
+  const topSubjectsLower = getCustomField(tutor, "Top 3 Subjects").toLowerCase();
+  
+  const subjectMatch = selectedSubjects.length === 0 || 
+    selectedSubjects.every(subj => 
+      tutorSubjectsLower.includes(subj.toLowerCase()) || 
+      topSubjectsLower.includes(subj.toLowerCase())
     );
     const availabilityMatch = !(selectedDay && selectedTime) || 
       (tutor.availabilities || []).some(avail => {
