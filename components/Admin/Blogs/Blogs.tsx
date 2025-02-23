@@ -299,11 +299,11 @@ const Blogs = () => {
   ))}
 </div>
             <div>
-              <label htmlFor="Description" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
                 Description
               </label>
               <textarea
-                name="Description"
+                name="description"
                 rows={2}
                 value={blogForm.description}
                 onChange={handleInputChange}
