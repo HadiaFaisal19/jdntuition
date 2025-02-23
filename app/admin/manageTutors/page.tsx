@@ -46,6 +46,12 @@ const defaultCenter = {
   lng: 151.2093
 };
 
+interface TravelTimeData {
+  driving?: { duration: string; distance: string };
+  walking?: { duration: string; distance: string };
+  transit?: { duration: string; distance: string };
+}
+
 const ManageTutors = () => {
   const [tutors, setTutors] = useState<Tutor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,6 +69,8 @@ const ManageTutors = () => {
   const [searchLocation, setSearchLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [distances, setDistances] = useState<{ [key: number]: number }>({});
   const searchAutocomplete = useRef<google.maps.places.Autocomplete>();
+  
+  const [travelTimes, setTravelTimes] = useState<{ [key: number]: TravelTimeData }>({});
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -70,6 +78,65 @@ const ManageTutors = () => {
     libraries: ['places', 'maps','geometry']
   });
 
+  useEffect(() => {
+    if (!isLoaded || !searchLocation) return;
+
+    const calculateTravelTimes = async () => {
+      const service = new window.google.maps.DistanceMatrixService();
+      const tutorsWithCoords = tutors.filter(tutor => coordinates[tutor.id]);
+      
+      const processResults = (
+        results: google.maps.DistanceMatrixResponse, 
+        mode: keyof TravelTimeData,
+        chunkIndex: number,
+        chunkSize: number
+      ) => {
+        setTravelTimes(prev => {
+          const updated = { ...prev };
+          results.rows[0].elements.forEach((element, index) => {
+            const tutorId = tutorsWithCoords[chunkIndex * chunkSize + index].id;
+            if (element.status === 'OK') {
+              updated[tutorId] = {
+                ...updated[tutorId],
+                [mode]: {
+                  duration: element.duration.text,
+                  distance: (element.distance.value / 1000).toFixed(1)
+                }
+              };
+            }
+          });
+          return updated;
+        });
+      };
+
+      const chunkSize = 25;
+      const modes: (keyof TravelTimeData)[] = ['driving', 'walking', 'transit'];
+
+      for (const mode of modes) {
+        for (let i = 0; i < tutorsWithCoords.length; i += chunkSize) {
+          const chunk = tutorsWithCoords.slice(i, i + chunkSize);
+          const destinations = chunk.map(t => 
+            new google.maps.LatLng(coordinates[t.id])
+          );
+
+          await new Promise(resolve => setTimeout(resolve, 200));
+          
+          service.getDistanceMatrix({
+            origins: [searchLocation],
+            destinations: destinations,
+            travelMode: google.maps.TravelMode[mode.toUpperCase() as keyof typeof google.maps.TravelMode],
+            unitSystem: google.maps.UnitSystem.METRIC,
+          }, (response, status) => {
+            if (status === 'OK' && response) {
+              processResults(response, mode, i / chunkSize, chunkSize);
+            }
+          });
+        }
+      }
+    };
+
+    calculateTravelTimes();
+  }, [searchLocation, coordinates, tutors, isLoaded]);
   useEffect(() => {
     if (isLoaded && tutors.length > 0) {
       const geocoder = new window.google.maps.Geocoder();
@@ -382,6 +449,8 @@ const ManageTutors = () => {
       <div className="space-y-4">
         {sortedTutors.map((tutor) => {
           const distance = searchLocation ? distances[tutor.id] : null;
+          const travelData = travelTimes[tutor.id];
+
           return (
             <div key={tutor.id} className="bg-white rounded-lg shadow-sm border p-4 cursor-pointer hover:bg-gray-50"
               onClick={() => toggleDetails(tutor.id)}>
@@ -471,15 +540,33 @@ const ManageTutors = () => {
                       </p>
                     </div>
                     <div>
-                      <p className="font-medium">Travel Distance</p>
-                      <p className="text-sm">
-                        {getCustomField(tutor, "Travel Distance (km)")} km
-                      </p>
-                      {searchLocation && distance !== null && (
-  <span className="block text-sm text-gray-500 mt-1">
-    {Math.round(distance / 100) / 10} km away
-  </span>
-)}
+                      <p className="font-medium">Travel Information</p>
+                      <div className="mt-1 space-y-2">
+                        {travelData ? (
+                          <>
+                            <div className="text-sm text-gray-600">
+                              <span className="font-medium">Road Distance:</span> {travelData.driving?.distance || 'N/A'} km
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              🚗 Drive: {travelData.driving?.duration || 'N/A'}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              🚶 Walk: {travelData.walking?.duration || 'N/A'}
+                            </div>
+                            <div className="text-sm text-gray-500">
+                              🚌 Transit: {travelData.transit?.duration || 'N/A'}
+                            </div>
+                          </>
+                        ) : (
+                          <div className="text-sm text-gray-500">
+                            {distance !== null && (
+                              <span>
+                                Straight-line distance: {Math.round(distance / 100) / 10} km
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
