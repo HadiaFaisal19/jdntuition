@@ -456,12 +456,14 @@ const ManageTutors = () => {
               onClick={() => toggleDetails(tutor.id)}>
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div>
+                  
                   <p className="font-semibold">
                     {tutor.first_name || ""} {tutor.last_name || ""}
                     {distance !== null && (
                       <span className="block text-sm text-gray-500 mt-1">
                         {Math.round(distance / 100) / 10} km away
                       </span>
+                      
                     )}
                   </p>
                   <p className="text-sm text-gray-600">{tutor.email}</p>
@@ -540,6 +542,8 @@ const ManageTutors = () => {
                       </p>
                     </div>
                     <div>
+                      
+                    <p className="">Travel Distance: {getCustomField(tutor, "Travel Distance (km)")} km</p>
                       <p className="font-medium">Travel Information</p>
                       <div className="mt-1 space-y-2">
                         {travelData ? (

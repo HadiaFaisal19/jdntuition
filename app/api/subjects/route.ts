@@ -2,12 +2,13 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const response = await fetch("https://api.teachworks.com/v1/subjects", {
+    const response = await fetch(`https://api.teachworks.com/v1/subjects?page=1&per_page=100`, {
       headers: {
         'Authorization': `Token token=${process.env.TEACHWORKS_API_KEY}`,
         'Content-Type': 'application/json'
       }
     });
+    
     
     if (!response.ok) {
       throw new Error(`TeachWorks API error: ${response.statusText}`);
