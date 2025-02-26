@@ -62,6 +62,7 @@ const ManageTutors = () => {
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [allSubjects, setAllSubjects] = useState<Subject[]>([]);
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>([]);
+  const [subjectSearchTerm, setSubjectSearchTerm] = useState("");
   const [refreshingAvailabilities, setRefreshingAvailabilities] = useState<number[]>([]);
   const [autoCheckedTutors, setAutoCheckedTutors] = useState<number[]>([]);
   const [coordinates, setCoordinates] = useState<{ [key: number]: google.maps.LatLngLiteral }>({});
@@ -376,20 +377,48 @@ const ManageTutors = () => {
           
           {isSubjectsOpen && (
             <div className="absolute z-10 left-1/2 transform -translate-x-1/2 w-full mt-1 p-2 bg-white border border-gray-200 rounded-lg shadow-lg grid grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
-              {allSubjects.map((subject) => (
-                <button key={subject.id} onClick={() => { toggleSubject(subject.name); setIsSubjectsOpen(false); }}
-                  className={`p-2 rounded-full text-base ${
-                    selectedSubjects.includes(subject.name)
-                      ? "bg-[#17A4A5] text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  } transition-colors`}>
-                  {subject.name}
-                </button>
-              ))}
-            </div>
-          )}
+              <div className="sticky top-0 bg-white pb-2">
+                <input
+                  type="text"
+                  placeholder="Search subjects..."
+                  value={subjectSearchTerm}
+                  onChange={(e) => setSubjectSearchTerm(e.target.value)}
+                  className="w-full p-2 mb-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              {allSubjects
+        .filter(subject =>
+          subject.name.toLowerCase().includes(subjectSearchTerm.toLowerCase())
+        )
+        .map((subject) => (
+          <button
+            key={subject.id}
+            onClick={() => {
+              toggleSubject(subject.name);
+              setIsSubjectsOpen(false);
+              setSubjectSearchTerm(""); // Clear search after selection
+            }}
+            className={`p-2 rounded-full text-base ${
+              selectedSubjects.includes(subject.name)
+                ? "bg-[#17A4A5] text-white"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            } transition-colors`}
+          >
+            {subject.name}
+          </button>
+        ))}
+        {allSubjects.filter(subject =>
+        subject.name.toLowerCase().includes(subjectSearchTerm.toLowerCase())
+      ).length === 0 && (
+        <div className="col-span-3 text-center text-gray-500 py-2">
+          No subjects found matching "{subjectSearchTerm}"
         </div>
-      </div>
+          )}
+          </div>
+          )}
+          </div>
+          </div>
+          
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <input type="text" placeholder="Search by name..." value={searchTerm}
