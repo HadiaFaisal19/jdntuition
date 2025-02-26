@@ -411,7 +411,7 @@ const ManageTutors = () => {
         subject.name.toLowerCase().includes(subjectSearchTerm.toLowerCase())
       ).length === 0 && (
         <div className="col-span-3 text-center text-gray-500 py-2">
-          No subjects found matching "{subjectSearchTerm}"
+          No matching subjects found
         </div>
           )}
           </div>
