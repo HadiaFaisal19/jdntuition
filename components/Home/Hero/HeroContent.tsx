@@ -6,14 +6,15 @@ const HeroContent = () => {
   return (
     <div>
       <h4 data-aos="fade-right"
-      className="text-1xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-2xl font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[4rem] text-white opacity-60">
+      className="text-1xl sm:text-2xl md:text-2xl lg:text-2xl xl:text-2xl font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[4rem] text-white opacity-60">
       Journey Development Network: Building the Pillars of Success
       </h4>
       <h1 data-aos="fade-left"
       data-aos-delay="200"
       className="text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-5xl font-bold md:leading-[3rem] lg:leading-[3.5rem] xl:leading-[4rem] text-white">
-      Australia&apos;s Highest Rated Tutoring Platform - The Trusted Choice
+      Sydney and Melbourne&apos;s #1 Rated Tutoring – Unmatched Results & Support
       </h1>
+      
       
       <div className="mt-8 flex items-center space-x-4">
         <button
