@@ -44,28 +44,29 @@ const Footer = () => {
   };
 
   return (
-    <div className=" relative pt-24 pb-12 bg-gray-200">
+    <div className="relative mt-16 pt-32 pb-12 bg-gray-200">
       {/* avail Now Section */}
-      {/* <div className=" absolute -top-24 w-[50%] h-[40%] left-1/2 transform -translate-x-1/2 bg-[#17A4A5] rounded-lg shadow-lg py-12 px-8 flex flex-col sm:flex-row items-center justify-between text-white space-y-6 sm:space-y-0 sm:space-x-4">
-        <div>
-          <h2 className="text-2xl font-bold text-center sm:text-left">
-            Confused to make a Decision? Give Us a Chance
-          </h2>
-          <p className="text-sm opacity-90 text-center sm:text-left mt-2">
-          Book Your First Lesson Now to gwt a 10% discount.
-          </p>
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 w-full sm:w-auto">
-          
-          <button className="px-6 py-3 mr-8 bg-white text-[#17A4A5] font-bold text-xl rounded-lg hover:bg-gray-700 transition duration-300">
-           Avail Offer Now
-          </button>
-        </div>
-      </div> */}
+      <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 w-[90%] max-w-4xl h-52 bg-[#17A4A5] rounded-lg shadow-xl z-50 flex flex-col sm:flex-row items-center justify-between text-white px-6 sm:px-12 py-8 gap-6 sm:gap-8">
+  <div className="flex-1 text-center sm:text-left min-w-[300px]">
+    <h2 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">
+      Demand is High! Secure Your Spot Today.
+    </h2>
+    <p className="text-sm sm:text-base opacity-90">
+      Expert Tutors | Personalised Learning | Proven Success
+    </p>
+  </div>
+  <div className="flex-shrink-0">
+    <button className="mr-6 px-8 py-3 bg-white text-[#17A4A5] font-bold text-lg rounded-lg hover:bg-gray-100 transition-colors duration-300 shadow-md hover:shadow-lg whitespace-nowrap">
+      <Link href="/book-now" className="block w-full h-full">
+        Book Now
+      </Link>
+    </button>
+  </div>
+</div>
 
       {/* Main Footer */}
-      <div className="mt-6 w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
-        <div>
+      <div className="mt-32 w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
+      <div>
         <Link href="/" className="flex-shrink-0">
           <Image src={"/images/LOGOC.png"} alt="logo" height={100} width={100} />
           </Link>
