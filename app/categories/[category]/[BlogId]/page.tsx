@@ -22,7 +22,7 @@ interface Blog {
   Image: string
   content: string
   isLatest?: boolean
-  isMostRead?: boolean
+  isMostRead?: number
 }
 
 // Define the type for the state arrays
@@ -114,17 +114,26 @@ const BlogDetailPage = ({ params }: { params: Promise<Params> }) => {
   useEffect(() => {
     const fetchMostReadBlogs = async () => {
       try {
-        const response = await axios.get("/api/blog")
-        const blogs: Blog[] = response.data.blogs // Explicit type for blogs array
-
+        const response = await axios.get("/api/blog");
+        const blogs: Blog[] = response.data.blogs;
+    
         const filteredBlogs = blogs
-          .filter((blog) => blog.isMostRead)
-          .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-          .slice(0, 5)
-
-        setMostReadBlogs(filteredBlogs)
+          .filter((blog): blog is Blog & { isMostRead: number } => 
+            typeof blog.isMostRead === 'number'
+          )
+          .sort((a, b) => {
+            // First sort by isMostRead ascending
+            const priorityDiff = a.isMostRead - b.isMostRead;
+            if (priorityDiff !== 0) return priorityDiff;
+            
+            // Then sort by date descending
+            return new Date(b.date).getTime() - new Date(a.date).getTime();
+          })
+          .slice(0, 5);
+    
+        setMostReadBlogs(filteredBlogs);
       } catch (error) {
-        console.error("Error fetching most-read blogs:", error)
+        console.error("Error fetching most-read blogs:", error);
       }
     }
 
