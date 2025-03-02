@@ -11,6 +11,7 @@ import WhyChooseUs from "./WhyChooseUs/WhyChooseUs";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
+import BookNow from "./BookNow/BookNow";
 
 const Home = () => {
   useEffect(() => {
@@ -48,6 +49,9 @@ const Home = () => {
       </div>
       <div id="team">
         <Team />
+      </div>
+      <div id="book-now">
+        <BookNow />
       </div>
     </div>
   );

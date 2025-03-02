@@ -44,9 +44,9 @@ const Footer = () => {
   };
 
   return (
-    <div className="relative mt-16 pt-32 pb-12 bg-gray-200">
+    <div className="relative pb-12 bg-gray-200">
       {/* avail Now Section */}
-      <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 w-[90%] max-w-4xl h-52 bg-[#17A4A5] rounded-lg shadow-xl z-50 flex flex-col sm:flex-row items-center justify-between text-white px-6 sm:px-12 py-8 gap-6 sm:gap-8">
+      {/* <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 w-[90%] max-w-4xl h-52 bg-[#17A4A5] rounded-lg shadow-xl z-50 flex flex-col sm:flex-row items-center justify-between text-white px-6 sm:px-12 py-8 gap-6 sm:gap-8">
   <div className="flex-1 text-center sm:text-left min-w-[300px]">
     <h2 className="text-xl sm:text-2xl font-bold mb-2 leading-tight">
       Demand is High! Secure Your Spot Today.
@@ -62,10 +62,10 @@ const Footer = () => {
       </Link>
     </button>
   </div>
-</div>
+</div> */}
 
       {/* Main Footer */}
-      <div className="mt-32 w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
+      <div className="pt-16 w-[80%] mx-auto grid items-start grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-8 border-b-[1.5px] border-white border-opacity-20">
       <div>
         <Link href="/" className="flex-shrink-0">
           <Image src={"/images/LOGOC.png"} alt="logo" height={100} width={100} />
