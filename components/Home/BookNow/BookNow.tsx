@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import { FaPhone, FaSms, FaEnvelope, FaClock, FaCheckCircle } from "react-icons/fa";
 
@@ -31,7 +32,7 @@ const BookNow = () => {
             </div>
 
             <button className="w-full bg-[#17A4A5] hover:bg-[#138F8F] text-white py-6 px-8 rounded-xl text-xl font-semibold transition-all duration-200 transform hover:scale-105">
-              Book Now
+            <Link href="/book-now">Book Now</Link>
             </button>
           </div>
 
