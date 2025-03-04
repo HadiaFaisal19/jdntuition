@@ -5,6 +5,7 @@ import { useState } from "react"
 import { FaBook, FaHandshake, FaRocket, FaComments } from "react-icons/fa"
 import emailjs from "emailjs-com"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 
 
@@ -1063,13 +1064,19 @@ export default function BookNow() {
       </div>
 
       {/* Button Section */}
-      <div className="mt-6 py-5">
-        <button
-          onClick={() => setIsFormVisible(true)} // Show the form on button click
-          className="bg-[#17A4A5] text-white font-bold py-3 px-6 rounded hover:bg-[#138F8F]"
-        >
-          Get Started Now
-        </button>
+      <div className="flex flex-col gap-4 items-center mt-6 py-5">
+          <button
+            onClick={() => setIsFormVisible(true)} // Show the form on button click
+            className="bg-[#17A4A5] text-white font-bold py-3 px-6 rounded hover:bg-[#138F8F]"
+          >
+            Get Started Now
+          </button>
+          <button
+            // Show the form on button click
+            className="bg-gray-300 text-[#17A4A5] font-bold py-3 px-6 rounded hover:bg-gray-200"
+          >
+            <Link href="/">Go To Home</Link>
+          </button>
       </div>
 
       {/* Conditional Form Display */}
