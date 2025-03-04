@@ -7,7 +7,7 @@ import RegisterUser from "../registerUser/page";
 import ManageTutors from "../manageTutors/page";
 
 const AdminDashboard = () => {
-  const [activeMenu, setActiveMenu] = useState("Manage Blogs");
+  const [activeMenu, setActiveMenu] = useState("Manage Tutors");
   const [isAdmin, setIsAdmin] = useState(false);
   const [email, setemail] = useState("");
   const router = useRouter();
