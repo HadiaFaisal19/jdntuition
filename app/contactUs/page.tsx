@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation"
 
 const ContactUsPage = () => {
   const [formData, setFormData] = useState({
@@ -17,10 +18,11 @@ const ContactUsPage = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  const router = useRouter();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+   
   
     try {
       const response = await fetch('/api/sendContactEmail', {
@@ -37,7 +39,8 @@ const ContactUsPage = () => {
         throw new Error(data.error || 'Failed to send message');
       }
   
-      setShowSuccessPopup(true);
+      // setShowSuccessPopup(true);
+      router.push("/contactUs/thank-you"); 
       setFormData({ name: "", email: "", phone: "", message: "" });
   
     } catch (error) {

@@ -15,7 +15,7 @@ export default function LayoutWrapper({
   console.log("Current Pathname:", pathname); // Debugging: Check the pathname
 
   // Routes that should hide the header and footer
-  const noHeaderFooterRoutes = ["/login", "/signup", "/book-now", "/book-now/thank-you", "/admin/login", "/admin/signup", "/admin/dashboard"];
+  const noHeaderFooterRoutes = ["/login", "/signup", "/book-now", "/book-now/thank-you", "/contactUs/thank-you", "/admin/login", "/admin/signup", "/admin/dashboard"];
 
   // Check if the current route matches any excluded route
   const hideHeaderFooter = noHeaderFooterRoutes.includes(pathname);

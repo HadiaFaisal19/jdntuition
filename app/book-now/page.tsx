@@ -1071,12 +1071,9 @@ export default function BookNow() {
           >
             Get Started Now
           </button>
-          <button
-            // Show the form on button click
-            className="bg-gray-300 text-[#17A4A5] font-bold py-3 px-6 rounded hover:bg-gray-200"
-          >
-            <Link href="/">Go To Home</Link>
-          </button>
+          <Link href="/" className="text-gray-700 font-bold underline hover:text-[#138F8F]">
+    Go To Home
+  </Link>
       </div>
 
       {/* Conditional Form Display */}
